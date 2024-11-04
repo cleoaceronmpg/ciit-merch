@@ -1,0 +1,78 @@
+@media screen and (min-width: 1200px) {
+  .page-width {
+    padding: 0 55px;
+  }
+}
+
+.page-width {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 22px;
+}
+@media (min-width: 768px) {
+  .md\:mb-8 {
+    margin-bottom: 2rem;
+  }
+}
+.mb-4 {
+  margin-bottom: 1rem;
+}
+.category__general {
+  position: relative;
+}
+
+.form-field-container:first-child {
+  margin-top: 0;
+}
+.form-field-container {
+  margin-top: 2rem;
+}
+
+html select {
+  padding: 1rem 1.2rem;
+}
+
+html select {
+  background: none;
+  padding: 0.5rem 1.2rem;
+  display: block;
+  flex: 1 1;
+  display: block;
+  width: 100%;
+  position: relative;
+  z-index: 10;
+  border: 1px solid rgba(0, 0, 0, 0);
+  margin: 1px;
+  border-radius: 4px;
+}
+button,
+select {
+  text-transform: none;
+}
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 100%;
+  font-weight: inherit;
+  line-height: inherit;
+  color: inherit;
+  margin: 0;
+  padding: 0;
+}
+select {
+  -webkit-appearance: none;
+  appearance: none;
+}
+.field-border {
+  border: 1px solid #c9cccf;
+  border-radius: 4px;
+  position: absolute;
+  z-index: 9;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
