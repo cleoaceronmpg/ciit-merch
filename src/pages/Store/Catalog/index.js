@@ -1,4 +1,5 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 
 //import Breadcrumbs
 import Breadcrumbs from "../../../components/MerchStore/Common/Breadcrumb";
@@ -6,19 +7,31 @@ import Header from "../../../components/MerchStore/Header";
 import "./styles.css";
 
 import { Container } from "reactstrap";
-import { collectionData, featureProductsData } from "./data";
+import { SIZE, COLOR, CatalogProducts } from "./data";
 
 const Home = () => {
+  const location = useLocation();
+  const [catalog, setCatalog] = React.useState(null);
+  // Access the passed data
+  const { collection } = location.state || {};
+
+  React.useEffect(() => {
+    collection && setCatalog(collection);
+  }, []);
+
   //meta title
   document.title = "CIIT Merch | Catalog";
 
   return (
     <React.Fragment>
       <Header />
-      <div className="page-content" style={{ paddingLeft: 0, paddingRight: 0 }}>
+      <div
+        className="page-content"
+        style={{ paddingLeft: 20, paddingRight: 20 }}
+      >
         <Container fluid>
           {/* Render Breadcrumbs */}
-          <Breadcrumbs title="Home" breadcrumbItem="Senior High" />
+          <Breadcrumbs title="Home" breadcrumbItem={catalog} />
 
           <div
             style={{
@@ -34,7 +47,7 @@ const Home = () => {
                 lineHeight: 1.1111111,
               }}
             >
-              Senior High
+              {catalog && catalog}
             </h1>
           </div>
           <div
@@ -45,13 +58,13 @@ const Home = () => {
             }}
           >
             <div
-              className="dropdown d-inline-block d-lg-none"
+              className="dropdown d-inline-block d-md-none"
               style={{
                 marginBottom: 4,
               }}
             />
             <div
-              className="dropdown d-inline-block d-none d-lg-block"
+              className="dropdown d-inline-block d-none d-md-block"
               style={{
                 marginBottom: 4,
               }}
@@ -95,10 +108,14 @@ const Home = () => {
                       position: "relative",
                     }}
                   >
-                    <select className="form-field" placeholder="Default">
-                      <option selected="" value="">
-                        Default
-                      </option>
+                    <select
+                      className="form-field"
+                      placeholder="Default"
+                      style={{
+                        width: 100,
+                      }}
+                    >
+                      <option value="">Default</option>
                       <option value="price">Price</option>
                       <option value="name">Name</option>
                     </select>
@@ -123,7 +140,205 @@ const Home = () => {
               </div>
             </div>
           </div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              marginTop: 20,
+            }}
+          >
+            <div
+              className="dropdown d-inline-block d-none d-md-block"
+              style={{
+                width: 400,
+                paddingRight: 30,
+              }}
+            >
+              <div
+                style={{
+                  borderBottom: "#ced4da solid 1px",
+                  paddingBottom: 5,
+                }}
+              >
+                <span
+                  style={{
+                    fontWeight: 500,
+                    letterSpacing: "0.2em",
+                  }}
+                >
+                  SIZE
+                </span>
+              </div>
+              {SIZE.map((item, index) => (
+                <div
+                  className="form-check"
+                  key={index}
+                  style={{
+                    marginTop: 10,
+                    marginLeft: 5,
+                  }}
+                >
+                  <input
+                    type="checkbox"
+                    className="form-check-input"
+                    onChange={() => console.log("check!")}
+                    id="formCheck2"
+                    style={{
+                      width: 20,
+                      height: 20,
+                    }}
+                  />
+                  <label
+                    style={{
+                      marginLeft: 10,
+                      marginTop: 3,
+                    }}
+                    className="form-check-label"
+                    htmlFor="formCheck2"
+                  >
+                    {item.size}
+                  </label>
+                </div>
+              ))}
+              <div
+                style={{
+                  borderBottom: "#ced4da solid 1px",
+                  paddingBottom: 5,
+                  marginTop: 20,
+                }}
+              >
+                <span
+                  style={{
+                    fontWeight: 500,
+                    letterSpacing: "0.2em",
+                  }}
+                >
+                  COLOR
+                </span>
+              </div>
+              {COLOR.map((item, index) => (
+                <div
+                  className="form-check"
+                  key={index}
+                  style={{
+                    marginTop: 10,
+                    marginLeft: 5,
+                  }}
+                >
+                  <input
+                    type="checkbox"
+                    className="form-check-input"
+                    onChange={() => console.log("check!")}
+                    id="formCheck2"
+                    style={{
+                      width: 20,
+                      height: 20,
+                    }}
+                  />
+                  <label
+                    style={{
+                      marginLeft: 10,
+                      marginTop: 3,
+                    }}
+                    className="form-check-label"
+                    htmlFor="formCheck2"
+                  >
+                    {item.color}
+                  </label>
+                </div>
+              ))}
+            </div>
+            <div
+              className="grid grid-cols-2 md:grid-cols-3 gap-8"
+              style={{
+                width: "100%",
+              }}
+            >
+              {CatalogProducts.map((item, index) => (
+                <div
+                  key={index}
+                  className="listing-tem"
+                  style={{
+                    width: "100%",
+                  }}
+                >
+                  <div className="product-thumbnail-listing2">
+                    <a href="/kids/continental-80-shoes-54">
+                      <img
+                        src={item.img}
+                        alt={item.title}
+                        className="catalog-image"
+                        height={200}
+                        width={200}
+                      />
+                    </a>
+                  </div>
+                  <div
+                    className="product-name product-list-name mt-4 mb-1"
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <a
+                      href="/kids/continental-80-shoes-54"
+                      className="font-bold hover:underline h5"
+                    >
+                      <span
+                        style={{
+                          fontSize: 18,
+                        }}
+                      >
+                        {item.title}
+                      </span>
+                    </a>
+                  </div>
+                  <div
+                    className="product-price-listing"
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <div>
+                      <span className="sale-price font-semibold">
+                        {item.price}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </Container>
+      </div>
+      <div className="footerStore">
+        <div
+          className="page-width"
+          style={{
+            gap: "2rem",
+            display: "grid",
+            justifyContent: "flex-end",
+          }}
+        >
+          <div
+            style={{
+              alignSelf: "center",
+            }}
+          >
+            <div
+              style={{
+                fontSize: 13,
+                opacity: 1,
+                color: "#737373",
+                textAlign: "center",
+              }}
+            >
+              <span>© 2024 CIIT Merch Store. All Rights Reserved.</span>
+            </div>
+          </div>
+        </div>
       </div>
     </React.Fragment>
   );

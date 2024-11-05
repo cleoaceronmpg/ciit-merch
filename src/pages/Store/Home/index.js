@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 //import Breadcrumbs
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
@@ -9,6 +10,7 @@ import { Container } from "reactstrap";
 import { collectionData, featureProductsData } from "./data";
 
 const Home = () => {
+  let navigate = useNavigate();
   //meta title
   document.title = "CIIT Merch | Home";
 
@@ -81,7 +83,13 @@ const Home = () => {
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                 Praesent ultricies sodales mi, at ornare elit semper ac.
               </p>
-              <a href="#" className="shopnow">
+              <a
+                href="#"
+                className="shopnow"
+                onClick={() => {
+                  navigate("/catalog");
+                }}
+              >
                 SHOP NOW
               </a>
             </div>
@@ -110,7 +118,15 @@ const Home = () => {
                       <h3>{item.title}</h3>
                       <p>{item.description}</p>
                       <div>
-                        <a href={item.url} className="button primary">
+                        <a
+                          href={"#"}
+                          className="button primary"
+                          onClick={() => {
+                            navigate("/catalog", {
+                              state: { collection: item.btnName }, // Pass your data here
+                            });
+                          }}
+                        >
                           <span>{item.btnName}</span>
                         </a>
                       </div>
