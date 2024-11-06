@@ -9,11 +9,11 @@ import "./styles.css";
 import { Container } from "reactstrap";
 import { SIZE, COLOR, CatalogProducts } from "./data";
 
-const Home = () => {
+const Catalog = () => {
   const location = useLocation();
   const [catalog, setCatalog] = React.useState(null);
   // Access the passed data
-  const { collection } = location.state || {};
+  const { collection } = location.state || { collection: "Catalog" };
 
   React.useEffect(() => {
     collection && setCatalog(collection);
@@ -264,7 +264,7 @@ const Home = () => {
                   }}
                 >
                   <div className="product-thumbnail-listing2">
-                    <a href="/kids/continental-80-shoes-54">
+                    <a href={`/product/${item.id}`}>
                       <img
                         src={item.img}
                         alt={item.title}
@@ -344,4 +344,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Catalog;

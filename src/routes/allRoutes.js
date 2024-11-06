@@ -15,6 +15,7 @@ import UserProfile from "../pages/Authentication/user-profile";
 // Merch Store
 import Home from "../pages/Store/Home";
 import Catalog from "../pages/Store/Catalog";
+import ProductDetails from "../pages/Store/Catalog/ProductDetails";
 
 const userRoutes = [
   //dashboard
@@ -35,6 +36,7 @@ const authRoutes = [
   { path: "/register", component: <Register /> },
   { path: "/home", component: <Home /> },
   { path: "/catalog", component: <Catalog /> },
+  { path: "/product/:id", component: <ProductDetails /> },
 ];
 
 export { userRoutes, authRoutes };

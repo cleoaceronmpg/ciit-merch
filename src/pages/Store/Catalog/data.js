@@ -46,6 +46,8 @@ const CatalogProducts = [
     title: "CIIT College Jacket",
     img: require("../../../assets/images/merch/Hoodie2.jpg"),
     price: "₱1,340.00 PHP",
+    sku: "NJC44203-Black-M",
+    color: "black",
     url: "/",
   },
   {
@@ -53,6 +55,8 @@ const CatalogProducts = [
     title: "CIIT College PE/NTSP Uniform",
     img: require("../../../assets/images/merch/PENSTP1.jpg"),
     price: "₱345.00 PHP",
+    sku: "NJC44203-Black-M",
+    color: "black",
     url: "/",
   },
   {
@@ -60,6 +64,8 @@ const CatalogProducts = [
     title: "CIIT Seniro High School PE Jogging Pants Uniform",
     img: require("../../../assets/images/merch/Jogger1.jpg"),
     price: "₱602.56 PHP",
+    sku: "NJC44203-Black-M",
+    color: "black",
     url: "/",
   },
   {
@@ -67,6 +73,8 @@ const CatalogProducts = [
     title: "CIIT SHS PE Uniform",
     img: require("../../../assets/images/merch/SHSShirt1.jpg"),
     price: "₱432.32 PHP",
+    sku: "NJC44203-Black-M",
+    color: "black",
     url: "/",
   },
   {
@@ -74,6 +82,8 @@ const CatalogProducts = [
     title: "CIIT SHS Polo Shirt",
     img: require("../../../assets/images/merch/PoloShirt1.jpg"),
     price: "₱644.00 PHP",
+    sku: "NJC44203-Black-M",
+    color: "black",
     url: "/",
   },
 ];
