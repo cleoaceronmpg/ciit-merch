@@ -8,10 +8,13 @@ import "./styles.css";
 
 import { Container } from "reactstrap";
 import { SIZE, COLOR, CatalogProducts } from "../data";
+import { setSelection } from "@testing-library/user-event/dist/cjs/event/selection/setSelection.js";
 
 const ProductDetails = () => {
   const { id } = useParams();
   const [selectedProduct, setSelectedProduct] = React.useState({});
+  const [selectedSize, setSelectedSize] = React.useState(null);
+  const [selectedColor, setSelectedColor] = React.useState(null);
 
   React.useEffect(() => {
     console.log(id);
@@ -107,25 +110,32 @@ const ProductDetails = () => {
                 <div className="">
                   <div>
                     <ul className="variant-option-list flex justify-start gap-2 flex-wrap">
-                      <li className="">
-                        <a href="#">X</a>
-                      </li>
-                      <li className="">
-                        <a href="#">M</a>
-                      </li>
-                      <li className="">
-                        <a href="#">S</a>
-                      </li>
+                      {SIZE.map((item, index) => (
+                        <li
+                          key={index}
+                          className={selectedSize === item.id ? "selected" : ""}
+                        >
+                          <a href="#" onClick={() => setSelectedSize(item.id)}>
+                            {item.size}
+                          </a>
+                        </li>
+                      ))}
                     </ul>
                   </div>
                   <div>
                     <ul className="variant-option-list flex justify-start gap-2 flex-wrap">
-                      <li className="">
-                        <a href="#">Purple</a>
-                      </li>
-                      <li className="">
-                        <a href="#">Brown</a>
-                      </li>
+                      {COLOR.map((item, index) => (
+                        <li
+                          key={index}
+                          className={
+                            selectedColor === item.id ? "selected" : ""
+                          }
+                        >
+                          <a href="#" onClick={() => setSelectedColor(item.id)}>
+                            {item.color}
+                          </a>
+                        </li>
+                      ))}
                     </ul>
                   </div>
                 </div>

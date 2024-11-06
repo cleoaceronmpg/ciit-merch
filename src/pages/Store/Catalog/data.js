@@ -12,11 +12,11 @@ const SIZE = [
     size: "L",
   },
   {
-    id: 3,
+    id: 4,
     size: "M",
   },
   {
-    id: 4,
+    id: 5,
     size: "X",
   },
 ];
@@ -35,7 +35,7 @@ const COLOR = [
     color: "BLACK",
   },
   {
-    id: 3,
+    id: 4,
     color: "DARK BLUE",
   },
 ];

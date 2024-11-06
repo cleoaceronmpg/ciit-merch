@@ -96,8 +96,8 @@
 }
 
 .variant-option-list li.selected {
-  background-color: 008060;
-  border-color: 008060;
+  background-color: #008060;
+  border-color: #008060;
   color: #fff;
   cursor: pointer;
 }
