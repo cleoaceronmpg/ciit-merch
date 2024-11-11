@@ -141,3 +141,7 @@ svg {
 .items-center {
   align-items: center;
 }
+
+.button.primary:hover {
+  background-color: #006e52;
+}

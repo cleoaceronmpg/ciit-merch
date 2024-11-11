@@ -16,7 +16,7 @@ import ProfileMenu from "./CommonForBoth/TopbarDropdown/ProfileMenu";
 import LightDark from "../CommonForBoth/Menus/LightDark";
 
 // import images
-import logoSvg from "../../assets/images/ciit-logo.png";
+import logoSvg from "../../assets/images/weare-logo.png";
 import github from "../../assets/images/brands/github.png";
 import bitbucket from "../../assets/images/brands/bitbucket.png";
 import dribbble from "../../assets/images/brands/dribbble.png";
@@ -85,7 +85,7 @@ const Header = (props) => {
                 </span>
                 <span className="logo-lg">
                   <img src={logoSvg} alt="" height="24" />{" "}
-                  <span className="logo-txt">Merch Store ❤️ </span>
+                  <span className="logo-txt">CIIT Merch ❤️ </span>
                 </span>
               </Link>
 
@@ -95,7 +95,7 @@ const Header = (props) => {
                 </span>
                 <span className="logo-lg">
                   <img src={logoSvg} alt="" height="24" />{" "}
-                  <span className="logo-txt">Merch Store ❤️ </span>
+                  <span className="logo-txt">CIIT Merch ❤️ </span>
                 </span>
               </Link>
             </div>
@@ -118,7 +118,11 @@ const Header = (props) => {
                   <Link
                     className="dropdown-icon-item"
                     to="/home"
-                    style={{ color: "blue", fontSize: "1rem", fontWeight: 700 }}
+                    style={{
+                      color: "#00364d",
+                      fontSize: "1rem",
+                      fontWeight: 700,
+                    }}
                   >
                     <span>Home</span>
                   </Link>
@@ -127,7 +131,11 @@ const Header = (props) => {
                   <Link
                     className="dropdown-icon-item"
                     to="/catalog"
-                    style={{ color: "blue", fontSize: "1rem", fontWeight: 700 }}
+                    style={{
+                      color: "#00364d",
+                      fontSize: "1rem",
+                      fontWeight: 700,
+                    }}
                   >
                     <span>Catalog</span>
                   </Link>
@@ -136,7 +144,11 @@ const Header = (props) => {
                   <Link
                     className="dropdown-icon-item"
                     to="/contact"
-                    style={{ color: "blue", fontSize: "1rem", fontWeight: 700 }}
+                    style={{
+                      color: "#00364d",
+                      fontSize: "1rem",
+                      fontWeight: 700,
+                    }}
                   >
                     <span>Contact</span>
                   </Link>
@@ -212,7 +224,7 @@ const Header = (props) => {
                         className="dropdown-icon-item"
                         to="/home"
                         style={{
-                          color: "blue",
+                          color: "#00364d",
                           fontSize: "1rem",
                           fontWeight: 700,
                         }}
@@ -225,7 +237,7 @@ const Header = (props) => {
                         className="dropdown-icon-item"
                         to="/catalog"
                         style={{
-                          color: "blue",
+                          color: "#00364d",
                           fontSize: "1rem",
                           fontWeight: 700,
                         }}
@@ -238,7 +250,7 @@ const Header = (props) => {
                         className="dropdown-icon-item"
                         to="/contact"
                         style={{
-                          color: "blue",
+                          color: "#00364d",
                           fontSize: "1rem",
                           fontWeight: 700,
                         }}

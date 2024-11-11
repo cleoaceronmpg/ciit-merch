@@ -60,6 +60,8 @@ const ProductDetails = ({ cart, ...props }) => {
             size: sizeDetails.size,
             color: colorDetails.color,
             quantity: selectedQty,
+            totalPrice:
+              parseFloat(selectedProduct.price) * parseInt(selectedQty),
           },
         ],
       });

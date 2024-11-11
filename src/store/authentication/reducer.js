@@ -5,13 +5,13 @@ import {
   LOGOUT_USER,
   LOGOUT_USER_SUCCESS,
   API_ERROR,
-  SESSION_TIMEOUT,
   CLEAR_AUTH,
   REGISTER,
 } from "./types";
 
 const initialState = {
   authenticated: false,
+  tempEmail: null,
   token: null,
   loading: true,
   data: [],
@@ -80,15 +80,6 @@ const authentication = (state = initialState, action) => {
         ...state,
         error: action.payload.error,
         loading: false,
-      };
-
-    case SESSION_TIMEOUT:
-      return {
-        ...state,
-        token: null,
-        authenticated: false,
-        error: true,
-        errorMessage: action.payload,
       };
 
     case CLEAR_AUTH:

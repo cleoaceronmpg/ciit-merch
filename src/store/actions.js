@@ -5,6 +5,6 @@ export * from "./auth/register/actions";
 export * from "./auth/login/actions";
 export * from "./auth/forgetpwd/actions";
 export * from "./auth/profile/actions";
-
 export * from "./authentication/types";
 export * from "./cart/types";
+export * from "./checkout/types";
