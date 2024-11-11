@@ -13,9 +13,11 @@ import ForgetPwd from "../pages/Authentication/ForgetPassword";
 import UserProfile from "../pages/Authentication/user-profile";
 
 // Merch Store
-import Home from "../pages/Store/Home";
-import Catalog from "../pages/Store/Catalog";
-import ProductDetails from "../pages/Store/Catalog/ProductDetails";
+import Home from "../pages/MerchStore/Home";
+import Catalog from "../pages/MerchStore/Catalog";
+import ShoppingCart from "../pages/MerchStore/Cart";
+import Checkout from "../pages/MerchStore/Checkout";
+import ProductDetails from "../pages/MerchStore/Catalog/ProductDetails";
 
 const userRoutes = [
   //dashboard
@@ -37,6 +39,8 @@ const authRoutes = [
   { path: "/home", component: <Home /> },
   { path: "/catalog", component: <Catalog /> },
   { path: "/product/:id", component: <ProductDetails /> },
+  { path: "/cart", component: <ShoppingCart /> },
+  { path: "/checkout", component: <Checkout /> },
 ];
 
 export { userRoutes, authRoutes };

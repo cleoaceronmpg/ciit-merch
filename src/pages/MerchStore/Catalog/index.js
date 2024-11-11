@@ -303,7 +303,7 @@ const Catalog = () => {
                   >
                     <div>
                       <span className="sale-price font-semibold">
-                        {item.price}
+                        ₱ {parseInt(item.price).toLocaleString("en-US")} PHP
                       </span>
                     </div>
                   </div>

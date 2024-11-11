@@ -1,36 +1,21 @@
-import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
+import React from "react";
 import { Dropdown, DropdownToggle, DropdownMenu } from "reactstrap";
-
-//i18n
 import { withTranslation } from "react-i18next";
-// Redux
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-
-// users
 import user1 from "../../../../assets/images/users/avatar-1.jpg";
 
-const ProfileMenu = (props) => {
-  // Declare a new state variable, which we'll call "menu"
-  const [menu, setMenu] = useState(false);
+const ProfileMenu = ({ profile, authentication, ...props }) => {
+  const [menu, setMenu] = React.useState(false);
+  const [username, setUsername] = React.useState("Admin");
 
-  const [username, setusername] = useState("Guest");
-
-  // useEffect(() => {
-  //   if (localStorage.getItem("authUser")) {
-  //     if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
-  //       const obj = JSON.parse(localStorage.getItem("authUser"));
-  //       setusername(obj.displayName);
-  //     } else if (
-  //       process.env.REACT_APP_DEFAULTAUTH === "fake" ||
-  //       process.env.REACT_APP_DEFAULTAUTH === "jwt"
-  //     ) {
-  //       const obj = JSON.parse(localStorage.getItem("authUser"));
-  //       setusername(obj.username);
-  //     }
-  //   }
-  // }, [props.success]);
+  React.useEffect(() => {
+    if (authentication.authenticated) {
+      const obj = JSON.parse(localStorage.getItem("authUser"));
+      const { username } = JSON.parse(obj.config.data);
+      setUsername(username);
+    }
+  }, [authentication]);
 
   return (
     <React.Fragment>
@@ -74,14 +59,9 @@ const ProfileMenu = (props) => {
   );
 };
 
-ProfileMenu.propTypes = {
-  success: PropTypes.any,
-  t: PropTypes.any,
-};
+const mapStateToProps = ({ profile, authentication }) => ({
+  profile,
+  authentication,
+});
 
-const mapStatetoProps = (state) => {
-  const { error, success } = state.Profile;
-  return { error, success };
-};
-
-export default connect(mapStatetoProps, {})(withTranslation()(ProfileMenu));
+export default connect(mapStateToProps, {})(withTranslation()(ProfileMenu));

@@ -1,16 +1,32 @@
-import { createStore, applyMiddleware, compose } from "redux"
-import createSagaMiddleware from "redux-saga"
+import storage from "redux-persist/lib/storage";
+import { legacy_createStore as createStore, applyMiddleware } from "redux";
+import { persistStore, persistReducer } from "redux-persist";
+import createSagaMiddleware from "redux-saga";
+import * as types from "./actions";
+import logger from "./logger";
 
-import rootReducer from "./reducers"
-import rootSaga from "./sagas"
+import rootReducer from "./reducers";
+import rootSaga from "./sagas";
 
-const sagaMiddleware = createSagaMiddleware()
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+const persistConfig = {
+  key: "root",
+  storage: storage,
+  whitelist: ["authentication", "app", "cart"],
+  timeout: null,
+};
+
+const sagaMiddleware = createSagaMiddleware();
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = createStore(
-  rootReducer,
-  composeEnhancers(applyMiddleware(sagaMiddleware))
-)
-sagaMiddleware.run(rootSaga)
+  persistedReducer,
+  applyMiddleware(sagaMiddleware, logger)
+);
 
-export default store
+const persistor = persistStore(store);
+
+sagaMiddleware.run(rootSaga);
+
+const actionCreator = (props) => props;
+
+export { store, persistor, types, actionCreator };

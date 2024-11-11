@@ -11,7 +11,7 @@ import { Dropdown, DropdownToggle, DropdownMenu, Row, Col } from "reactstrap";
 
 // Import menuDropdown
 import LanguageDropdown from "../CommonForBoth/TopbarDropdown/LanguageDropdown";
-import NotificationDropdown from "../CommonForBoth/TopbarDropdown/NotificationDropdown";
+import NotificationDropdown from "./CommonForBoth/TopbarDropdown/NotificationDropdown";
 import ProfileMenu from "./CommonForBoth/TopbarDropdown/ProfileMenu";
 import LightDark from "../CommonForBoth/Menus/LightDark";
 
@@ -37,21 +37,11 @@ import {
   changelayoutMode,
 } from "../../store/actions";
 import { createSelector } from "reselect";
+import { actionCreator } from "../../store";
 
 const Header = (props) => {
   const dispatch = useDispatch();
 
-  const headerData = createSelector(
-    (state) => state.Layout,
-    (layout) => ({
-      showRightSidebar: layout.showRightSide,
-    })
-  );
-  // Inside your component
-  const { showRightSidebar } = useSelector(headerData);
-
-  const { onChangeLayoutMode } = props;
-  const [search, setsearch] = useState(false);
   const [socialDrp, setsocialDrp] = useState(false);
   const [isClick, setClick] = useState(true);
 
@@ -367,8 +357,8 @@ const Header = (props) => {
               </DropdownMenu>
             </Dropdown> */}
 
-            {/* <NotificationDropdown />
-            <div
+            <NotificationDropdown />
+            {/* <div
               onClick={() => {
                 dispatch(showRightSidebarAction(!showRightSidebar));
               }}
@@ -378,10 +368,7 @@ const Header = (props) => {
                 type="button"
                 className="btn header-item noti-icon right-bar-toggle "
               >
-                <FeatherIcon
-                  icon="settings"
-                  className="icon-lg"
-                />
+                <FeatherIcon icon="settings" className="icon-lg" />
               </button>
             </div> */}
             <ProfileMenu />
@@ -392,25 +379,9 @@ const Header = (props) => {
   );
 };
 
-Header.propTypes = {
-  changeSidebarType: PropTypes.func,
-  leftMenu: PropTypes.any,
-  showRightSidebar: PropTypes.any,
-  showRightSidebarAction: PropTypes.func,
-  t: PropTypes.any,
-  toggleLeftmenu: PropTypes.func,
-  changelayoutMode: PropTypes.func,
-  layoutMode: PropTypes.any,
+const mapStateToProps = ({ layout, app, ...state }) => {
+  const { layoutMode } = layout;
+  return { app, layout, layoutMode };
 };
 
-const mapStatetoProps = (state) => {
-  const { layoutType, showRightSidebar, leftMenu, layoutMode } = state.Layout;
-  return { layoutType, showRightSidebar, leftMenu, layoutMode };
-};
-
-export default connect(mapStatetoProps, {
-  showRightSidebarAction,
-  changelayoutMode,
-  toggleLeftmenu,
-  changeSidebarType,
-})(withTranslation()(Header));
+export default connect(mapStateToProps, { actionCreator })(Header);

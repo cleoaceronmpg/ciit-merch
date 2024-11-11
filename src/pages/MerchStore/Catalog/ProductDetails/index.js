@@ -1,5 +1,8 @@
 import React from "react";
+import Swal from "sweetalert2";
 import { useParams } from "react-router-dom";
+import { connect } from "react-redux";
+import { actionCreator, types } from "../../../../store";
 
 //import Breadcrumbs
 import Breadcrumbs from "../../../../components/MerchStore/Common/Breadcrumb";
@@ -8,16 +11,30 @@ import "./styles.css";
 
 import { Container } from "reactstrap";
 import { SIZE, COLOR, CatalogProducts } from "../data";
-import { setSelection } from "@testing-library/user-event/dist/cjs/event/selection/setSelection.js";
 
-const ProductDetails = () => {
+const ProductDetails = ({ cart, ...props }) => {
   const { id } = useParams();
   const [selectedProduct, setSelectedProduct] = React.useState({});
   const [selectedSize, setSelectedSize] = React.useState(null);
   const [selectedColor, setSelectedColor] = React.useState(null);
+  const [selectedQty, setSelectedQty] = React.useState(1);
 
   React.useEffect(() => {
-    console.log(id);
+    console.log("cart", cart);
+
+    cart &&
+      selectedSize &&
+      selectedColor &&
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "JUST ADDED TO YOUR CART",
+        showConfirmButton: false,
+        footer: '<a href="/home">Continue Shopping</a>',
+      });
+  }, [cart]);
+
+  React.useEffect(() => {
     id && filterProduct(parseInt(id));
   }, [id]);
 
@@ -27,8 +44,36 @@ const ProductDetails = () => {
   };
 
   React.useEffect(() => {
-    console.log(selectedProduct);
-  }, [selectedProduct]);
+    console.log(selectedQty);
+  }, [selectedQty]);
+
+  const addToCart = async () => {
+    if (selectedSize && selectedColor) {
+      const sizeDetails = SIZE.find((item) => item.id === selectedSize);
+      const colorDetails = COLOR.find((item) => item.id === selectedColor);
+
+      await props.actionCreator({
+        type: types.ADD_TO_CART,
+        payload: [
+          {
+            ...selectedProduct,
+            size: sizeDetails.size,
+            color: colorDetails.color,
+            quantity: selectedQty,
+          },
+        ],
+      });
+      setSelectedSize(null);
+      setSelectedColor(null);
+      setSelectedQty(1);
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Add to Cart",
+        text: "Please select variant options",
+      });
+    }
+  };
 
   //meta title
   document.title = "CIIT Merch | Product Details";
@@ -48,13 +93,14 @@ const ProductDetails = () => {
           />
 
           <div
-            className="grid grid-cols-1 gap-12 md:grid-cols-2"
+            className="gap-12"
             style={{
               marginBottom: 4,
               display: "flex",
               flexDirection: "row",
               justifyContent: "center",
               alignItems: "center",
+              flexWrap: "wrap",
             }}
           >
             <div>
@@ -84,7 +130,11 @@ const ProductDetails = () => {
                   <h4 className="product-single-price">
                     <div>
                       <span className="sale-price">
-                        {selectedProduct.price}
+                        ₱{" "}
+                        {parseInt(selectedProduct.price).toLocaleString(
+                          "en-US"
+                        )}{" "}
+                        PHP
                       </span>
                     </div>
                   </h4>
@@ -167,6 +217,7 @@ const ProductDetails = () => {
                               name="qty"
                               placeholder="Qty"
                               defaultValue="1"
+                              onChange={(e) => setSelectedQty(e.target.value)}
                             />
                           </div>
                         </div>
@@ -175,6 +226,7 @@ const ProductDetails = () => {
                         <button
                           type="button"
                           className="button primary outline"
+                          onClick={() => addToCart()}
                         >
                           <span>ADD TO CART</span>
                         </button>
@@ -242,4 +294,9 @@ const ProductDetails = () => {
   );
 };
 
-export default ProductDetails;
+const mapStateToProps = ({ cart, authentication }) => ({
+  cart,
+  authentication,
+});
+
+export default connect(mapStateToProps, { actionCreator })(ProductDetails);
