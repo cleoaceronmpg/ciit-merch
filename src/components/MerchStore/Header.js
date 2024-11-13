@@ -79,7 +79,7 @@ const Header = (props) => {
                 borderRight: "none",
               }}
             >
-              <Link to="/dashboard" className="logo logo-dark">
+              <Link to="/home" className="logo logo-dark">
                 <span className="logo-sm">
                   <img src={logoSvg} alt="" height="24" />
                 </span>
@@ -89,7 +89,7 @@ const Header = (props) => {
                 </span>
               </Link>
 
-              <Link to="/dashboard" className="logo logo-light">
+              <Link to="/home" className="logo logo-light">
                 <span className="logo-sm">
                   <img src={logoSvg} alt="" height="24" />
                 </span>

@@ -10,7 +10,7 @@ import {
   SHOW_SIDEBAR,
   CHANGE_PRELOADER,
   TOGGLE_LEFTMENU,
-} from "./actionTypes"
+} from "./types"
 
 export const changeLayout = layout => ({
   type: CHANGE_LAYOUT,

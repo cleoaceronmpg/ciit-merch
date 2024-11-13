@@ -1,40 +1,36 @@
-import React, { useEffect } from "react"
-import { Row, Col, Alert, Container, Input, Label, Form, FormFeedback  } from "reactstrap"
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import {
+  Row,
+  Col,
+  Alert,
+  Container,
+  Input,
+  Label,
+  Form,
+  FormFeedback,
+} from 'reactstrap';
 
 // Formik Validation
-import * as Yup from "yup";
-import { useFormik } from "formik";
+import * as Yup from 'yup';
+import { useFormik } from 'formik';
 
-// action
-import { registerUser, apiError } from "../../store/actions";
+import {
+  REGISTER_USER,
+  REGISTER_USER_FAILED,
+} from '../../store/auth/register/types';
 
-//redux
-import { useSelector, useDispatch } from "react-redux";
+import { actionCreator } from '../../store';
 
-import { Link } from "react-router-dom"
+import { Link } from 'react-router-dom';
 
 // import images
-import logo from "../../assets/images/logo-sm.svg"
-import { createSelector } from "reselect";
-import CarouselPage from "./CarouselPage";
+import logo from '../../assets/images/logo-sm.svg';
+import CarouselPage from '../AuthenticationInner/CarouselPage';
 
-const Register = props => {
-
+const Register = ({ account, ...props }) => {
   //meta title
-  document.title = "Register | Minia - React Admin & Dashboard Template";
-
-  const dispatch = useDispatch()
-
-  const registerData = createSelector(
-    (state) => state.Account,
-    (state) => ({
-      user: state.user,
-      registrationError: state.registrationError,
-      loading: state.loading,
-    })
-  );
-  // Inside your component
-  const { user, registrationError } = useSelector(registerData);
+  document.title = 'Register | EMS | Camp';
 
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
@@ -46,18 +42,19 @@ const Register = props => {
       password: '123456' || '',
     },
     validationSchema: Yup.object({
-      email: Yup.string().required("Please Enter Your Email"),
-      username: Yup.string().required("Please Enter Your Username"),
-      password: Yup.string().required("Please Enter Your Password"),
+      email: Yup.string().required('Enter Your Email'),
+      username: Yup.string().required('Enter Your Username'),
+      password: Yup.string().required('Enter Your Password'),
     }),
     onSubmit: (values) => {
-      dispatch(registerUser(values));
-    }
+      props.actionCreator({
+        type: REGISTER_USER,
+        payload: {
+          user: values,
+        },
+      });
+    },
   });
-
-  useEffect(() => {
-    dispatch(apiError(""))
-  }, [dispatch])
 
   return (
     <React.Fragment>
@@ -70,13 +67,16 @@ const Register = props => {
                   <div className="d-flex flex-column h-100">
                     <div className="mb-4 mb-md-5 text-center">
                       <Link to="/dashboard" className="d-block auth-logo">
-                        <img src={logo} alt="" height="28" /> <span className="logo-txt">Minia</span>
+                        <img src={logo} alt="" height="28" />{' '}
+                        <span className="logo-txt">Minia</span>
                       </Link>
                     </div>
                     <div className="auth-content my-auto">
                       <div className="text-center">
                         <h5 className="mb-0">Register Account</h5>
-                        <p className="text-muted mt-2">Get your free Minia account now.</p>
+                        <p className="text-muted mt-2">
+                          Get your free Minia account now.
+                        </p>
                       </div>
 
                       <Form
@@ -87,14 +87,17 @@ const Register = props => {
                           return false;
                         }}
                       >
-                        {user && user ? (
+                        {account.user && account.user ? (
                           <Alert color="success">
                             Register User Successfully
                           </Alert>
                         ) : null}
 
-                        {registrationError && registrationError ? (
-                          <Alert color="danger">{registrationError}</Alert>
+                        {account.registrationError &&
+                        account.registrationError ? (
+                          <Alert color="danger">
+                            {account.registrationError}
+                          </Alert>
                         ) : null}
 
                         <div className="mb-3">
@@ -107,16 +110,21 @@ const Register = props => {
                             type="email"
                             onChange={validation.handleChange}
                             onBlur={validation.handleBlur}
-                            value={validation.values.email || ""}
+                            value={validation.values.email || ''}
                             invalid={
-                              validation.touched.email && validation.errors.email ? true : false
+                              validation.touched.email &&
+                              validation.errors.email
+                                ? true
+                                : false
                             }
                           />
-                          {validation.touched.email && validation.errors.email ? (
-                            <FormFeedback type="invalid">{validation.errors.email}</FormFeedback>
+                          {validation.touched.email &&
+                          validation.errors.email ? (
+                            <FormFeedback type="invalid">
+                              {validation.errors.email}
+                            </FormFeedback>
                           ) : null}
                         </div>
-
 
                         <div className="mb-3">
                           <Label className="form-label">Username</Label>
@@ -126,13 +134,19 @@ const Register = props => {
                             placeholder="Enter username"
                             onChange={validation.handleChange}
                             onBlur={validation.handleBlur}
-                            value={validation.values.username || ""}
+                            value={validation.values.username || ''}
                             invalid={
-                              validation.touched.username && validation.errors.username ? true : false
+                              validation.touched.username &&
+                              validation.errors.username
+                                ? true
+                                : false
                             }
                           />
-                          {validation.touched.username && validation.errors.username ? (
-                            <FormFeedback type="invalid">{validation.errors.username}</FormFeedback>
+                          {validation.touched.username &&
+                          validation.errors.username ? (
+                            <FormFeedback type="invalid">
+                              {validation.errors.username}
+                            </FormFeedback>
                           ) : null}
                         </div>
                         <div className="mb-3">
@@ -143,19 +157,25 @@ const Register = props => {
                             placeholder="Enter Password"
                             onChange={validation.handleChange}
                             onBlur={validation.handleBlur}
-                            value={validation.values.password || ""}
+                            value={validation.values.password || ''}
                             invalid={
-                              validation.touched.password && validation.errors.password ? true : false
+                              validation.touched.password &&
+                              validation.errors.password
+                                ? true
+                                : false
                             }
                           />
-                          {validation.touched.password && validation.errors.password ? (
-                            <FormFeedback type="invalid">{validation.errors.password}</FormFeedback>
+                          {validation.touched.password &&
+                          validation.errors.password ? (
+                            <FormFeedback type="invalid">
+                              {validation.errors.password}
+                            </FormFeedback>
                           ) : null}
                         </div>
-                        
+
                         <div className="mb-4">
                           <p className="mb-0">
-                            By registering you agree to the Minia{" "}
+                            By registering you agree to the Minia{' '}
                             <Link to="#" className="text-primary">
                               Terms of Use
                             </Link>
@@ -172,12 +192,24 @@ const Register = props => {
                       </Form>
 
                       <div className="mt-5 text-center">
-                        <p className="text-muted mb-0">Already have an account ? <Link to="/login"
-                          className="text-primary fw-semibold"> Login </Link> </p>
+                        <p className="text-muted mb-0">
+                          Already have an account ?{' '}
+                          <Link
+                            to="/login"
+                            className="text-primary fw-semibold"
+                          >
+                            {' '}
+                            Login{' '}
+                          </Link>{' '}
+                        </p>
                       </div>
                     </div>
                     <div className="mt-4 mt-md-5 text-center">
-                      <p className="mb-0">© {new Date().getFullYear()} Minia . Crafted with <i className="mdi mdi-heart text-danger"></i> by Themesbrand</p>
+                      <p className="mb-0">
+                        © {new Date().getFullYear()} Minia . Crafted with{' '}
+                        <i className="mdi mdi-heart text-danger"></i> by
+                        Themesbrand
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -188,7 +220,10 @@ const Register = props => {
         </Container>
       </div>
     </React.Fragment>
-  )
-}
+  );
+};
 
-export default Register
+// export default Register
+const mapStateToProps = ({ account }) => ({ account });
+
+export default connect(mapStateToProps, { actionCreator })(Register);

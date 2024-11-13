@@ -1,50 +1,69 @@
-import { takeEvery, fork, put, all, call } from "redux-saga/effects"
+import {
+  takeEvery,
+  takeLatest,
+  fork,
+  put,
+  all,
+  call,
+} from "redux-saga/effects";
 
 // Login Redux States
-import { EDIT_PROFILE } from "./actionTypes"
-import { profileSuccess, profileError } from "./actions"
-
-//Include Both Helper File with needed methods
-import { getFirebaseBackend } from "../../../helpers/firebase_helper"
 import {
-  postFakeProfile,
-  postJwtProfile,
-} from "../../../helpers/fakebackend_helper"
+  EDIT_PROFILE,
+  PROFILE_SUCCESS,
+  PROFILE_ERROR,
+  GET_PROFILE,
+  GET_PROFILE_SUCCESS,
+  GET_PROFILE_FAILED,
+} from "./types";
 
-const fireBaseBackend = getFirebaseBackend()
+import profileServices from "../../../api/services/profile";
 
-function* editProfile({ payload: { user } }) {
+function* fnGetProfile() {
   try {
-    if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
-      const response = yield call(
-        fireBaseBackend.editProfileAPI,
-        user.username,
-        user.idx
-      )
-      yield put(profileSuccess(response))
-    } else if (process.env.REACT_APP_DEFAULTAUTH === "jwt") {
-      const response = yield call(postJwtProfile, "/post-jwt-profile", {
-        username: user.username,
-        idx: user.idx,
-      })
-      yield put(profileSuccess(response))
-    } else if (process.env.REACT_APP_DEFAULTAUTH === "fake") {
-      const response = yield call(postFakeProfile, {
-        username: user.username,
-        idx: user.idx,
-      })
-      yield put(profileSuccess(response))
-    }
+    const data = yield call(profileServices.api.fnGetProfile);
+    yield put({
+      type: GET_PROFILE_SUCCESS,
+      payload: data.data,
+    });
   } catch (error) {
-    yield put(profileError(error))
+    yield put({
+      type: GET_PROFILE_FAILED,
+      payload: error.response?.data ? error.response?.data.message : "",
+      status: error.response?.status,
+    });
   }
 }
+
+function* editProfile({ payload }) {
+  try {
+    const result = yield call(profileServices.api.fneditProfile, payload);
+
+    if (result) {
+      yield put({
+        type: PROFILE_SUCCESS,
+        payload: { message: result.data.message },
+      });
+      yield put({
+        type: GET_PROFILE,
+      });
+    }
+  } catch (error) {
+    yield put({
+      type: PROFILE_ERROR,
+      payload: error.response?.data ? error.response?.data.message : "",
+      status: error.response?.status,
+    });
+  }
+}
+
 export function* watchProfile() {
-  yield takeEvery(EDIT_PROFILE, editProfile)
+  yield takeLatest(GET_PROFILE, fnGetProfile);
+  yield takeLatest(EDIT_PROFILE, editProfile);
 }
 
 function* ProfileSaga() {
-  yield all([fork(watchProfile)])
+  yield all([fork(watchProfile)]);
 }
 
-export default ProfileSaga
+export default ProfileSaga;

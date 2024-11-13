@@ -1,5 +1,5 @@
 // @flow
-import { all, call, fork, takeEvery, put } from "redux-saga/effects";
+import { all, call, fork, takeEvery, takeLatest, put } from "redux-saga/effects";
 
 import {
   CHANGE_LAYOUT,
@@ -10,12 +10,7 @@ import {
   CHANGE_LAYOUT_THEME,
   SHOW_RIGHT_SIDEBAR,
   CHANGE_LAYOUT_POSITION,
-} from "./actionTypes";
-
-import {
-  changeSidebarType as changeSidebarTypeAction,
-  changeTopbarTheme as changeTopbarThemeAction,
-} from "./actions";
+} from "./types";
 
 /**
  * Changes the body attribute
@@ -52,11 +47,18 @@ function manageBodyClass(cssClass, action = "toggle") {
 function* changeLayout({ payload: layout }) {
   try {
     if (layout === "horizontal") {
-      yield put(changeTopbarThemeAction("dark"));
+      yield put({
+        type: CHANGE_TOPBAR_THEME,
+        payload: "dark"
+      });
+
       document.body.removeAttribute("data-sidebar", "");
       yield call(changeBodyAttribute, "data-sidebar-size", "lg");
     } else {
-      yield put(changeTopbarThemeAction("light"));
+      yield put({
+        type: CHANGE_TOPBAR_THEME,
+        payload: "light"
+      });
     }
     yield call(changeBodyAttribute, "data-layout", layout);
   } catch (error) { }
@@ -69,12 +71,27 @@ function* changeLayout({ payload: layout }) {
 function* changeLayoutWidth({ payload: width }) {
   try {
     if (width === "boxed") {
-      yield put(changeSidebarTypeAction("md"));
+      yield put({
+        type: CHANGE_SIDEBAR_TYPE,
+        payload: {
+          sidebarType: "md"
+        },
+      });
       yield call(changeBodyAttribute, "data-layout-size", width);
     } else if (width === "scrollable") {
-      yield put(changeSidebarTypeAction("md"));
+      yield put({
+        type: CHANGE_SIDEBAR_TYPE,
+        payload: {
+          sidebarType: "md"
+        },
+      });
     } else {
-      yield put(changeSidebarTypeAction("lg"));
+      yield put({
+        type: CHANGE_SIDEBAR_TYPE,
+        payload: {
+          sidebarType: "lg"
+        },
+      });
       yield call(changeBodyAttribute, "data-layout-size", width);
     }
   } catch (error) { }
@@ -118,7 +135,10 @@ function* changelayoutMode({ payload: { layoutMode, layoutType } }) {
   try {
     if (layoutMode === "light") {
       yield call(changeBodyAttribute, "data-bs-theme", layoutMode);
-      yield put(changeTopbarThemeAction("light"));
+      yield put({
+        type: CHANGE_TOPBAR_THEME,
+        payload: "light"
+      });
       if (layoutType !== "horizontal") {
         yield call(changeBodyAttribute, "data-sidebar", "light");
       } else {
@@ -126,7 +146,10 @@ function* changelayoutMode({ payload: { layoutMode, layoutType } }) {
       }
     } else if (layoutMode === "dark") {
       yield call(changeBodyAttribute, "data-bs-theme", layoutMode);
-      yield put(changeTopbarThemeAction("dark"));
+      yield put({
+        type: CHANGE_TOPBAR_THEME,
+        payload: "dark"
+      });
       yield call(changeBodyAttribute, "data-sidebar", "dark");
     }
   } catch (error) { }
@@ -148,7 +171,6 @@ function* changeLeftSidebarType({ payload: { sidebarType } }) {
         yield call(changeBodyAttribute, "data-sidebar-size", "sm");
         break;
       default:
-        // yield call(manageBodyClass, "sidebar-enable", "add");
         yield call(changeBodyAttribute, "data-sidebar-size", "lg");
         break;
     }
@@ -161,42 +183,44 @@ function* changeLeftSidebarType({ payload: { sidebarType } }) {
 function* showRightSidebar() {
   try {
     yield call(manageBodyClass, "right-bar-enabled", "add");
-  } catch (error) { }
+  } catch (error) {
+    console.log("error", error)
+  }
 }
 
 /**
  * Watchers
  */
 export function* watchChangeLayoutType() {
-  yield takeEvery(CHANGE_LAYOUT, changeLayout);
+  yield takeLatest(CHANGE_LAYOUT, changeLayout);
 }
 
 export function* watchChangeLayoutWidth() {
-  yield takeEvery(CHANGE_LAYOUT_WIDTH, changeLayoutWidth);
+  yield takeLatest(CHANGE_LAYOUT_WIDTH, changeLayoutWidth);
 }
 
 export function* watchChangeLeftSidebarTheme() {
-  yield takeEvery(CHANGE_SIDEBAR_THEME, changeLeftSidebarTheme);
+  yield takeLatest(CHANGE_SIDEBAR_THEME, changeLeftSidebarTheme);
 }
 
 export function* watchChangeLayoutPosition() {
-  yield takeEvery(CHANGE_LAYOUT_POSITION, changeLayoutPosition);
+  yield takeLatest(CHANGE_LAYOUT_POSITION, changeLayoutPosition);
 }
 
 export function* watchChangeLeftSidebarType() {
-  yield takeEvery(CHANGE_SIDEBAR_TYPE, changeLeftSidebarType);
+  yield takeLatest(CHANGE_SIDEBAR_TYPE, changeLeftSidebarType);
 }
 
 export function* watchChangeTopbarTheme() {
-  yield takeEvery(CHANGE_TOPBAR_THEME, changeTopbarTheme);
+  yield takeLatest(CHANGE_TOPBAR_THEME, changeTopbarTheme);
 }
 
 export function* watchChangelayoutMode() {
-  yield takeEvery(CHANGE_LAYOUT_THEME, changelayoutMode);
+  yield takeLatest(CHANGE_LAYOUT_THEME, changelayoutMode);
 }
 
 export function* watchShowRightSidebar() {
-  yield takeEvery(SHOW_RIGHT_SIDEBAR, showRightSidebar);
+  yield takeLatest(SHOW_RIGHT_SIDEBAR, showRightSidebar);
 }
 
 function* LayoutSaga() {

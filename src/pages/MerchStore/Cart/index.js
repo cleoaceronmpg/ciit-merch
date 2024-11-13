@@ -120,10 +120,10 @@ const Cart = ({ cart, ...props }) => {
                               <td>
                                 <span>Price</span>
                               </td>
-                              <td className="hidden md:table-cell">
-                                <span>Quantity</span>
+                              <td className="hidden md-table-cell">
+                                <span>Quantity12312321</span>
                               </td>
-                              <td className="hidden md:table-cell">
+                              <td className="hidden md-table-cell">
                                 <span>Total</span>
                               </td>
                             </tr>
@@ -207,7 +207,7 @@ const Cart = ({ cart, ...props }) => {
                                     </span>
                                   </div>
                                 </td>
-                                <td className="hidden md:table-cell">
+                                <td className="hidden md-table-cell">
                                   <div
                                     className="qty-box grid grid-cols-3 border"
                                     style={{
@@ -293,7 +293,7 @@ const Cart = ({ cart, ...props }) => {
                                     </button>
                                   </div>
                                 </td>
-                                <td className="hidden md:table-cell">
+                                <td className="hidden md-table-cell">
                                   {item?.totalPrice ? (
                                     <span>
                                       ₱
@@ -476,7 +476,10 @@ const Cart = ({ cart, ...props }) => {
                 textAlign: "center",
               }}
             >
-              <span>© 2024 CIIT Merch Store. All Rights Reserved.</span>
+              <span>
+                © {new Date().getFullYear()} CIIT Merch Store. All Rights
+                Reserved.
+              </span>
             </div>
           </div>
         </div>

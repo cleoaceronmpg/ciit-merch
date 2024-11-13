@@ -2,7 +2,7 @@ import {
   REGISTER_USER,
   REGISTER_USER_SUCCESSFUL,
   REGISTER_USER_FAILED,
-} from "./actionTypes"
+} from "./types"
 
 const initialState = {
   registrationError: null,
@@ -24,7 +24,7 @@ const account = (state = initialState, action) => {
       state = {
         ...state,
         loading: false,
-        user: action.payload,
+        user: action.payload.data,
         registrationError: null,
       }
       break
@@ -33,7 +33,7 @@ const account = (state = initialState, action) => {
         ...state,
         user: null,
         loading: false,
-        registrationError: action.payload,
+        registrationError: action.payload.error,
       }
       break
     default:

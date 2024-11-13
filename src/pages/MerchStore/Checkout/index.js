@@ -931,7 +931,10 @@ const Checkout = ({ cart, checkout, authentication, ...props }) => {
                 textAlign: "center",
               }}
             >
-              <span>© 2024 CIIT Merch Store. All Rights Reserved.</span>
+              <span>
+                © {new Date().getFullYear()} CIIT Merch Store. All Rights
+                Reserved.
+              </span>
             </div>
           </div>
         </div>

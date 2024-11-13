@@ -1,60 +1,35 @@
-import { takeEvery, fork, put, all, call } from "redux-saga/effects"
+import { takeEvery, takeLatest, fork, put, all, call } from "redux-saga/effects"
 
 // Login Redux States
-import { FORGET_PASSWORD } from "./actionTypes"
-import { userForgetPasswordSuccess, userForgetPasswordError } from "./actions"
+import { FORGET_PASSWORD, FORGET_PASSWORD_SUCCESS, FORGET_PASSWORD_ERROR } from "./types"
 
-//Include Both Helper File with needed methods
-import { getFirebaseBackend } from "../../../helpers/firebase_helper"
 import {
   postFakeForgetPwd,
   postJwtForgetPwd,
 } from "../../../helpers/fakebackend_helper"
 
-const fireBaseBackend = getFirebaseBackend()
-
 //If user is send successfully send mail link then dispatch redux action's are directly from here.
 function* forgetUser({ payload: { user, history } }) {
   try {
-    if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
-      const response = yield call(fireBaseBackend.forgetPassword, user.email)
-      if (response) {
-        yield put(
-          userForgetPasswordSuccess(
-            "Reset link are sended to your mailbox, check there first"
-          )
-        )
-      }
-    } else if (process.env.REACT_APP_DEFAULTAUTH === "jwt") {
-      const response = yield call(postJwtForgetPwd, "/jwt-forget-pwd", {
-        email: user.email,
-      })
-      if (response) {
-        yield put(
-          userForgetPasswordSuccess(
-            "Reset link are sended to your mailbox, check there first"
-          )
-        )
-      }
-    } else {
-      const response = yield call(postFakeForgetPwd, "/fake-forget-pwd", {
-        email: user.email,
-      })
-      if (response) {
-        yield put(
-          userForgetPasswordSuccess(
-            "Reset link are sended to your mailbox, check there first"
-          )
-        )
-      }
+    const response = yield call(postFakeForgetPwd, "/fake-forget-pwd", {
+      email: user.email,
+    })
+    if (response) {
+      yield put({
+        type: FORGET_PASSWORD_SUCCESS,
+        payload: { data: "Reset link are sended to your mailbox, check there first"},
+      });
     }
   } catch (error) {
-    yield put(userForgetPasswordError(error))
+    yield put({
+      type: FORGET_PASSWORD_ERROR,
+      payload: { error },
+    });
   }
 }
 
 export function* watchUserPasswordForget() {
-  yield takeEvery(FORGET_PASSWORD, forgetUser)
+  yield takeLatest(FORGET_PASSWORD, forgetUser)
 }
 
 function* forgetPasswordSaga() {
