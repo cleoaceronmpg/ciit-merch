@@ -55,7 +55,11 @@ const NotificationDropdown = ({ cart, ...props }) => {
 
           <SimpleBar style={{ height: "230px" }}>
             {cart.data.map((item, index) => (
-              <Link key={index} to="" className="text-reset notification-item">
+              <Link
+                key={index}
+                to={"/cart"}
+                className="text-reset notification-item"
+              >
                 <div className="d-flex">
                   {/* <div className="avatar-sm me-3">
                     <span className="avatar-title bg-primary rounded-circle font-size-16">

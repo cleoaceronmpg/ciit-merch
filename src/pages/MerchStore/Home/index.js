@@ -146,7 +146,7 @@ const Home = () => {
                 featureProductsData.map((item, index) => (
                   <div key={index} className="listing-tem">
                     <div className="product-thumbnail-listing">
-                      <a href={item.url}>
+                      <a href={`/product/${item.id}`}>
                         <img
                           src={item.img}
                           alt={item.title}
