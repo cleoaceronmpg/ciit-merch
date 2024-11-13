@@ -1,4 +1,4 @@
-import { ADD_TO_CART, UPDATE_CART, REMOVE_CART } from "./types";
+import { ADD_TO_CART, UPDATE_CART, REMOVE_CART, CLEAR_CART } from "./types";
 
 const INIT_STATE = {
   loading: true,
@@ -37,6 +37,10 @@ const cart = (state = INIT_STATE, action) => {
         error: false,
         errorMessage: null,
       };
+
+    case CLEAR_CART:
+      return INIT_STATE;
+
     default:
       return state;
   }

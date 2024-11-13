@@ -17,6 +17,7 @@ import Home from "../pages/MerchStore/Home";
 import Catalog from "../pages/MerchStore/Catalog";
 import ShoppingCart from "../pages/MerchStore/Cart";
 import Checkout from "../pages/MerchStore/Checkout";
+import Thankyou from "../pages/MerchStore/Checkout/ThankyouScreen";
 import ProductDetails from "../pages/MerchStore/Catalog/ProductDetails";
 
 const userRoutes = [
@@ -41,6 +42,7 @@ const authRoutes = [
   { path: "/product/:id", component: <ProductDetails /> },
   { path: "/cart", component: <ShoppingCart /> },
   { path: "/checkout", component: <Checkout /> },
+  { path: "/checkout/success/:id", component: <Thankyou /> },
 ];
 
 export { userRoutes, authRoutes };

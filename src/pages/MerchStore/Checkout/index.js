@@ -7,18 +7,11 @@ import {
   Col,
   Container,
   Row,
-  Modal,
-  ModalHeader,
-  ModalBody,
   Form,
   Label,
   Input,
   FormFeedback,
   FormGroup,
-  DropdownToggle,
-  UncontrolledDropdown,
-  DropdownMenu,
-  DropdownItem,
 } from "reactstrap";
 
 import * as Yup from "yup";
@@ -29,9 +22,9 @@ import gcashLogo from "../../../assets/images/gcash.png";
 import Breadcrumbs from "../../../components/MerchStore/Common/Breadcrumb";
 import Header from "../../../components/MerchStore/Header";
 import "./styles.css";
-import authentication from "../../../store/authentication/reducer";
 
 const Checkout = ({ cart, checkout, authentication, ...props }) => {
+  let navigate = useNavigate();
   const [shoppingCart, setShoppingCart] = React.useState([]);
   const [subTotal, setSubTotal] = React.useState(null);
   const [totalItems, setTotalItems] = React.useState(null);
@@ -40,7 +33,6 @@ const Checkout = ({ cart, checkout, authentication, ...props }) => {
   );
   const [selectedPaymentOption, setSelectedPaymentOption] =
     React.useState(null);
-  let navigate = useNavigate();
 
   // validation
   const validation = useFormik({
@@ -64,7 +56,22 @@ const Checkout = ({ cart, checkout, authentication, ...props }) => {
       postalCode: Yup.string().required("Postal Code is required"),
     }),
     onSubmit: async (values) => {
-      console.log(values);
+      await props.actionCreator({
+        type: types.SET_SHIP_ADDRESS,
+        payload: {
+          shipMethod: "For Delivery",
+          data: [
+            {
+              fullName: values.fullName,
+              telephone: values.telephone,
+              address: values.address,
+              city: values.city,
+              country: values.country,
+              postalCode: values.postalCode,
+            },
+          ],
+        },
+      });
       validation.resetForm();
     },
   });
@@ -146,15 +153,35 @@ const Checkout = ({ cart, checkout, authentication, ...props }) => {
   };
 
   const placeOrder = async () => {
-    // await props.actionCreator({
-    //   type: types.SET_SHIP_ADDRESS,
-    //   payload: {
-    //     shipMethod: null,
-    //     data: [],
-    //   },
-    // });
-
     if (selectedPaymentOption) {
+      const orderID = generateRandomString();
+
+      await props.actionCreator({
+        type: types.SET_PAYMENT_METHOD,
+        payload: {
+          paymentMethod: selectedPaymentOption,
+        },
+      });
+
+      await props.actionCreator({
+        type: types.SET_ORDER_ITEMS,
+        payload: {
+          orderItemsData: shoppingCart,
+        },
+      });
+
+      await props.actionCreator({
+        type: types.SET_ORDER_ID,
+        payload: {
+          orderID: orderID,
+        },
+      });
+
+      await props.actionCreator({
+        type: types.CLEAR_CART,
+      });
+
+      navigate(`/checkout/success/${orderID}`);
     } else {
       Swal.fire({
         icon: "error",
@@ -167,6 +194,23 @@ const Checkout = ({ cart, checkout, authentication, ...props }) => {
 
   const handlePaymentOption = (e) => {
     setSelectedPaymentOption(e.target.value);
+  };
+
+  const generateRandomString = (length = 16) => {
+    const charset =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let result = "";
+    const cryptoObj = window.crypto || window.msCrypto; // For cross-browser compatibility
+
+    for (let i = 0; i < length; i++) {
+      // Generate a random index within the charset length
+      const randomIndex = Math.floor(
+        (cryptoObj.getRandomValues(new Uint32Array(1))[0] / (0xffffffff + 1)) *
+          charset.length
+      );
+      result += charset[randomIndex];
+    }
+    return result;
   };
 
   //meta title
@@ -391,7 +435,8 @@ const Checkout = ({ cart, checkout, authentication, ...props }) => {
                       </div>
                     </div>
                   )}
-                  {selectedOption === "for-delivery" ? (
+                  {selectedOption === "for-delivery" &&
+                  !checkout.shipAddressData.length ? (
                     <Form
                       onSubmit={(e) => {
                         e.preventDefault();

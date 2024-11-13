@@ -1,4 +1,11 @@
-import { CLEAR_CHECKOUT, SET_TEMP_EMAIL, SET_SHIP_ADDRESS } from "./types";
+import {
+  CLEAR_CHECKOUT,
+  SET_TEMP_EMAIL,
+  SET_SHIP_ADDRESS,
+  SET_PAYMENT_METHOD,
+  SET_ORDER_ID,
+  SET_ORDER_ITEMS,
+} from "./types";
 
 const initialState = {
   tempEmail: null,
@@ -8,6 +15,9 @@ const initialState = {
   errorMessage: null,
   shipMethod: null,
   shipAddressData: [],
+  orderItemsData: [],
+  orderID: null,
+  paymentMethod: null,
 };
 
 const checkout = (state = initialState, action) => {
@@ -25,6 +35,27 @@ const checkout = (state = initialState, action) => {
         loading: false,
         shipMethod: action.payload.shipMethod,
         shipAddressData: action.payload.data,
+      };
+
+    case SET_PAYMENT_METHOD:
+      return {
+        ...state,
+        loading: false,
+        paymentMethod: action.payload.paymentMethod,
+      };
+
+    case SET_ORDER_ID:
+      return {
+        ...state,
+        loading: false,
+        orderID: action.payload.orderID,
+      };
+
+    case SET_ORDER_ITEMS:
+      return {
+        ...state,
+        loading: false,
+        orderItemsData: action.payload.orderItemsData,
       };
 
     case CLEAR_CHECKOUT:
