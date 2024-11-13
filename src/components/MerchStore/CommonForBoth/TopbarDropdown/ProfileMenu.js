@@ -7,7 +7,7 @@ import user1 from "../../../../assets/images/users/avatar-1.jpg";
 
 const ProfileMenu = ({ profile, authentication, ...props }) => {
   const [menu, setMenu] = React.useState(false);
-  const [username, setUsername] = React.useState("Admin");
+  const [username, setUsername] = React.useState("Guest");
 
   React.useEffect(() => {
     if (authentication.authenticated) {
@@ -39,21 +39,23 @@ const ProfileMenu = ({ profile, authentication, ...props }) => {
           </span>
           <i className="mdi mdi-chevron-down d-none d-xl-inline-block" />
         </DropdownToggle>
-        <DropdownMenu className="dropdown-menu-end">
-          <Link to={"/profile"} className="dropdown-item">
-            <i className="mdi mdi mdi-face-man font-size-16 align-middle me-1"></i>{" "}
-            {props.t("Profile")}{" "}
-          </Link>{" "}
-          <Link to="/page-lock-screen" className="dropdown-item">
-            <i className="mdi mdi-lock font-size-16 align-middle me-1"></i>
-            {props.t("Lock screen")}
-          </Link>
-          <div className="dropdown-divider" />
-          <Link to="/logout" className="dropdown-item">
-            <i className="mdi mdi-logout font-size-16 align-middle me-1"></i>
-            <span>{props.t("Logout")}</span>
-          </Link>
-        </DropdownMenu>
+        {!username === "Guest" && (
+          <DropdownMenu className="dropdown-menu-end">
+            <Link to={"/profile"} className="dropdown-item">
+              <i className="mdi mdi mdi-face-man font-size-16 align-middle me-1"></i>{" "}
+              {props.t("Profile")}{" "}
+            </Link>{" "}
+            <Link to="/page-lock-screen" className="dropdown-item">
+              <i className="mdi mdi-lock font-size-16 align-middle me-1"></i>
+              {props.t("Lock screen")}
+            </Link>
+            <div className="dropdown-divider" />
+            <Link to="/logout" className="dropdown-item">
+              <i className="mdi mdi-logout font-size-16 align-middle me-1"></i>
+              <span>{props.t("Logout")}</span>
+            </Link>
+          </DropdownMenu>
+        )}
       </Dropdown>
     </React.Fragment>
   );

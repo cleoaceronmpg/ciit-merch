@@ -121,7 +121,7 @@ const Cart = ({ cart, ...props }) => {
                                 <span>Price</span>
                               </td>
                               <td className="hidden md-table-cell">
-                                <span>Quantity12312321</span>
+                                <span>Quantity</span>
                               </td>
                               <td className="hidden md-table-cell">
                                 <span>Total</span>
