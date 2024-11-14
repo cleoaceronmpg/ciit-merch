@@ -117,7 +117,13 @@ const Home = () => {
                     }}
                   >
                     <div className="prose prose-base max-w-none">
-                      <h3>{item.title}</h3>
+                      <h3
+                        style={{
+                          color: "#00364d",
+                        }}
+                      >
+                        {item.title}
+                      </h3>
                       <p>{item.description}</p>
                       <div>
                         <a

@@ -96,12 +96,12 @@
 }
 
 .variant-option-list li.selected {
-  background-color: #008060;
-  border-color: #008060;
+  background-color: #00364d;
+  border-color: #00364d;
   color: #fff;
   cursor: pointer;
 }
 
 .button.primary:hover {
-  background-color: #006e52;
+  background-color: #00364d;
 }

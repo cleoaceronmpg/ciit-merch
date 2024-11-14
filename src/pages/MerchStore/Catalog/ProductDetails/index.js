@@ -30,7 +30,7 @@ const ProductDetails = ({ cart, ...props }) => {
         icon: "success",
         title: "JUST ADDED TO YOUR CART",
         showConfirmButton: false,
-        footer: '<a href="/home">Continue Shopping</a>',
+        footer: '<a href="/catalog">Continue Shopping</a>',
       });
   }, [cart]);
 

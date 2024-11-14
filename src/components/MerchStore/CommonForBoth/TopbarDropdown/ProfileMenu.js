@@ -3,7 +3,7 @@ import { Dropdown, DropdownToggle, DropdownMenu } from "reactstrap";
 import { withTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import user1 from "../../../../assets/images/users/avatar-1.jpg";
+import user1 from "../../../../assets/images/users/ciit-avatar.png";
 
 const ProfileMenu = ({ profile, authentication, ...props }) => {
   const [menu, setMenu] = React.useState(false);

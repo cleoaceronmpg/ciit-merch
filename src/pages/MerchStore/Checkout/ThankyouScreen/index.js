@@ -59,7 +59,7 @@ const Thankyou = ({ checkout, ...props }) => {
               <div
                 className="thank-you flex justify-start space-x-8"
                 style={{
-                  width: 530,
+                  width: "100%",
                   margin: 5,
                   display: "flex",
                   flexDirection: "row",
@@ -101,7 +101,10 @@ const Thankyou = ({ checkout, ...props }) => {
                     }}
                   >
                     Order Referrence #{checkout.orderID}
+                    <br />
+                    Please check your email for the pickup details and schedule.
                   </span>
+
                   <h3
                     style={{
                       fontWeight: "inherit",
@@ -197,7 +200,7 @@ const Thankyou = ({ checkout, ...props }) => {
               </a>
             </div>
 
-            <div style={{ width: 530, margin: 5 }}>
+            <div style={{ width: "50%", margin: 5 }}>
               <div className="checkout-summary h-full hidden md:block">
                 <div id="summary-items">
                   <table className="listing items-table">

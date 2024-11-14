@@ -41,6 +41,7 @@ const userRoutes = [
 ];
 
 const authRoutes = [
+  { path: "/home", component: <Home /> },
   //authencation page
   { path: "/logout", component: <Logout /> },
   { path: "/login", component: <Login /> },
@@ -57,10 +58,9 @@ const authRoutes = [
   { path: "/pages-maintenance", component: <PageMaintenance /> },
   { path: "/pages-404", component: <Error404 /> },
   { path: "/pages-500", component: <Error500 /> },
-  { path: "/", exact: true, component: <Navigate to="/login" /> },
+  { path: "/", exact: true, component: <Navigate to="/home" /> },
 
   //custom page
-  { path: "/home", component: <Home /> },
   { path: "/catalog", component: <Catalog /> },
   { path: "/product/:id", component: <ProductDetails /> },
   { path: "/cart", component: <ShoppingCart /> },

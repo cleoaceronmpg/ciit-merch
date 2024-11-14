@@ -85,7 +85,14 @@ const Header = (props) => {
                 </span>
                 <span className="logo-lg">
                   <img src={logoSvg} alt="" height="24" />{" "}
-                  <span className="logo-txt">CIIT Merch ❤️ </span>
+                  <span
+                    className="logo-txt"
+                    style={{
+                      fontSize: "1rem",
+                    }}
+                  >
+                    CIIT Merch ❤️{" "}
+                  </span>
                 </span>
               </Link>
 
@@ -95,7 +102,14 @@ const Header = (props) => {
                 </span>
                 <span className="logo-lg">
                   <img src={logoSvg} alt="" height="24" />{" "}
-                  <span className="logo-txt">CIIT Merch ❤️ </span>
+                  <span
+                    className="logo-txt"
+                    style={{
+                      fontSize: "1rem",
+                    }}
+                  >
+                    CIIT Merch ❤️{" "}
+                  </span>
                 </span>
               </Link>
             </div>
@@ -103,7 +117,7 @@ const Header = (props) => {
             <div
               className="dropdown d-inline-block d-none d-lg-block"
               style={{
-                marginTop: 20,
+                marginTop: 12,
               }}
             >
               <ul

@@ -1,7 +1,7 @@
 const collectionData = [
   {
     id: 1,
-    title: "Senior High collection",
+    title: "Senior High Collection",
     description: `Constructed from luxury nylons, leathers, and custom
                     hardware, featuring sport details such as hidden breathing
                     vents, waterproof + antimicrobial linings, and more`,
@@ -10,7 +10,7 @@ const collectionData = [
   },
   {
     id: 2,
-    title: "College collection",
+    title: "College Collection",
     description: `Constructed from luxury nylons, leathers, and custom
                     hardware, featuring sport details such as hidden breathing
                     vents, waterproof + antimicrobial linings, and more`,
@@ -19,7 +19,7 @@ const collectionData = [
   },
   {
     id: 3,
-    title: "Creators collection",
+    title: "Creators Collection",
     description: `Constructed from luxury nylons, leathers, and custom
                     hardware, featuring sport details such as hidden breathing
                     vents, waterproof + antimicrobial linings, and more.`,
