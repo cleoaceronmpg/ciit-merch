@@ -25,7 +25,10 @@ ciitMerchApi.interceptors.request.use(
   async (config) => {
     const { authentication } = store.getState();
     if (authentication.token) {
-      config.headers.authorization = `${authentication.token}`;
+      config.headers = {
+        Authorization: `Bearer ${authentication.token}`,
+        "Content-Type": "application/json",
+      };
     }
     return config;
   },

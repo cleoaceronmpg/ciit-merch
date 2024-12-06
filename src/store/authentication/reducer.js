@@ -6,13 +6,15 @@ import {
   LOGOUT_USER_SUCCESS,
   API_ERROR,
   CLEAR_AUTH,
-  REGISTER,
+  REGISTER_SUCCESS,
+  REGISTER_FAILED,
 } from "./types";
 
 const initialState = {
   authenticated: false,
   tempEmail: null,
-  token: null,
+  token:
+    "patJGpjGYaObneFdv.381d678ff3bf3362781a22216ab012e96de813240dbbf2af9ec83c9eb12204a7",
   loading: true,
   data: [],
   error: null,
@@ -30,14 +32,24 @@ const authentication = (state = initialState, action) => {
         authenticated: true,
       };
 
-    case REGISTER:
+    case REGISTER_SUCCESS:
       return {
         ...state,
         loading: false,
         authenticated: true,
-        tempUsers: action.payload,
+        data: action.payload,
         error: null,
         errorMessage: null,
+      };
+
+    case REGISTER_FAILED:
+      return {
+        ...state,
+        error: true,
+        errorMessage: action.payload,
+        tempUsers: [],
+        loading: false,
+        authenticated: false,
       };
 
     case LOGIN_SUCCESS:
@@ -61,19 +73,7 @@ const authentication = (state = initialState, action) => {
       };
 
     case LOGOUT_USER:
-      return {
-        ...state,
-        error: null,
-        authenticated: false,
-      };
-
-    case LOGOUT_USER_SUCCESS:
-      return {
-        ...state,
-        error: null,
-        token: null,
-        authenticated: false,
-      };
+      return initialState;
 
     case API_ERROR:
       return {

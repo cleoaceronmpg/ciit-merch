@@ -7,3 +7,5 @@ export const LOGOUT_USER_SUCCESS = "@authentication/LOGOUT_USER_SUCCESS";
 export const API_ERROR = "@authentication/LOGIN_API_ERROR";
 export const CLEAR_AUTH = "@authentication/CLEAR_AUTH";
 export const REGISTER = "@authentication/REGISTER";
+export const REGISTER_SUCCESS = "@authentication/REGISTER_SUCCESS";
+export const REGISTER_FAILED = "@authentication/REGISTER_FAILED";

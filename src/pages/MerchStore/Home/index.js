@@ -1,5 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { connect } from "react-redux";
+import { actionCreator, types } from "../../../store";
 
 //import Breadcrumbs
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
@@ -10,7 +12,7 @@ import tshirtLogo from "../../../assets/images/merch01-tshirt.png";
 import { Container } from "reactstrap";
 import { collectionData, featureProductsData } from "./data";
 
-const Home = () => {
+const Home = ({ authentication, ...props }) => {
   let navigate = useNavigate();
   //meta title
   document.title = "CIIT Merch | Home";
@@ -236,4 +238,6 @@ const Home = () => {
   );
 };
 
-export default Home;
+const mapStateToProps = ({ authentication }) => ({ authentication });
+
+export default connect(mapStateToProps, { actionCreator })(Home);

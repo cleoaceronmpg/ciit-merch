@@ -26,18 +26,7 @@ import fakeBackend from "./helpers/AuthType/fakeBackend";
 fakeBackend();
 
 const App = ({ authentication, app, ...props }) => {
-  // React.useEffect(() => {
-  //   if (authentication.authenticated) {
-  //     fetchSelectedWorkshop();
-  //   }
-  // }, []);
-
-  // const fetchSelectedWorkshop = async () => {
-  //   await props.actionCreator({
-  //     type: types.GET_SELECTED_WORKSHOP,
-  //   });
-  // };
-
+  console.log("authentication", authentication);
   return (
     <React.Fragment>
       {/* <Router> */}
@@ -59,7 +48,7 @@ const App = ({ authentication, app, ...props }) => {
           <Route
             path={route.path}
             element={
-              <Authmiddleware path={route.path}>
+              <Authmiddleware path={route.path} authentication={authentication}>
                 <Layout>{route.component}</Layout>
               </Authmiddleware>
             }

@@ -8,23 +8,24 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAILED,
   API_ERROR,
+  REGISTER,
+  REGISTER_SUCCESS,
+  REGISTER_FAILED,
 } from "./types";
 
-import appServices from "../../api/services/app";
+import authenticationServices from "../../api/services/authentication";
 
-function* loginUser({ payload: { user, history } }) {
+function* fnPostLogin({ payload }) {
   try {
-    const response = yield call(appServices.api.fnLogin, {
-      username: user.username,
-      password: user.password,
-    });
+    const response = yield call(
+      authenticationServices.api.fnPostLogin,
+      payload
+    );
 
-    // localStorage.setItem("authUser", JSON.stringify(response));
-    // yield put({
-    //   type: LOGIN_SUCCESS,
-    //   payload: { token: response.data.token, data: response.data },
-    // });
-    // history("/dashboard");
+    yield put({
+      type: LOGIN_SUCCESS,
+      payload: { token: response.data.token, data: response.data },
+    });
   } catch (error) {
     yield put({
       type: LOGIN_FAILED,
@@ -33,25 +34,29 @@ function* loginUser({ payload: { user, history } }) {
   }
 }
 
-function* logoutUser({ payload: { history } }) {
+function* fnPostRegister({ payload }) {
   try {
-    localStorage.removeItem("authUser");
-    yield put({
-      type: LOGOUT_USER_SUCCESS,
-    });
+    console.log("huyyyyyyy");
+    const response = yield call(
+      authenticationServices.api.fnPostRegister,
+      payload
+    );
 
-    history("/login");
+    yield put({
+      type: REGISTER_SUCCESS,
+      payload: response.data?.records[0],
+    });
   } catch (error) {
     yield put({
-      type: API_ERROR,
-      payload: { error },
+      type: REGISTER_FAILED,
+      payload: error.response.data ? error.response.data.message : "",
     });
   }
 }
 
 function* authenticationSaga() {
-  // yield takeLatest(LOGIN_USER, loginUser);
-  // yield takeLatest(LOGOUT_USER, logoutUser);
+  yield takeLatest(LOGIN_USER, fnPostLogin);
+  yield takeLatest(REGISTER, fnPostRegister);
 }
 
 export default authenticationSaga;

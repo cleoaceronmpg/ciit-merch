@@ -1,6 +1,7 @@
 export const USER_SERVICE = {
-  login: "api/login-token",
-  register: "api/register-user",
+  login:
+    "https://api.airtable.com/v0/app4inPAJIADt9MVb/Users?filterByFormula={Email}=",
+  register: "https://api.airtable.com/v0/app4inPAJIADt9MVb/Users",
 };
 
 export const CHECK_OUT_SERVICE = {

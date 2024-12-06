@@ -1,8 +1,8 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
 
-const Authmiddleware = (props) => {
-  if (!localStorage.getItem("authUser")) {
+const Authmiddleware = ({ authentication, ...props }) => {
+  if (!authentication.authenticated) {
     return (
       <Navigate to={{ pathname: "/home", state: { from: props.location } }} />
     );

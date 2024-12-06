@@ -16,7 +16,7 @@ import RecoverPassword from "../pages/AuthenticationInner/RecoverPassword";
 import AuthLogout from "../pages/AuthenticationInner/Logout";
 import Login from "../pages/Authentication/Login";
 import Logout from "../pages/Authentication/Logout";
-import Register from "../pages/Authentication/Register";
+// import Register from "../pages/Authentication/Register";
 import ForgetPwd from "../pages/Authentication/ForgetPassword";
 
 import UserProfile from "../pages/Authentication/user-profile";
@@ -28,6 +28,7 @@ import ShoppingCart from "../pages/MerchStore/Cart";
 import Checkout from "../pages/MerchStore/Checkout";
 import Thankyou from "../pages/MerchStore/Checkout/ThankyouScreen";
 import ProductDetails from "../pages/MerchStore/Catalog/ProductDetails";
+import Register from "../pages/MerchStore/Register";
 
 const userRoutes = [
   //dashboard

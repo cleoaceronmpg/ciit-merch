@@ -13,7 +13,6 @@ import cart from "./cart/reducer";
 import checkout from "./checkout/reducer";
 
 const rootReducer = combineReducers({
-  // public
   layout,
   Login,
   Account,
