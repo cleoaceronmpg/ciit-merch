@@ -14,7 +14,7 @@ import PageLogin from "../pages/AuthenticationInner/PageLogin";
 import PageRegister from "../pages/AuthenticationInner/PageRegister";
 import RecoverPassword from "../pages/AuthenticationInner/RecoverPassword";
 import AuthLogout from "../pages/AuthenticationInner/Logout";
-import Login from "../pages/Authentication/Login";
+// import Login from "../pages/Authentication/Login";
 import Logout from "../pages/Authentication/Logout";
 // import Register from "../pages/Authentication/Register";
 import ForgetPwd from "../pages/Authentication/ForgetPassword";
@@ -29,6 +29,7 @@ import Checkout from "../pages/MerchStore/Checkout";
 import Thankyou from "../pages/MerchStore/Checkout/ThankyouScreen";
 import ProductDetails from "../pages/MerchStore/Catalog/ProductDetails";
 import Register from "../pages/MerchStore/Register";
+import MerchLogin from "../pages/MerchStore/MerchLogin";
 
 const userRoutes = [
   //dashboard
@@ -45,9 +46,7 @@ const authRoutes = [
   { path: "/home", component: <Home /> },
   //authencation page
   { path: "/logout", component: <Logout /> },
-  { path: "/login", component: <Login /> },
   { path: "/forgot-password", component: <ForgetPwd /> },
-  { path: "/register", component: <Register /> },
 
   //AuthenticationInner pages
   { path: "/page-login", component: <PageLogin /> },
@@ -67,6 +66,8 @@ const authRoutes = [
   { path: "/cart", component: <ShoppingCart /> },
   { path: "/checkout", component: <Checkout /> },
   { path: "/checkout/success/:id", component: <Thankyou /> },
+  { path: "/login", component: <MerchLogin /> },
+  { path: "/register", component: <Register /> },
 ];
 
 export { userRoutes, authRoutes };

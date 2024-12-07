@@ -16,8 +16,9 @@ import {
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { Link } from "react-router-dom";
-import logoSvg from "../../../assets/images/weare-logo.png";
+import { ToastContainer, toast } from "react-toastify";
 import { actionCreator, types } from "../../../store";
+import logoSvg from "../../../assets/images/weare-logo.png";
 import "./styles.css";
 
 const Register = ({ account, authentication, ...props }) => {
@@ -26,8 +27,25 @@ const Register = ({ account, authentication, ...props }) => {
   document.title = "CIIT Merch | Register";
 
   React.useEffect(() => {
+    clearAuthBeforeRegister();
+  }, []);
+
+  React.useEffect(() => {
     if (authentication.authenticated) {
-      navigate("/home");
+      if (authentication.data?.id) {
+        toast(
+          "Thank you for signing up! You're all set to continue your shopping adventure!",
+          {
+            position: "top-right",
+            hideProgressBar: true,
+            className: "bg-success text-white",
+          }
+        );
+
+        setTimeout(() => {
+          navigate("/home");
+        }, 2000);
+      }
     }
   }, [authentication]);
 
@@ -49,20 +67,19 @@ const Register = ({ account, authentication, ...props }) => {
     }),
     onSubmit: async (values) => {
       console.log("values", values);
-      const data = {
-        records: [
-          {
-            fields: values,
-          },
-        ],
-      };
 
       await props.actionCreator({
         type: types.REGISTER,
-        payload: data,
+        payload: values,
       });
     },
   });
+
+  const clearAuthBeforeRegister = async () => {
+    await props.actionCreator({
+      type: types.CLEAR_AUTH,
+    });
+  };
 
   return (
     <React.Fragment>
@@ -261,6 +278,7 @@ const Register = ({ account, authentication, ...props }) => {
           </Row>
         </Container>
       </div>
+      <ToastContainer />
     </React.Fragment>
   );
 };

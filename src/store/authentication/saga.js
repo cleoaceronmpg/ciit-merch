@@ -22,21 +22,30 @@ function* fnPostLogin({ payload }) {
       payload
     );
 
+    if (!response.length) {
+      throw "Invalid Email or Password.";
+    }
+
+    const data = {
+      fields: response[0].fields,
+      id: response[0].id,
+    };
+    console.log("data", data);
+
     yield put({
       type: LOGIN_SUCCESS,
-      payload: { token: response.data.token, data: response.data },
+      payload: data,
     });
   } catch (error) {
     yield put({
       type: LOGIN_FAILED,
-      payload: error.response.data ? error.response.data.message : "",
+      payload: error,
     });
   }
 }
 
 function* fnPostRegister({ payload }) {
   try {
-    console.log("huyyyyyyy");
     const response = yield call(
       authenticationServices.api.fnPostRegister,
       payload
@@ -44,12 +53,12 @@ function* fnPostRegister({ payload }) {
 
     yield put({
       type: REGISTER_SUCCESS,
-      payload: response.data?.records[0],
+      payload: response,
     });
   } catch (error) {
     yield put({
       type: REGISTER_FAILED,
-      payload: error.response.data ? error.response.data.message : "",
+      payload: error,
     });
   }
 }

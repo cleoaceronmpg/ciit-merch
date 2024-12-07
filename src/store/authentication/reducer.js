@@ -13,8 +13,7 @@ import {
 const initialState = {
   authenticated: false,
   tempEmail: null,
-  token:
-    "patJGpjGYaObneFdv.381d678ff3bf3362781a22216ab012e96de813240dbbf2af9ec83c9eb12204a7",
+  token: null,
   loading: true,
   data: [],
   error: null,
@@ -58,7 +57,7 @@ const authentication = (state = initialState, action) => {
         loading: false,
         authenticated: true,
         data: action.payload,
-        token: action.payload.token,
+        // token: action.payload.token,
         error: null,
         errorMessage: null,
       };

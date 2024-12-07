@@ -11,11 +11,7 @@ const ProfileMenu = ({ profile, authentication, ...props }) => {
   const [fullName, setFullName] = React.useState("Guest");
 
   React.useEffect(() => {
-    if (authentication.authenticated) {
-      // const obj = JSON.parse(localStorage.getItem("authUser"));
-      const { FullName } = authentication.data.fields;
-      setFullName(FullName);
-    }
+    setFullName(authentication.data?.fields?.FullName || "Guest");
   }, [authentication]);
 
   return (

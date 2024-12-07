@@ -14,7 +14,7 @@ import Layout from "./components/VerticalLayout/";
 import NonAuthLayout from "./components/NonAuthLayout";
 import { actionCreator, types } from "./store";
 
-import Login from "./pages/Authentication/Login";
+import Login from "./pages/MerchStore/MerchLogin";
 
 // Import scss
 import "./assets/scss/theme.scss";
