@@ -81,9 +81,9 @@ const MerchLogin = ({ authentication, ...props }) => {
                 <div className="w-100">
                   <div className="d-flex flex-column h-100">
                     <div className="mb-4 mb-md-5 text-center">
-                      <Link to="/dashboard" className="d-block auth-logo">
-                        <img src={weareLogo} alt="" height="28" />{" "}
-                        <span className="logo-txt">EMS</span>
+                      <Link to="/home" className="d-block auth-logo">
+                        <img src={weareLogo} alt="" height="45" />{" "}
+                        {/* <span className="logo-txt">CIIT Merch ❤️</span> */}
                       </Link>
                     </div>
                     <div className="mb-0 mb-md-0 text-center">
@@ -178,6 +178,10 @@ const MerchLogin = ({ authentication, ...props }) => {
                               <button
                                 className="btn btn-primary btn-block"
                                 type="submit"
+                                style={{
+                                  backgroundColor: "#ff5400",
+                                  borderColor: "#ff5400",
+                                }}
                               >
                                 Log In
                               </button>
@@ -188,14 +192,13 @@ const MerchLogin = ({ authentication, ...props }) => {
                     </div>
                     <div className="mt-4 mt-md-5 text-center">
                       <p className="mb-0">
-                        © {new Date().getFullYear()} Seoulful.
+                        © {new Date().getFullYear()} CIIT Merch Store.
                       </p>
                     </div>
                   </div>
                 </div>
               </div>
             </Col>
-            <CarouselPage />
           </Row>
         </Container>
       </div>
