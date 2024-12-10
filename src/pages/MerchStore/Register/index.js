@@ -96,7 +96,7 @@ const Register = ({ account, authentication, ...props }) => {
               display: "flex",
             }}
           >
-            <Col lg={6} md={6} className="col-xxl-4">
+            <Col lg={6} md={6} className="col-xxl-5">
               <div className="auth-full-page-content d-flex p-sm-5 p-4">
                 <div className="w-100">
                   <div className="d-flex flex-column h-100">
@@ -241,7 +241,18 @@ const Register = ({ account, authentication, ...props }) => {
                               target="_blank"
                               className="text-primary"
                             >
-                              Terms of Use
+                              Terms of Condition
+                            </Link>{" "}
+                            and{" "}
+                            <Link
+                              to="/privacy-policy"
+                              target="_blank"
+                              className="text-primary"
+                              style={{
+                                marginTop: 10,
+                              }}
+                            >
+                              Privacy Policy
                             </Link>
                           </p>
                         </div>

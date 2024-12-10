@@ -1,404 +1,271 @@
-import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-
 //Import Icons
 import FeatherIcon from "feather-icons-react";
-
 // Reactstrap
-import { Dropdown, DropdownToggle, DropdownMenu, Row, Col } from "reactstrap";
-
-// Import menuDropdown
-import LanguageDropdown from "../CommonForBoth/TopbarDropdown/LanguageDropdown";
-import NotificationDropdown from "./CommonForBoth/TopbarDropdown/NotificationDropdown";
-import ProfileMenu from "./CommonForBoth/TopbarDropdown/ProfileMenu";
-import LightDark from "../CommonForBoth/Menus/LightDark";
-
-// import images
-import logoSvg from "../../assets/images/weare-logo.png";
-import github from "../../assets/images/brands/github.png";
-import bitbucket from "../../assets/images/brands/bitbucket.png";
-import dribbble from "../../assets/images/brands/dribbble.png";
-import dropbox from "../../assets/images/brands/dropbox.png";
-import mail_chimp from "../../assets/images/brands/mail_chimp.png";
-import slack from "../../assets/images/brands/slack.png";
-
-//i18n
-import { withTranslation } from "react-i18next";
+import { Container, Row, Col } from "reactstrap";
 //redux
-import { useSelector, useDispatch } from "react-redux";
-
-// Redux Store
-import {
-  showRightSidebarAction,
-  toggleLeftmenu,
-  changeSidebarType,
-  changelayoutMode,
-} from "../../store/actions";
-import { createSelector } from "reselect";
 import { actionCreator } from "../../store";
+import "./styles.css";
+
+import weareLogo from "../../assets/images/weare-logo-white.png";
+import cartIcon from "../../assets/images/cart.png";
 
 const Header = (props) => {
-  const dispatch = useDispatch();
-
-  const [socialDrp, setsocialDrp] = useState(false);
-  const [isClick, setClick] = useState(true);
-
-  // React.useEffect(() => {
-  //   const body = document.body;
-  //   body.classList.remove("sidebar-enable");
-  //   document.body.setAttribute("data-sidebar-size", "sm");
-  // }, []);
-  /*** Sidebar menu icon and default menu set */
-  function tToggle() {
-    const body = document.body;
-    setClick(!isClick);
-    if (isClick === true) {
-      body.classList.remove("sidebar-enable");
-      document.body.setAttribute("data-sidebar-size", "sm");
-    } else {
-      body.classList.add("sidebar-enable");
-      document.body.setAttribute("data-sidebar-size", "lg");
-    }
-  }
-
+  const [search, setsearch] = React.useState(true);
   return (
     <React.Fragment>
-      <header id="page-topbar">
-        <div className="navbar-header">
-          <div className="d-flex">
-            <div
-              className="navbar-brand-box"
-              style={{
-                boxShadow: "none",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                background: "none",
-                borderRight: "none",
-              }}
-            >
-              <Link to="/home" className="logo logo-dark">
-                <span className="logo-sm">
-                  <img src={logoSvg} alt="" height="24" />
-                </span>
-                <span className="logo-lg">
-                  <img src={logoSvg} alt="" height="24" />{" "}
-                  <span
-                    className="logo-txt"
-                    style={{
-                      fontSize: "1rem",
-                    }}
-                  >
-                    CIIT Merch ❤️{" "}
+      <header
+        id="page-topbar"
+        style={{
+          position: "relative",
+        }}
+      >
+        <div
+          style={{
+            backgroundColor: "#00364D",
+            width: "100%",
+          }}
+        >
+          <Container
+            className="p-0"
+            style={{
+              miHeight: 30,
+            }}
+          >
+            <Row>
+              <Col lg={6} md={6} sm={12} xxl={6}>
+                <div className="leftUpperHeader">
+                  <span style={{ marginRight: 15 }}>
+                    Welcome to WeAre, CIIT’s Official Merch{" "}
                   </span>
-                </span>
-              </Link>
-
-              <Link to="/home" className="logo logo-light">
-                <span className="logo-sm">
-                  <img src={logoSvg} alt="" height="24" />
-                </span>
-                <span className="logo-lg">
-                  <img src={logoSvg} alt="" height="24" />{" "}
-                  <span
-                    className="logo-txt"
-                    style={{
-                      fontSize: "1rem",
-                    }}
-                  >
-                    CIIT Merch ❤️{" "}
+                  <span> | </span>
+                  <span style={{ marginLeft: 15 }}>
+                    Follow us on{"  "}
+                    <a
+                      href="https://bit.ly/3D4mPPq"
+                      style={{
+                        color: "#fff",
+                      }}
+                    >
+                      <i
+                        className="fab fa-facebook-f"
+                        style={{ height: 15, width: 15, marginLeft: 10 }}
+                      ></i>
+                    </a>
+                    <a
+                      href="https://bit.ly/3Vr8h2m"
+                      style={{
+                        color: "#fff",
+                      }}
+                    >
+                      <i
+                        className="fab fa-instagram"
+                        style={{ height: 15, width: 15 }}
+                      ></i>
+                    </a>
                   </span>
-                </span>
-              </Link>
-            </div>
-
-            <div
-              className="dropdown d-inline-block d-none d-lg-block"
-              style={{
-                marginTop: 12,
-              }}
-            >
-              <ul
-                style={{
-                  display: "flex",
-                  listStyle: "none",
-                  width: 300,
-                  justifyContent: "space-between",
-                }}
-              >
-                <li>
-                  <Link
-                    className="dropdown-icon-item"
-                    to="/home"
-                    style={{
-                      color: "#00364d",
-                      fontSize: "1rem",
-                      fontWeight: 700,
-                    }}
-                  >
-                    <span>Home</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="dropdown-icon-item"
-                    to="/catalog"
-                    style={{
-                      color: "#00364d",
-                      fontSize: "1rem",
-                      fontWeight: 700,
-                    }}
-                  >
-                    <span>Catalog</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="dropdown-icon-item"
-                    to="/contact"
-                    style={{
-                      color: "#00364d",
-                      fontSize: "1rem",
-                      fontWeight: 700,
-                    }}
-                  >
-                    <span>Contact</span>
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            {/* <button
-              onClick={() => {
-                tToggle();
-              }}
-              type="button"
-              className="btn btn-sm px-3 font-size-16 header-item"
-              id="vertical-menu-btn"
-            >
-              <i className="fa fa-fw fa-bars"></i>
-            </button> */}
-
-            {/* <form className="app-search d-none d-lg-block">
-              <div className="position-relative">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Search..."
-                />
-                <button className="btn btn-primary" type="button">
-                  <i className="bx bx-search-alt align-middle"></i>
-                </button>
-              </div>
-            </form> */}
-          </div>
-
-          {/* <div className="d-flex">
-            <div className="dropdown d-inline-block d-lg-none ms-2">
-              <ul
-                style={{
-                  display: "flex",
-                  listStyle: "none",
-                  width: 200,
-                  justifyContent: "space-between",
-                }}
-              >
-                <li>
-                  <a href="/home">Home</a>
-                </li>
-                <li>
-                  <a href="/catalog">Catalog</a>
-                </li>
-                <li>
-                  <a href="/contact">Contact</a>
-                </li>
-              </ul>
-            </div>
-          </div> */}
-          <div className="d-flex">
-            <Dropdown
-              className="dropdown d-inline-block d-lg-none ms-2"
-              isOpen={socialDrp}
-              toggle={() => {
-                setsocialDrp(!socialDrp);
-              }}
-            >
-              <DropdownToggle
-                className="btn header-item noti-icon "
-                tag="button"
-              >
-                <FeatherIcon icon="grid" className="icon-lg" />
-              </DropdownToggle>
-              <DropdownMenu className="dropdown-menu-lg dropdown-menu-end">
-                <div className="p-2">
-                  <Row className="g-0">
-                    <Col>
-                      <Link
-                        className="dropdown-icon-item"
-                        to="/home"
-                        style={{
-                          color: "#00364d",
-                          fontSize: "1rem",
-                          fontWeight: 700,
-                        }}
-                      >
-                        <span>Home</span>
-                      </Link>
-                    </Col>
-                    <Col>
-                      <Link
-                        className="dropdown-icon-item"
-                        to="/catalog"
-                        style={{
-                          color: "#00364d",
-                          fontSize: "1rem",
-                          fontWeight: 700,
-                        }}
-                      >
-                        <span>Catalog</span>
-                      </Link>
-                    </Col>
-                    <Col>
-                      <Link
-                        className="dropdown-icon-item"
-                        to="/contact"
-                        style={{
-                          color: "#00364d",
-                          fontSize: "1rem",
-                          fontWeight: 700,
-                        }}
-                      >
-                        <span>Contact</span>
-                      </Link>
-                    </Col>
-                  </Row>
                 </div>
-              </DropdownMenu>
-            </Dropdown>
-            {/* <div className="dropdown d-inline-block d-lg-none ms-2">
-              <button
-                onClick={() => {
-                  setsearch(!search);
+              </Col>
+              <Col lg={6} md={6} sm={12} xxl={6}>
+                <div className="rightUpperHeader">
+                  <span>
+                    <i className="bx bx-bell"></i> Notifications
+                  </span>
+                  <span>
+                    <i className="bx bx-message-rounded-dots"></i> Chat us
+                  </span>
+                  <span>
+                    <a href="/login" style={{ color: "#fff" }}>
+                      Sign-in
+                    </a>
+                  </span>
+                  <span>
+                    |{" "}
+                    <a href="/register" style={{ color: "#fff" }}>
+                      Sign-up
+                    </a>
+                  </span>
+                </div>
+              </Col>
+            </Row>
+          </Container>
+        </div>
+        <div
+          style={{
+            backgroundColor: "#FF5400",
+            width: "100%",
+          }}
+        >
+          <Container
+            className="p-0"
+            style={{
+              miHeight: 70,
+            }}
+          >
+            <Row
+              style={{
+                paddingTop: 15,
+                paddingBottom: 15,
+              }}
+            >
+              <Col
+                lg={4}
+                xxl={4}
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
                 }}
-                type="button"
-                className="btn header-item noti-icon "
-                id="page-header-search-dropdown"
               >
-                <i className="mdi mdi-magnify" />
-              </button>
-              <div
-                className={
-                  search
-                    ? "dropdown-menu dropdown-menu-lg dropdown-menu-end p-0 show"
-                    : "dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
-                }
-                aria-labelledby="page-header-search-dropdown"
+                <Link to="/home">
+                  <img
+                    src={weareLogo}
+                    width={94}
+                    height={27}
+                    style={{
+                      marginRight: 10,
+                    }}
+                  />
+                </Link>
+                <h5
+                  className="text-white"
+                  style={{
+                    fontSize: 24,
+                    fontWeight: 700,
+                    marginTop: 2,
+                  }}
+                >
+                  CIIT Merch
+                </h5>
+              </Col>
+              <Col
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                }}
               >
-                <form className="p-3">
-                  <div className="form-group m-0">
-                    <div className="input-group">
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Search ..."
-                        aria-label="Recipient's username"
-                      />
-                      <div className="input-group-append">
-                        <button className="btn btn-primary" type="submit">
-                          <i className="mdi mdi-magnify" />
-                        </button>
+                <div
+                  className="d-inline-block ms-2"
+                  style={{
+                    width: "100%",
+                    marginRight: 10,
+                  }}
+                >
+                  <form>
+                    <div className="form-group m-0">
+                      <div
+                        className="input-group"
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          width: "100%",
+                        }}
+                      >
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Search Anything ..."
+                          aria-label="Recipient's username"
+                        />
+                        <div
+                          className="input-group-append"
+                          style={{
+                            backgroundColor: "white",
+                            borderTopRightRadius: 4,
+                            borderBottomRightRadius: 4,
+                          }}
+                        >
+                          <button className="btn" type="submit">
+                            <i className="mdi mdi-magnify" />
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </form>
-              </div>
-            </div> */}
-
-            {/* <LanguageDropdown /> */}
-
-            {/* light / dark mode */}
-            {/* <LightDark
-              layoutMode={props["layoutMode"]}
-              onChangeLayoutMode={onChangeLayoutMode}
-            />
-
-            <Dropdown
-              className="d-none d-lg-inline-block ms-1"
-              isOpen={socialDrp}
-              toggle={() => {
-                setsocialDrp(!socialDrp);
-              }}
-            >
-              <DropdownToggle
-                className="btn header-item noti-icon "
-                tag="button"
-              >
-                <FeatherIcon icon="grid" className="icon-lg" />
-              </DropdownToggle>
-              <DropdownMenu className="dropdown-menu-lg dropdown-menu-end">
-                <div className="p-2">
-                  <Row className="g-0">
-                    <Col>
-                      <Link className="dropdown-icon-item" to="#">
-                        <img src={github} alt="Github" />
-                        <span>GitHub</span>
-                      </Link>
-                    </Col>
-                    <Col>
-                      <Link className="dropdown-icon-item" to="#">
-                        <img src={bitbucket} alt="bitbucket" />
-                        <span>Bitbucket</span>
-                      </Link>
-                    </Col>
-                    <Col>
-                      <Link className="dropdown-icon-item" to="#">
-                        <img src={dribbble} alt="dribbble" />
-                        <span>Dribbble</span>
-                      </Link>
-                    </Col>
-                  </Row>
-
-                  <Row className="g-0">
-                    <Col>
-                      <Link className="dropdown-icon-item" to="#">
-                        <img src={dropbox} alt="dropbox" />
-                        <span>Dropbox</span>
-                      </Link>
-                    </Col>
-                    <Col>
-                      <Link className="dropdown-icon-item" to="#">
-                        <img src={mail_chimp} alt="mail_chimp" />
-                        <span>Mail Chimp</span>
-                      </Link>
-                    </Col>
-                    <Col>
-                      <Link className="dropdown-icon-item" to="#">
-                        <img src={slack} alt="slack" />
-                        <span>Slack</span>
-                      </Link>
-                    </Col>
-                  </Row>
+                  </form>
                 </div>
-              </DropdownMenu>
-            </Dropdown> */}
-
-            <NotificationDropdown />
-            {/* <div
-              onClick={() => {
-                dispatch(showRightSidebarAction(!showRightSidebar));
+                <Link to="/cart" className="dropdown-item">
+                  <img src={cartIcon} width={35} height={35} />
+                </Link>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: 10,
               }}
-              className="dropdown d-inline-block"
             >
-              <button
-                type="button"
-                className="btn header-item noti-icon right-bar-toggle "
-              >
-                <FeatherIcon icon="settings" className="icon-lg" />
-              </button>
-            </div> */}
-            <ProfileMenu />
-          </div>
+              <Col lg={12} xxl={12}>
+                <ul
+                  className=""
+                  style={{
+                    listStyle: "none",
+                    display: "flex",
+                    flexDirection: "row",
+                    color: "#fff",
+                    padding: 0,
+                  }}
+                >
+                  <li
+                    style={{
+                      borderRight: "#fff solid 2px",
+                      paddingRight: 5,
+                    }}
+                  >
+                    {" "}
+                    Category{" "}
+                  </li>
+                  <li
+                    style={{
+                      borderRight: "#fff solid 2px",
+                      paddingLeft: 5,
+                      paddingRight: 5,
+                    }}
+                  >
+                    {" "}
+                    Basic Tees{" "}
+                  </li>
+                  <li
+                    style={{
+                      borderRight: "#fff solid 2px",
+                      paddingLeft: 5,
+                      paddingRight: 5,
+                    }}
+                  >
+                    {" "}
+                    Polo Shirts{" "}
+                  </li>
+                  <li
+                    style={{
+                      borderRight: "#fff solid 2px",
+                      paddingLeft: 5,
+                      paddingRight: 5,
+                    }}
+                  >
+                    {" "}
+                    PE/NTSP Uniform{" "}
+                  </li>
+                  <li
+                    style={{
+                      borderRight: "#fff solid 2px",
+                      paddingLeft: 5,
+                      paddingRight: 5,
+                    }}
+                  >
+                    {" "}
+                    Jacket / Hoodies{" "}
+                  </li>
+                  <li
+                    style={{
+                      paddingLeft: 5,
+                    }}
+                  >
+                    {" "}
+                    Accessories / Others...{" "}
+                  </li>
+                </ul>
+              </Col>
+            </Row>
+          </Container>
         </div>
       </header>
     </React.Fragment>

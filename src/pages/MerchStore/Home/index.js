@@ -6,6 +6,7 @@ import { actionCreator, types } from "../../../store";
 //import Breadcrumbs
 import Breadcrumbs from "../../../components/Common/Breadcrumb";
 import Header from "../../../components/MerchStore/Header";
+import Footer from "../../../components/MerchStore/Footer";
 import "./styles.css";
 import tshirtLogo from "../../../assets/images/merch01-tshirt.png";
 
@@ -178,36 +179,7 @@ const Home = ({ authentication, ...props }) => {
           </div>
         </div>
       </div>
-      <div className="footerStore">
-        <div
-          className="page-width"
-          style={{
-            gap: "2rem",
-            display: "grid",
-            justifyContent: "flex-end",
-          }}
-        >
-          <div
-            style={{
-              alignSelf: "center",
-            }}
-          >
-            <div
-              style={{
-                fontSize: 13,
-                opacity: 1,
-                color: "#737373",
-                textAlign: "center",
-              }}
-            >
-              <span>
-                © {new Date().getFullYear()} CIIT Merch Store. All Rights
-                Reserved.
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Footer />
     </React.Fragment>
   );
 };

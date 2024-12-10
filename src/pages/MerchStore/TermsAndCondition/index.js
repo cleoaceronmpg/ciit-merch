@@ -27,13 +27,13 @@ const TermsAndCondition = ({ account, authentication, ...props }) => {
               display: "flex",
             }}
           >
-            <Col lg={12} md={6} className="col-xxl-8">
+            <Col lg={10} md={10} className="col-xxl-8">
               <div className="auth-full-page-content d-flex p-sm-5 p-4">
                 <div className="w-200">
                   <div className="d-flex flex-column h-100">
                     <div className="auth-content my-auto">
                       <div className="text-left">
-                        <h4 className="mb-5">Terms and Conditions</h4>
+                        <h5 className="mb-5">Terms and Conditions</h5>
                         <p className="text-muted mt-2">
                           Welcome to{" "}
                           <span style={{ fontWeight: 700 }}>WeAre Merch</span>,
@@ -73,13 +73,13 @@ const TermsAndCondition = ({ account, authentication, ...props }) => {
                             </p>
                           </li>
                         </ul>
-                        <h5 className="mt-5 mb-5">Payment Terms</h5>
+                        <h5 className="mt-5">Payment Terms</h5>
                         <p className="text-muted mt-2">
                           We accept [insert payment methods, e.g., credit/debit
                           cards, online wallets, bank transfers]. All payments
                           must be made in full before the shipment of goods.
                         </p>
-                        <h5 className="mt-5 mb-5">Shipping and Delivery</h5>
+                        <h5 className="mt-5">Shipping and Delivery</h5>
                         <ul>
                           <li>
                             <p className="text-muted mt-2">
@@ -111,9 +111,9 @@ const TermsAndCondition = ({ account, authentication, ...props }) => {
                           services or force majeure events (e.g.,natural
                           disasters, pandemics, strikes).
                         </p>
-                        <h5 className="mt-5 mb-5">Refund and Return Policy</h5>
+                        <h5 className="mt-5">Refund and Return Policy</h5>
                         <h5
-                          className="mt-5 mb-5"
+                          className="mt-3"
                           style={{
                             marginLeft: 20,
                           }}
@@ -136,7 +136,7 @@ const TermsAndCondition = ({ account, authentication, ...props }) => {
                           </li>
                         </ul>
                         <h5
-                          className="mt-5 mb-5"
+                          className="mt-3"
                           style={{
                             marginLeft: 20,
                           }}
@@ -157,7 +157,7 @@ const TermsAndCondition = ({ account, authentication, ...props }) => {
                           </li>
                         </ul>
                         <h5
-                          className="mt-5 mb-5"
+                          className="mt-3"
                           style={{
                             marginLeft: 20,
                           }}
@@ -191,7 +191,7 @@ const TermsAndCondition = ({ account, authentication, ...props }) => {
                           </li>
                         </ul>
                         <h5
-                          className="mt-5 mb-5"
+                          className="mt-3"
                           style={{
                             marginLeft: 20,
                           }}
@@ -210,17 +210,38 @@ const TermsAndCondition = ({ account, authentication, ...props }) => {
                           <li>
                             <p className="text-muted mt-2">
                               Refunds will be issued based on the given account
-                              of the customer. Privacy Policy
+                              of the customer.{" "}
+                              <a
+                                href="/privacy-policy"
+                                style={{
+                                  textDecoration: "none",
+                                  color: "blue",
+                                }}
+                              >
+                                Privacy Policy
+                              </a>
                             </p>
                           </li>
                         </ul>
                         <p className="text-muted mt-2">
                           Your personal information is collected, used, and
-                          stored in accordance with our Privacy Policy. Please
-                          review the Privacy Policy for details on how we handle
-                          your data.
+                          stored in accordance with our{" "}
+                          <a
+                            href="/privacy-policy"
+                            style={{ textDecoration: "none", color: "blue" }}
+                          >
+                            Privacy Policy
+                          </a>
+                          . Please review the{" "}
+                          <a
+                            href="/privacy-policy"
+                            style={{ textDecoration: "none", color: "blue" }}
+                          >
+                            Privacy Policy
+                          </a>{" "}
+                          for details on how we handle your data.
                         </p>
-                        <h5 className="mt-5 mb-5">Intellectual Property</h5>
+                        <h5 className="mt-5">Intellectual Property</h5>
                         <p className="text-muted mt-2">
                           All content on this website, including text, images,
                           graphics, and logos, is the property of{" "}
@@ -232,7 +253,7 @@ const TermsAndCondition = ({ account, authentication, ...props }) => {
                           distribute, or use our content without prior written
                           consent.
                         </p>
-                        <h5 className="mt-5 mb-5">Limitation of Liability</h5>
+                        <h5 className="mt-5">Limitation of Liability</h5>
                         <p className="text-muted mt-2">
                           WeAre Merch and{" "}
                           <span style={{ fontWeight: 700 }}>
@@ -243,7 +264,7 @@ const TermsAndCondition = ({ account, authentication, ...props }) => {
                           including but not limited to direct, indirect,
                           incidental, punitive, or consequential damages.
                         </p>
-                        <h5 className="mt-5 mb-5">Governing Law</h5>
+                        <h5 className="mt-5">Governing Law</h5>
                         <p className="text-muted mt-2">
                           These Terms and Conditions shall be governed by and
                           construed in accordance with the laws of the Republic
@@ -252,7 +273,7 @@ const TermsAndCondition = ({ account, authentication, ...props }) => {
                           [Insert City/Province].
                         </p>
 
-                        <h5 className="mt-5 mb-5">
+                        <h5 className="mt-5">
                           Changes to Terms and Conditions
                         </h5>
                         <p className="text-muted mt-2">
@@ -262,7 +283,7 @@ const TermsAndCondition = ({ account, authentication, ...props }) => {
                           this website.
                         </p>
 
-                        <h5 className="mt-5 mb-5">Contact Us</h5>
+                        <h5 className="mt-5">Contact Us</h5>
                         <p className="text-muted mt-2">
                           For any questions or concerns regarding these Terms
                           and Conditions, please contact us at{" "}

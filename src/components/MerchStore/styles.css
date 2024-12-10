@@ -17,11 +17,41 @@
 .leftUpperHeader i {
   cursor: pointer;
 }
+.footerStore {
+  background-color: #00364d;
+  margin-top: 9rem;
+  padding-top: 1rem;
+  padding-block-end: 1rem;
+  border-top: 1px solid #00364d;
+}
+.footer-wrapper {
+  width: 100%;
+  min-height: 50px;
+  color: #ffff;
+  display: "flex";
+  flex-direction: row;
+  justify-content: space-between;
+}
+.footer-wrapper div {
+  align-items: center;
+}
+.leftFooter {
+  text-align: left;
+}
+.rightFooter {
+  text-align: right;
+}
 @media (max-width: 768px) {
   .rightUpperHeader {
     text-align: center;
   }
   .leftUpperHeader {
+    text-align: center;
+  }
+  .leftFooter {
+    text-align: center;
+  }
+  .rightFooter {
     text-align: center;
   }
 }

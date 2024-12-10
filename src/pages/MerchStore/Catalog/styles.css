@@ -107,11 +107,3 @@ select {
 .grid {
   display: grid;
 }
-
-.footerStore {
-  background-color: #f6f6f6;
-  margin-top: 9rem;
-  padding-top: 1rem;
-  padding-block-end: 1rem;
-  border-top: 1px solid #ddd;
-}

@@ -31,6 +31,7 @@ import ProductDetails from "../pages/MerchStore/Catalog/ProductDetails";
 import Register from "../pages/MerchStore/Register";
 import MerchLogin from "../pages/MerchStore/MerchLogin";
 import TermsAndCondition from "../pages/MerchStore/TermsAndCondition";
+import PrivacyPolicy from "../pages/MerchStore/TermsAndCondition/PrivacyPolicy";
 
 const userRoutes = [
   //dashboard
@@ -70,6 +71,7 @@ const authRoutes = [
   { path: "/login", component: <MerchLogin /> },
   { path: "/register", component: <Register /> },
   { path: "/terms-condition", component: <TermsAndCondition /> },
+  { path: "/privacy-policy", component: <PrivacyPolicy /> },
 ];
 
 export { userRoutes, authRoutes };
