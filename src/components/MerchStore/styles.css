@@ -1,0 +1,27 @@
+.rightUpperHeader {
+  color: #ffff;
+  text-align: right;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.rightUpperHeader span {
+  margin: 0px 10px 0px 10px;
+  cursor: pointer;
+}
+.leftUpperHeader {
+  color: #ffff;
+  text-align: left;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.leftUpperHeader i {
+  cursor: pointer;
+}
+@media (max-width: 768px) {
+  .rightUpperHeader {
+    text-align: center;
+  }
+  .leftUpperHeader {
+    text-align: center;
+  }
+}

@@ -1,11 +1,11 @@
 import {
-  INITIAL_AUTHENTICATION,
+  LOGIN_USER,
   LOGIN_SUCCESS,
   LOGIN_FAILED,
   LOGOUT_USER,
-  LOGOUT_USER_SUCCESS,
   API_ERROR,
   CLEAR_AUTH,
+  REGISTER,
   REGISTER_SUCCESS,
   REGISTER_FAILED,
 } from "./types";
@@ -14,7 +14,7 @@ const initialState = {
   authenticated: false,
   tempEmail: null,
   token: null,
-  loading: true,
+  loading: false,
   data: [],
   error: null,
   errorMessage: null,
@@ -23,12 +23,16 @@ const initialState = {
 
 const authentication = (state = initialState, action) => {
   switch (action.type) {
-    case INITIAL_AUTHENTICATION:
+    case LOGIN_USER:
       return {
         ...state,
-        loading: false,
-        token: action.payload.token,
-        authenticated: true,
+        loading: true,
+      };
+
+    case REGISTER:
+      return {
+        ...state,
+        loading: true,
       };
 
     case REGISTER_SUCCESS:

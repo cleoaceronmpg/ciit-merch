@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
 import {
+  Button,
   Row,
   Col,
   Alert,
@@ -10,6 +11,7 @@ import {
   Label,
   Form,
   FormFeedback,
+  Spinner,
 } from "reactstrap";
 
 // Formik Validation
@@ -234,13 +236,17 @@ const Register = ({ account, authentication, ...props }) => {
                         <div className="mb-4">
                           <p className="mb-0">
                             By registering you agree to the CIIT{" "}
-                            <Link to="#" className="text-primary">
+                            <Link
+                              to="/terms-condition"
+                              target="_blank"
+                              className="text-primary"
+                            >
                               Terms of Use
                             </Link>
                           </p>
                         </div>
                         <div className="mb-3">
-                          <button
+                          {/* <button
                             className="btn btn-primary w-100 waves-effect waves-light"
                             type="submit"
                             style={{
@@ -249,7 +255,26 @@ const Register = ({ account, authentication, ...props }) => {
                             }}
                           >
                             Register
-                          </button>
+                          </button> */}
+                          <Button
+                            className="btn btn-primary w-100 waves-effect waves-light"
+                            type="submit"
+                            style={{
+                              backgroundColor: "#ff5400",
+                              borderColor: "#ff5400",
+                            }}
+                            color="primary"
+                            disabled={authentication.loading}
+                          >
+                            {authentication.loading ? (
+                              <>
+                                <Spinner size="sm">Loading...</Spinner>
+                                <span> Loading</span>
+                              </>
+                            ) : (
+                              <span>Register</span>
+                            )}
+                          </Button>
                         </div>
                       </Form>
 

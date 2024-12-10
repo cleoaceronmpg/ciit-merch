@@ -18,6 +18,10 @@
 body {
   * {
     outline: none !important;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.4px;
+    line-height: 1;
   }
 }
 
@@ -31,7 +35,8 @@ body {
   border: 0;
   font-size: 10px;
   padding: 1.35rem 1.25rem;
-  background: transparent escape-svg($btn-close-bg) center / $btn-close-width auto no-repeat;
+  background: transparent escape-svg($btn-close-bg) center / $btn-close-width
+    auto no-repeat;
   position: absolute;
   top: 0;
   right: 0;
@@ -131,7 +136,6 @@ body {
 
 // dark
 [data-bs-theme="dark"] {
-
   .rdw-option-wrapper {
     img {
       filter: invert(1) grayscale(100%) brightness(200%);
@@ -191,7 +195,6 @@ span.flatpickr-weekday {
   border-bottom-color: $primary !important;
 }
 
-
 // Flatepicker
 .flatpickr-months,
 .flatpickr-weekdays,
@@ -233,10 +236,10 @@ span.flatpickr-weekday {
   cursor: pointer;
   background-color: #fff;
   background-clip: padding-box;
-  -webkit-transition: opacity .6s ease;
-  transition: opacity .6s ease;
-  width: 30px ;
-  height: 3px ;
+  -webkit-transition: opacity 0.6s ease;
+  transition: opacity 0.6s ease;
+  width: 30px;
+  height: 3px;
 }
 
 .dashboard-slider.carousel-indicators li {
@@ -301,6 +304,5 @@ span.flatpickr-weekday {
 }
 
 .card-body.z-0 {
-  z-index: 0 !important
+  z-index: 0 !important;
 }
-

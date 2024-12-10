@@ -26,7 +26,6 @@ import fakeBackend from "./helpers/AuthType/fakeBackend";
 fakeBackend();
 
 const App = ({ authentication, app, ...props }) => {
-  console.log("authentication", authentication);
   return (
     <React.Fragment>
       {/* <Router> */}

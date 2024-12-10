@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import {
+  Button,
   Row,
   Col,
-  Alert,
   Container,
   Form,
   Input,
   FormFeedback,
   Label,
+  Spinner,
 } from "reactstrap";
 import { ToastContainer, toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
@@ -19,7 +20,6 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 // import images
 import weareLogo from "../../../assets/images/weare-logo.png";
-import CarouselPage from "../../AuthenticationInner/CarouselPage";
 
 const MerchLogin = ({ authentication, ...props }) => {
   const [passwordShow, setPasswordShow] = useState(false);
@@ -44,8 +44,11 @@ const MerchLogin = ({ authentication, ...props }) => {
   });
 
   React.useEffect(() => {
+    // props.actionCreator({
+    //   type: types.CLEAR_AUTH,
+    // });
     // notify after error
-    if (authentication.error) {
+    if (!authentication.loading && authentication.error) {
       toast(authentication.errorMessage, {
         position: "top-right",
         hideProgressBar: true,
@@ -175,16 +178,24 @@ const MerchLogin = ({ authentication, ...props }) => {
                         <div className="row mb-4">
                           <div className="col">
                             <div className="mt-3 d-grid">
-                              <button
-                                className="btn btn-primary btn-block"
+                              <Button
                                 type="submit"
                                 style={{
                                   backgroundColor: "#ff5400",
                                   borderColor: "#ff5400",
                                 }}
+                                color="primary"
+                                disabled={authentication.loading}
                               >
-                                Log In
-                              </button>
+                                {authentication.loading ? (
+                                  <>
+                                    <Spinner size="sm">Loading...</Spinner>
+                                    <span> Loading</span>
+                                  </>
+                                ) : (
+                                  <span>Log In</span>
+                                )}
+                              </Button>
                             </div>
                           </div>
                         </div>
@@ -201,8 +212,8 @@ const MerchLogin = ({ authentication, ...props }) => {
             </Col>
           </Row>
         </Container>
+        <ToastContainer />
       </div>
-      <ToastContainer />
     </React.Fragment>
   );
 };

@@ -30,6 +30,7 @@ import Thankyou from "../pages/MerchStore/Checkout/ThankyouScreen";
 import ProductDetails from "../pages/MerchStore/Catalog/ProductDetails";
 import Register from "../pages/MerchStore/Register";
 import MerchLogin from "../pages/MerchStore/MerchLogin";
+import TermsAndCondition from "../pages/MerchStore/TermsAndCondition";
 
 const userRoutes = [
   //dashboard
@@ -68,6 +69,7 @@ const authRoutes = [
   { path: "/checkout/success/:id", component: <Thankyou /> },
   { path: "/login", component: <MerchLogin /> },
   { path: "/register", component: <Register /> },
+  { path: "/terms-condition", component: <TermsAndCondition /> },
 ];
 
 export { userRoutes, authRoutes };

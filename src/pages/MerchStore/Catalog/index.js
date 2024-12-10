@@ -29,7 +29,7 @@ const Catalog = () => {
         className="page-content"
         style={{ paddingLeft: 20, paddingRight: 20 }}
       >
-        <Container fluid>
+        <Container>
           {/* Render Breadcrumbs */}
           <Breadcrumbs title="Home" breadcrumbItem={catalog} />
 
