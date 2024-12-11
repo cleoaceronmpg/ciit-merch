@@ -37,11 +37,11 @@ const Header = (props) => {
             <Row>
               <Col lg={6} md={6} sm={12} xxl={6}>
                 <div className="leftUpperHeader">
-                  <span style={{ marginRight: 15 }}>
+                  <span className="welcomeContainer">
                     Welcome to WeAre, CIIT’s Official Merch{" "}
                   </span>
                   <span> | </span>
-                  <span style={{ marginLeft: 15 }}>
+                  <span className="followContainer">
                     Follow us on{"  "}
                     <a
                       href="https://bit.ly/3D4mPPq"
@@ -116,6 +116,7 @@ const Header = (props) => {
                 style={{
                   display: "flex",
                   flexDirection: "row",
+                  justifyContent: "center",
                 }}
               >
                 <Link to="/home">
@@ -139,29 +140,16 @@ const Header = (props) => {
                   CIIT Merch
                 </h5>
               </Col>
-              <Col
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                }}
-              >
+              <Col className="searchContainer">
                 <div
-                  className="d-inline-block ms-2"
                   style={{
-                    width: "100%",
+                    width: "70%",
                     marginRight: 10,
                   }}
                 >
                   <form>
                     <div className="form-group m-0">
-                      <div
-                        className="input-group"
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                          width: "100%",
-                        }}
-                      >
+                      <div className="input-group">
                         <input
                           type="text"
                           className="form-control"
@@ -184,27 +172,14 @@ const Header = (props) => {
                     </div>
                   </form>
                 </div>
-                <Link to="/cart" className="dropdown-item">
+                <Link to="/cart">
                   <img src={cartIcon} width={35} height={35} />
                 </Link>
               </Col>
             </Row>
-            <Row
-              style={{
-                marginTop: 10,
-              }}
-            >
+            <Row className="categoryContainer">
               <Col lg={12} xxl={12}>
-                <ul
-                  className=""
-                  style={{
-                    listStyle: "none",
-                    display: "flex",
-                    flexDirection: "row",
-                    color: "#fff",
-                    padding: 0,
-                  }}
-                >
+                <ul className="category">
                   <li
                     style={{
                       borderRight: "#fff solid 2px",

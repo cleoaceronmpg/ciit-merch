@@ -1,196 +1,118 @@
-.banner-container {
-  min-height: 500px;
-  margin-top: -3rem;
-  background: linear-gradient(135deg, #000000, #8ca8b3);
+.pageCustomContent {
+  margin-top: 40px;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+.bannerContainer {
+  background-color: #f2f4f5;
+}
+.bannerTagLineContainer {
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+  padding: 10px 30px;
 }
-.banner {
+.tagline {
+  margin-left: 20px;
+}
+.tagline p {
+  font-family: "Poppins", sans-serif;
+  font-size: 16px;
+  color: #545454;
+}
+.orderNow {
+  margin-left: 20px;
+}
+.bannerImageContainer {
   display: flex;
+  justify-content: center;
   align-items: center;
-  max-width: 1200px;
-  width: 100%;
-  padding: 0 20px;
-  flex-wrap: wrap;
+  margin: 0px;
 }
-.banner-image {
-  flex: 1;
-  width: 300px;
-  text-align: center;
-  padding: 30px;
+.bannerImage {
+  height: auto;
+  max-width: 100%;
+  padding: 0px;
+  margin: 0px;
 }
-
-.banner-description {
-  flex: 1;
-  width: 300px;
-  text-align: left;
+.midTransContainer {
+  margin-top: 25px;
+  border-radius: 8px;
+  background-color: #f2f4f5;
+}
+.midTransContainer .row .col {
+  display: flex;
+  justify-content: center;
+  align-self: center;
   padding: 20px;
 }
-
-.shopnow {
-  display: inline-block;
-  padding: 10px 20px;
-  background-color: #fff;
-  color: #0056b3;
-  text-decoration: none;
-  border-radius: 5px;
-  font-weight: bold;
+.midTransContainer .row .col span {
+  margin-top: 15px;
+  margin-left: 10px;
+  font-size: 20px;
 }
-
-@media screen and (min-width: 1200px) {
-  .page-width {
-    padding: 0 55px;
-  }
-}
-.page-width {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 22px;
-}
-
-@media (min-width: 768px) {
-  .md\:grid-cols-3 {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-.gap-8 {
-  gap: 2rem;
-}
-.grid-cols-1 {
-  grid-template-columns: repeat(1, minmax(0, 1fr));
-}
-.grid {
-  display: grid;
-}
-.mt-12 {
-  margin-top: 3rem;
-}
-.col-span-1 {
-  grid-column: span 1 / span 1;
-}
-html .prose {
-  font-size: 100%;
-}
-.max-w-none {
-  max-width: none;
-}
-
-.prose-base {
-  font-size: 1rem;
-  line-height: 1.75;
-}
-.prose {
-  --tw-prose-body: #374151;
-  --tw-prose-headings: #111827;
-  --tw-prose-lead: #4b5563;
-  --tw-prose-links: #111827;
-  --tw-prose-bold: #111827;
-  --tw-prose-counters: #6b7280;
-  --tw-prose-bullets: #d1d5db;
-  --tw-prose-hr: #e5e7eb;
-  --tw-prose-quotes: #111827;
-  --tw-prose-quote-borders: #e5e7eb;
-  --tw-prose-captions: #6b7280;
-  --tw-prose-kbd: #111827;
-  --tw-prose-kbd-shadows: 17 24 39;
-  --tw-prose-code: #111827;
-  --tw-prose-pre-code: #e5e7eb;
-  --tw-prose-pre-bg: #1f2937;
-  --tw-prose-th-borders: #d1d5db;
-  --tw-prose-td-borders: #e5e7eb;
-  --tw-prose-invert-body: #d1d5db;
-  --tw-prose-invert-headings: #fff;
-  --tw-prose-invert-lead: #9ca3af;
-  --tw-prose-invert-links: #fff;
-  --tw-prose-invert-bold: #fff;
-  --tw-prose-invert-counters: #9ca3af;
-  --tw-prose-invert-bullets: #4b5563;
-  --tw-prose-invert-hr: #374151;
-  --tw-prose-invert-quotes: #f3f4f6;
-  --tw-prose-invert-quote-borders: #374151;
-  --tw-prose-invert-captions: #9ca3af;
-  --tw-prose-invert-kbd: #fff;
-  --tw-prose-invert-kbd-shadows: 255 255 255;
-  --tw-prose-invert-code: #fff;
-  --tw-prose-invert-pre-code: #d1d5db;
-  --tw-prose-invert-pre-bg: rgb(0 0 0 / 50%);
-  --tw-prose-invert-th-borders: #4b5563;
-  --tw-prose-invert-td-borders: #374151;
-  font-size: 1rem;
-  line-height: 1.75;
-}
-.prose {
-  color: var(--tw-prose-body);
-  max-width: 65ch;
-}
-.button.primary {
-  background-color: #3a3a3a;
-  border: 0;
+.deliveryBan {
   color: #fff;
-  box-shadow:
-    0 1px 0 rgba(0, 0, 0, 0.05),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+  max-width: 50px;
+  max-height: 44px;
 }
-.editor__html a {
-  color: var(--interactive);
-  text-decoration: none;
+.securePayment {
+  color: #fff;
+  max-width: 50px;
+  max-height: 44px;
 }
-
-html .button {
-  padding: 1rem 2rem;
-  font-weight: 400;
-  border-radius: 2px;
+.officialFont {
+  font-size: 20px;
+  color: #545454;
 }
-.prose :where(a):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
-  color: var(--tw-prose-links);
-  text-decoration: underline;
+.bannerAds {
+  margin-top: 30px;
+  height: auto;
+  max-width: 100%;
+}
+.featuresContainer {
+  margin-top: 30px;
+}
+.featuresContainer h5 {
+  font-size: 30px;
   font-weight: 500;
+  color: #545454;
 }
-.button {
-  display: inline-block;
-  position: relative;
-  border: 1px solid #babfc3;
-  border-radius: 3px;
-  padding: 0.7rem 1.6rem;
-  font-weight: 600;
-  color: inherit;
-  background-color: #fff;
-  border-top-color: #c9cccf;
-  border-bottom-color: #babfc4;
-}
-@media (min-width: 768px) and (max-width: 1535px) {
-  body .h5,
-  body h5 {
-    font-size: 1.61rem;
+@media (max-width: 992px) {
+  .bannerContainer {
+    background-color: #fff;
+  }
+  .bannerTagLineContainer {
+    margin-bottom: 25px;
   }
 }
-.tracking-widest {
-  letter-spacing: 0.1em;
-}
-.uppercase {
-  text-transform: uppercase;
-}
-.text-center {
-  text-align: center;
-}
-.mb-12 {
-  margin-bottom: 3rem;
-}
-@media (min-width: 768px) {
-  .grid-cols-4 {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+@media (max-width: 431px) {
+  .bannerContainer {
+    background-color: #fff;
   }
-}
-.grid-cols-2 {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-.product-thumbnail-listing {
-  background-color: #f6f6f6;
-  color: rgba(51, 17, 51, 0.0666666667);
-  min-height: 250px;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
+  .bannerTagLineContainer {
+    margin-bottom: 20px;
+  }
+  .midTransContainer {
+    padding-right: 10px;
+  }
+  .midTransContainer .row .col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+  }
+  .midTransContainer .row .col h5 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  .midTransContainer .row .col span {
+    font-size: 10px;
+  }
+  .officialFont {
+    font-size: 15px;
+  }
 }
