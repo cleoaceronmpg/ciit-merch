@@ -128,13 +128,6 @@ const Register = ({ account, authentication, ...props }) => {
                           </Alert>
                         ) : null}
 
-                        {/*{account.registrationError &&
-                        account.registrationError ? (
-                          <Alert color="danger">
-                            {account.registrationError}
-                          </Alert>
-                        ) : null} */}
-
                         <div className="mb-3">
                           <Label className="form-label">Full Name</Label>
                           <Input

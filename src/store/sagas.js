@@ -7,10 +7,12 @@ import ForgetSaga from "./auth/forgetpwd/saga";
 import ProfileSaga from "./auth/profile/saga";
 import LayoutSaga from "./layout/saga";
 import authenticationSaga from "./authentication/saga";
+import appSaga from "./app/saga";
 
 export default function* rootSaga() {
   yield all([
     //public
+    fork(appSaga),
     fork(AccountSaga),
     fork(authenticationSaga),
     fork(AuthSaga),

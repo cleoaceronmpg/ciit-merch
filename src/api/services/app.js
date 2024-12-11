@@ -1,9 +1,12 @@
 import { ciitMerchApi } from "../../api";
-import { CHECK_OUT_SERVICE, USER_SERVICE } from "../../api/constants";
-
 class App {
-  fnPostCheckout = async (payload) => {
-    return await ciitMerchApi.post(CHECK_OUT_SERVICE.CHECKOUT, payload);
+  // this is temporary
+  fnGetProducts = async (payload) => {
+    return await ciitMerchApi("Products").select().firstPage();
+  };
+
+  fnGetCampaign = async (payload) => {
+    return await ciitMerchApi("Campaign").select().firstPage();
   };
 }
 

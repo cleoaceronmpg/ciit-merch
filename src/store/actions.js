@@ -7,3 +7,4 @@ export * from "./dashboard/types";
 export * from "./layout/types";
 export * from "./cart/types";
 export * from "./checkout/types";
+export * from "./app/types";

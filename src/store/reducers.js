@@ -11,8 +11,10 @@ import Profile from "./auth/profile/reducer";
 import authentication from "./authentication/reducer";
 import cart from "./cart/reducer";
 import checkout from "./checkout/reducer";
+import app from "./app/reducer";
 
 const rootReducer = combineReducers({
+  app,
   layout,
   Login,
   Account,

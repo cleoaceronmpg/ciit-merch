@@ -79,6 +79,22 @@
   font-weight: 500;
   color: #545454;
 }
+.featureProducts {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.highlight {
+  font-weight: 900;
+  font-size: 35;
+  color: #545454;
+}
+.marginTop {
+  margin-top: 20;
+}
+.fontBold {
+  font-weight: 700;
+}
 @media (max-width: 992px) {
   .bannerContainer {
     background-color: #fff;
@@ -114,5 +130,8 @@
   }
   .officialFont {
     font-size: 15px;
+  }
+  .featureProducts {
+    margin-top: 40px;
   }
 }

@@ -11,14 +11,53 @@ import { Button, Container, Row, Col } from "reactstrap";
 import hoodie from "../../../assets/images/banner-hoodie.png";
 import deliveryBan from "../../../assets/images/delivery-ban.png";
 import securePayment from "../../../assets/images/secure-payment.png";
-import bannerAds from "../../../assets/images/banner-ads.png";
+import bannerHeroAds from "../../../assets/images/banner-ads.png";
 
 import { collectionData, featureProductsData } from "./data";
 
-const Home = ({ authentication, ...props }) => {
+const Home = ({ app, authentication, ...props }) => {
   let navigate = useNavigate();
   //meta title
   document.title = "CIIT Merch | Home";
+
+  const [bannerAds, setBannerAds] = React.useState(null);
+
+  React.useEffect(() => {
+    console.log("bannerAds", bannerAds);
+  }, [bannerAds]);
+
+  React.useEffect(() => {
+    //console.log("app", app);
+    app.campaignData.length > 0 && bannerAdsHandler();
+  }, [app]);
+
+  React.useEffect(() => {
+    fetchCampaigns();
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    await props.actionCreator({
+      type: types.GET_PRODUCTS,
+    });
+  };
+
+  const fetchCampaigns = async () => {
+    await props.actionCreator({
+      type: types.GET_CAMPAIGN,
+    });
+  };
+
+  const bannerAdsHandler = () => {
+    setBannerAds(
+      app.campaignData
+        .filter(
+          (item) =>
+            item?.CampainCategory && item.CampainCategory === "banner ads"
+        )
+        .map((banner) => banner)[0] || []
+    );
+  };
 
   return (
     <React.Fragment>
@@ -78,7 +117,13 @@ const Home = ({ authentication, ...props }) => {
                 paddingRight: "0px",
               }}
             >
-              <img src={hoodie} className="bannerImage" />
+              {bannerAds && (
+                <img
+                  src={bannerAds.Image[0]?.url || ""}
+                  className="bannerImage"
+                  alt="Hero Banner"
+                />
+              )}
             </Col>
           </Row>
           <div className="midTransContainer">
@@ -97,12 +142,46 @@ const Home = ({ authentication, ...props }) => {
             </Row>
           </div>
           <div className="featuresContainer">
+            <h5>Featured Products</h5>
             <Row>
               <Col xxl={4} xl={4} md={4}>
-                <h5>Featured Products</h5>
-                <img src={bannerAds} className="bannerAds" />
+                <img src={bannerHeroAds} className="bannerAds" />
               </Col>
-              <Col>container 2</Col>
+              <Col className="featureProducts">
+                {app.products.length > 0 &&
+                  app.products.map((item, index) => (
+                    <div
+                      key={index}
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        padding: 10,
+                        flexBasis: "20%", // Each column takes 30% of the row
+                        boxSizing: "border-box", // Includes padding in the width calculation
+                      }}
+                    >
+                      <img
+                        src={item.Images[0].url}
+                        width={160}
+                        className="featureImage"
+                      />
+                      <Button
+                        type="submit"
+                        style={{
+                          backgroundColor: "#FF5400",
+                          borderColor: "#FF5400",
+                          fontWeight: 700,
+                          marginLeft: 10,
+                          marginRight: 10,
+                          borderRadius: 8,
+                        }}
+                        color="primary"
+                      >
+                        Order now
+                      </Button>
+                    </div>
+                  ))}
+              </Col>
             </Row>
           </div>
         </Container>
@@ -112,6 +191,6 @@ const Home = ({ authentication, ...props }) => {
   );
 };
 
-const mapStateToProps = ({ authentication }) => ({ authentication });
+const mapStateToProps = ({ app, authentication }) => ({ app, authentication });
 
 export default connect(mapStateToProps, { actionCreator })(Home);
