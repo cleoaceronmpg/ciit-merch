@@ -8,12 +8,9 @@ import Header from "../../../components/MerchStore/Header";
 import Footer from "../../../components/MerchStore/Footer";
 import "./styles.css";
 import { Button, Container, Row, Col } from "reactstrap";
-import hoodie from "../../../assets/images/banner-hoodie.png";
 import deliveryBan from "../../../assets/images/delivery-ban.png";
 import securePayment from "../../../assets/images/secure-payment.png";
 import bannerHeroAds from "../../../assets/images/banner-ads.png";
-
-import { collectionData, featureProductsData } from "./data";
 
 const Home = ({ app, authentication, ...props }) => {
   let navigate = useNavigate();
@@ -21,26 +18,20 @@ const Home = ({ app, authentication, ...props }) => {
   document.title = "CIIT Merch | Home";
 
   const [bannerAds, setBannerAds] = React.useState(null);
+  const [heroBannerAds, setHeroBannerAds] = React.useState(null);
 
   React.useEffect(() => {
-    console.log("bannerAds", bannerAds);
+    //console.log("bannerAds", bannerAds);
   }, [bannerAds]);
 
   React.useEffect(() => {
-    //console.log("app", app);
+    console.log("app", app);
     app.campaignData.length > 0 && bannerAdsHandler();
   }, [app]);
 
   React.useEffect(() => {
     fetchCampaigns();
-    fetchProducts();
   }, []);
-
-  const fetchProducts = async () => {
-    await props.actionCreator({
-      type: types.GET_PRODUCTS,
-    });
-  };
 
   const fetchCampaigns = async () => {
     await props.actionCreator({
@@ -54,6 +45,15 @@ const Home = ({ app, authentication, ...props }) => {
         .filter(
           (item) =>
             item?.CampainCategory && item.CampainCategory === "banner ads"
+        )
+        .map((banner) => banner)[0] || []
+    );
+
+    setHeroBannerAds(
+      app.campaignData
+        .filter(
+          (item) =>
+            item?.CampainCategory && item.CampainCategory === "hero banner"
         )
         .map((banner) => banner)[0] || []
     );
@@ -96,13 +96,14 @@ const Home = ({ app, authentication, ...props }) => {
               </div>
               <div className="orderNow">
                 <Button
-                  type="submit"
+                  type="button"
                   style={{
                     backgroundColor: "#FF5400",
                     borderColor: "#FF5400",
                     fontWeight: 700,
                   }}
                   color="primary"
+                  onClick={() => navigate("/catalog")}
                 >
                   Order now
                 </Button>
@@ -144,8 +145,14 @@ const Home = ({ app, authentication, ...props }) => {
           <div className="featuresContainer">
             <h5>Featured Products</h5>
             <Row>
-              <Col xxl={4} xl={4} md={4}>
-                <img src={bannerHeroAds} className="bannerAds" />
+              <Col xxl={3} xl={3} md={3}>
+                {heroBannerAds && heroBannerAds?.Image && (
+                  <img
+                    src={heroBannerAds.Image[0]?.url || ""}
+                    className="bannerAds"
+                    alt="Hero Banner"
+                  />
+                )}
               </Col>
               <Col className="featureProducts">
                 {app.products.length > 0 &&

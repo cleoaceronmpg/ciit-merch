@@ -6,14 +6,19 @@ import FeatherIcon from "feather-icons-react";
 // Reactstrap
 import { Container, Row, Col } from "reactstrap";
 //redux
-import { actionCreator } from "../../store";
+import { actionCreator, types } from "../../store";
 import "./styles.css";
 
 import weareLogo from "../../assets/images/weare-logo-white.png";
 import cartIcon from "../../assets/images/cart.png";
 
-const Header = (props) => {
+const Header = ({ authentication, ...props }) => {
   const [search, setsearch] = React.useState(true);
+
+  React.useEffect(() => {
+    console.log("authentication", authentication);
+  }, [authentication]);
+
   return (
     <React.Fragment>
       <header
@@ -76,17 +81,45 @@ const Header = (props) => {
                   <span>
                     <i className="bx bx-message-rounded-dots"></i> Chat us
                   </span>
-                  <span>
-                    <a href="/login" style={{ color: "#fff" }}>
-                      Sign-in
-                    </a>
-                  </span>
-                  <span>
-                    |{" "}
-                    <a href="/register" style={{ color: "#fff" }}>
-                      Sign-up
-                    </a>
-                  </span>
+                  {authentication.authenticated ? (
+                    <>
+                      {" "}
+                      <span>
+                        <a href="/login" style={{ color: "#fff" }}>
+                          Hello! {authentication.data?.fields?.FullName || ""}
+                        </a>
+                      </span>
+                      <span>
+                        |{" "}
+                        <a
+                          href="#"
+                          style={{ color: "#fff" }}
+                          onClick={() => {
+                            props.actionCreator({
+                              type: types.LOGOUT_USER,
+                            });
+                          }}
+                        >
+                          Logout
+                        </a>
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      {" "}
+                      <span>
+                        <a href="/login" style={{ color: "#fff" }}>
+                          Sign-in
+                        </a>
+                      </span>
+                      <span>
+                        |{" "}
+                        <a href="/register" style={{ color: "#fff" }}>
+                          Sign-up
+                        </a>
+                      </span>
+                    </>
+                  )}
                 </div>
               </Col>
             </Row>
@@ -247,9 +280,9 @@ const Header = (props) => {
   );
 };
 
-const mapStateToProps = ({ layout, app, ...state }) => {
+const mapStateToProps = ({ layout, app, authentication, ...state }) => {
   const { layoutMode } = layout;
-  return { app, layout, layoutMode };
+  return { app, authentication, layout, layoutMode };
 };
 
 export default connect(mapStateToProps, { actionCreator })(Header);

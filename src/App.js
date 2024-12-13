@@ -26,6 +26,16 @@ import fakeBackend from "./helpers/AuthType/fakeBackend";
 fakeBackend();
 
 const App = ({ authentication, app, ...props }) => {
+  React.useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    await props.actionCreator({
+      type: types.GET_PRODUCTS,
+    });
+  };
+
   return (
     <React.Fragment>
       {/* <Router> */}
