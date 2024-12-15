@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { actionCreator, types } from "../../../store";
 import {
+  Button,
   Col,
   Container,
   Row,
@@ -638,9 +639,18 @@ const Checkout = ({ cart, checkout, authentication, ...props }) => {
                           justifyContent: "flex-end",
                         }}
                       >
-                        <button type="submit" className="button primary">
+                        <Button
+                          className="btn btn-primary w-100 waves-effect waves-light"
+                          type="submit"
+                          style={{
+                            backgroundColor: "#ff5400",
+                            borderColor: "#ff5400",
+                            maxWidth: "50%",
+                          }}
+                          color="primary"
+                        >
                           <span>Continue to payment</span>
-                        </button>
+                        </Button>
                       </div>
                     </Form>
                   ) : !checkout.shipAddressData.length ? (
@@ -651,13 +661,19 @@ const Checkout = ({ cart, checkout, authentication, ...props }) => {
                         justifyContent: "flex-end",
                       }}
                     >
-                      <button
-                        type="button"
-                        className="button primary"
+                      <Button
+                        className="btn btn-primary w-100 waves-effect waves-light"
+                        type="submit"
+                        style={{
+                          backgroundColor: "#ff5400",
+                          borderColor: "#ff5400",
+                          maxWidth: "50%",
+                        }}
+                        color="primary"
                         onClick={() => continueForPickup()}
                       >
                         <span>Continue to shipping</span>
-                      </button>
+                      </Button>
                     </div>
                   ) : (
                     <div
@@ -667,13 +683,19 @@ const Checkout = ({ cart, checkout, authentication, ...props }) => {
                         justifyContent: "flex-end",
                       }}
                     >
-                      <button
+                      <Button
+                        className="btn btn-primary w-100 waves-effect waves-light"
                         type="button"
-                        className="button primary"
+                        style={{
+                          backgroundColor: "#ff5400",
+                          borderColor: "#ff5400",
+                          maxWidth: "50%",
+                        }}
+                        color="primary"
                         onClick={() => placeOrder()}
                       >
                         <span>Place Order</span>
-                      </button>
+                      </Button>
                     </div>
                   )}
                 </>
@@ -744,9 +766,18 @@ const Checkout = ({ cart, checkout, authentication, ...props }) => {
                           justifyContent: "flex-end",
                         }}
                       >
-                        <button type="submit" className="button primary">
+                        <Button
+                          className="btn btn-primary w-100 waves-effect waves-light"
+                          type="submit"
+                          style={{
+                            backgroundColor: "#ff5400",
+                            borderColor: "#ff5400",
+                            maxWidth: "50%",
+                          }}
+                          color="primary"
+                        >
                           <span>Continue to shipping</span>
-                        </button>
+                        </Button>
                       </div>
                     </div>
                   </div>

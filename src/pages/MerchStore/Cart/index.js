@@ -9,7 +9,7 @@ import Header from "../../../components/MerchStore/Header";
 import Footer from "../../../components/MerchStore/Footer";
 import "./styles.css";
 
-import { Container } from "reactstrap";
+import { Button, Container } from "reactstrap";
 
 const Cart = ({ cart, ...props }) => {
   const [shoppingCart, setShoppingCart] = React.useState([]);
@@ -352,9 +352,18 @@ const Cart = ({ cart, ...props }) => {
                               </div>
                             </div>
                             <div className="col-span-1">
-                              <button type="button" className="button primary">
+                              <Button
+                                className="btn btn-primary w-100 waves-effect waves-light"
+                                type="button"
+                                style={{
+                                  backgroundColor: "#ff5400",
+                                  borderColor: "#ff5400",
+                                  maxWidth: "50%",
+                                }}
+                                color="primary"
+                              >
                                 <span>Apply</span>
-                              </button>
+                              </Button>
                             </div>
                           </div>
                         </form>
@@ -398,9 +407,21 @@ const Cart = ({ cart, ...props }) => {
                           </div>
                         </div>
                         <div className="shopping-cart-checkout-btn flex justify-between mt-8">
-                          <a href="/checkout" className="button primary">
+                          <Button
+                            className="btn btn-primary w-100 waves-effect waves-light"
+                            type="button"
+                            style={{
+                              backgroundColor: "#ff5400",
+                              borderColor: "#ff5400",
+                              maxWidth: "50%",
+                            }}
+                            color="primary"
+                            onClick={() => {
+                              navigate("/checkout");
+                            }}
+                          >
                             <span>CHECKOUT</span>
-                          </a>
+                          </Button>
                         </div>
                       </div>
                     </div>
