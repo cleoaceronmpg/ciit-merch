@@ -80,7 +80,7 @@ const NotificationDropdown = ({ cart, ...props }) => {
                       <p className="mb-0">
                         <i className="mdi mdi-cart-arrow-up" /> Price:{" "}
                         {props.t(item?.price || "")} Qty:{" "}
-                        {props.t(item?.quantity || "")}{" "}
+                        {props.t(item?.Quantity || "")}{" "}
                       </p>
                     </div>
                   </div>

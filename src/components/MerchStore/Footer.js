@@ -18,7 +18,7 @@ const Footer = (props) => {
       <div className="footerStore">
         <Container className="footer-wrapper">
           <Row>
-            <Col lg={6} xxl={6} md={6} sm={12} className="leftFooter">
+            <Col lg={7} xxl={7} md={7} sm={12} className="leftFooter">
               <img
                 src={weareLogo}
                 width={94}
@@ -27,9 +27,9 @@ const Footer = (props) => {
                   marginBottom: 15,
                 }}
               />
-              <p>96 Kamuning Road Quezon City inquiry@wearemerch.ph</p>
+              {/* <p>96 Kamuning Road Quezon City inquiry@wearemerch.ph</p> */}
             </Col>
-            <Col lg={6} xxl={6} md={6} sm={12} className="rightFooter">
+            <Col lg={5} xxl={5} md={5} sm={12} className="rightFooter">
               <ul
                 style={{
                   listStyle: "none",
@@ -44,7 +44,11 @@ const Footer = (props) => {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/#" className="dropdown-item">
+                  <Link
+                    to="https://www.facebook.com/messages/t/502903216233917"
+                    target="_blank"
+                    className="dropdown-item"
+                  >
                     Contact Us
                   </Link>
                 </li>

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 //Import Icons
 import FeatherIcon from "feather-icons-react";
 // Reactstrap
@@ -13,6 +13,8 @@ import weareLogo from "../../assets/images/weare-logo-white.png";
 import cartIcon from "../../assets/images/cart.png";
 
 const Header = ({ authentication, ...props }) => {
+  let navigate = useNavigate();
+
   const [search, setsearch] = React.useState(true);
 
   React.useEffect(() => {
@@ -67,7 +69,7 @@ const Header = ({ authentication, ...props }) => {
                     >
                       <i
                         className="fab fa-instagram"
-                        style={{ height: 15, width: 15 }}
+                        style={{ height: 15, width: 15, marginLeft: 8 }}
                       ></i>
                     </a>
                   </span>
@@ -79,7 +81,12 @@ const Header = ({ authentication, ...props }) => {
                     <i className="bx bx-bell"></i> Notifications
                   </span>
                   <span>
-                    <i className="bx bx-message-rounded-dots"></i> Chat us
+                    <Link
+                      to={"https://www.facebook.com/messages/t/502903216233917"}
+                      target="_blank"
+                    >
+                      <i className="bx bx-message-rounded-dots"></i> Chat us
+                    </Link>
                   </span>
                   {authentication.authenticated ? (
                     <>
@@ -139,8 +146,8 @@ const Header = ({ authentication, ...props }) => {
           >
             <Row
               style={{
-                paddingTop: 15,
-                paddingBottom: 15,
+                paddingTop: 20,
+                paddingBottom: 25,
               }}
             >
               <Col
@@ -149,7 +156,6 @@ const Header = ({ authentication, ...props }) => {
                 style={{
                   display: "flex",
                   flexDirection: "row",
-                  justifyContent: "center",
                 }}
               >
                 <Link to="/home">
@@ -173,10 +179,14 @@ const Header = ({ authentication, ...props }) => {
                   CIIT Merch
                 </h5>
               </Col>
-              <Col className="searchContainer">
+              <Col
+                className="searchContainer"
+                style={{
+                  justifyContent: "flex-end",
+                }}
+              >
                 <div
                   style={{
-                    width: "70%",
                     marginRight: 10,
                   }}
                 >
@@ -210,7 +220,7 @@ const Header = ({ authentication, ...props }) => {
                 </Link>
               </Col>
             </Row>
-            <Row className="categoryContainer">
+            {/* <Row className="categoryContainer">
               <Col lg={12} xxl={12}>
                 <ul className="category">
                   <li
@@ -272,7 +282,7 @@ const Header = ({ authentication, ...props }) => {
                   </li>
                 </ul>
               </Col>
-            </Row>
+            </Row> */}
           </Container>
         </div>
       </header>

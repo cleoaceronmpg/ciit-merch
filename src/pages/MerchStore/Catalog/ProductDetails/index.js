@@ -10,19 +10,18 @@ import Header from "../../../../components/MerchStore/Header";
 import Footer from "../../../../components/MerchStore/Footer";
 import "./styles.css";
 
-import { Container } from "reactstrap";
+import { Button, Container } from "reactstrap";
 import { SIZE, COLOR, CatalogProducts } from "../data";
 
-const ProductDetails = ({ cart, ...props }) => {
+const ProductDetails = ({ app, cart, ...props }) => {
   const { id } = useParams();
+  const { products } = app;
   const [selectedProduct, setSelectedProduct] = React.useState({});
   const [selectedSize, setSelectedSize] = React.useState(null);
   const [selectedColor, setSelectedColor] = React.useState(null);
   const [selectedQty, setSelectedQty] = React.useState(1);
 
   React.useEffect(() => {
-    console.log("cart", cart);
-
     cart &&
       selectedSize &&
       selectedColor &&
@@ -36,11 +35,12 @@ const ProductDetails = ({ cart, ...props }) => {
   }, [cart]);
 
   React.useEffect(() => {
-    id && filterProduct(parseInt(id));
+    id && filterProduct(id);
   }, [id]);
 
   const filterProduct = (id) => {
-    const filteredProduct = CatalogProducts.find((item) => item.id === id);
+    const filteredProduct = products.find((item) => item["Product ID"] === id);
+    console.log("filteredProduct", filteredProduct);
     setSelectedProduct(filteredProduct);
   };
 
@@ -58,11 +58,11 @@ const ProductDetails = ({ cart, ...props }) => {
         payload: [
           {
             ...selectedProduct,
-            size: sizeDetails.size,
-            color: colorDetails.color,
-            quantity: selectedQty,
-            totalPrice:
-              parseFloat(selectedProduct.price) * parseInt(selectedQty),
+            Size: sizeDetails.size,
+            Color: colorDetails.color,
+            Quantity: parseInt(selectedQty),
+            TotalAmount:
+              parseFloat(selectedProduct.Price) * parseInt(selectedQty),
           },
         ],
       });
@@ -91,8 +91,8 @@ const ProductDetails = ({ cart, ...props }) => {
         <Container>
           {/* Render Breadcrumbs */}
           <Breadcrumbs
-            title="Home"
-            breadcrumbItem={selectedProduct.title || ""}
+            title="Catalog"
+            breadcrumbItem={selectedProduct["Product Name"] || ""}
           />
 
           <div
@@ -107,7 +107,7 @@ const ProductDetails = ({ cart, ...props }) => {
             }}
           >
             <div>
-              {selectedProduct.img && (
+              {selectedProduct?.Images && selectedProduct.Images.length > 0 && (
                 <div
                   id="product-current-image"
                   style={{
@@ -117,36 +117,41 @@ const ProductDetails = ({ cart, ...props }) => {
                   className="product-image product-single-page-image flex justify-center items-center"
                 >
                   <img
-                    src={selectedProduct.img}
-                    alt="Nike revolution 5"
-                    className="self-center"
+                    src={selectedProduct.Images[0].url}
+                    alt={selectedProduct["Product Name"]}
+                    className="self-center-details"
                   />
                 </div>
               )}
             </div>
-            {selectedProduct.id && (
+            {selectedProduct["Product ID"] && (
               <div className="">
                 <div className="flex flex-col ">
                   <h1 className="product-single-name">
-                    {selectedProduct.title}
+                    {selectedProduct["Product Name"]}
                   </h1>
                   <h4 className="product-single-price">
                     <div>
                       <span className="sale-price">
                         ₱{" "}
-                        {parseInt(selectedProduct.price).toLocaleString(
+                        {parseInt(selectedProduct.Price).toLocaleString(
                           "en-US"
                         )}{" "}
                         PHP
                       </span>
                     </div>
                   </h4>
-                  <div className="product-single-sku text-textSubdued">
+                  <div
+                    className="product-single-sku text-textSubdued"
+                    style={{
+                      marginBottom: 20,
+                    }}
+                  >
                     <span>Sku</span>
                     <span>: </span>
-                    {selectedProduct.sku}
+                    {selectedProduct["Product ID"]}
                   </div>
-                  <div
+                  {/* <div
                     className="specification"
                     style={{
                       marginTop: 10,
@@ -158,24 +163,27 @@ const ProductDetails = ({ cart, ...props }) => {
                         <span>{selectedProduct.color}</span>
                       </li>
                     </ul>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="">
-                  <div>
+                  <div id="size">
                     <ul className="variant-option-list flex justify-start gap-2 flex-wrap">
                       {SIZE.map((item, index) => (
                         <li
                           key={index}
                           className={selectedSize === item.id ? "selected" : ""}
                         >
-                          <a href="#" onClick={() => setSelectedSize(item.id)}>
+                          <a
+                            href="#size"
+                            onClick={() => setSelectedSize(item.id)}
+                          >
                             {item.size}
                           </a>
                         </li>
                       ))}
                     </ul>
                   </div>
-                  <div>
+                  <div id="color">
                     <ul className="variant-option-list flex justify-start gap-2 flex-wrap">
                       {COLOR.map((item, index) => (
                         <li
@@ -184,7 +192,10 @@ const ProductDetails = ({ cart, ...props }) => {
                             selectedColor === item.id ? "selected" : ""
                           }
                         >
-                          <a href="#" onClick={() => setSelectedColor(item.id)}>
+                          <a
+                            href="#color"
+                            onClick={() => setSelectedColor(item.id)}
+                          >
                             {item.color}
                           </a>
                         </li>
@@ -192,69 +203,64 @@ const ProductDetails = ({ cart, ...props }) => {
                     </ul>
                   </div>
                 </div>
-                <form
-                  id="productForm"
-                  action="/api/cart/mine/items"
-                  method="POST"
-                >
-                  <div className="">
-                    <div className="add-to-cart mt-8">
-                      <div style={{ width: "5rem" }}>
-                        <div className="form-field-container null">
-                          <div className="field-wrapper flex flex-grow">
-                            <span
-                              style={{
-                                marginRight: 10,
-                                marginTop: 10,
-                              }}
-                            >
-                              Quantity:{" "}
-                            </span>
-                            <input
-                              style={{
-                                border: "1px solid #e1e3e5",
-                                width: 80,
-                                padding: 10,
-                              }}
-                              type="text"
-                              name="qty"
-                              placeholder="Qty"
-                              defaultValue="1"
-                              onChange={(e) => setSelectedQty(e.target.value)}
-                            />
-                          </div>
+
+                <div className="">
+                  <div className="add-to-cart mt-8">
+                    <div style={{ width: "5rem" }}>
+                      <div className="form-field-container null">
+                        <div className="field-wrapper flex flex-grow">
+                          <span
+                            style={{
+                              marginRight: 10,
+                              marginTop: 10,
+                            }}
+                          >
+                            Quantity:{" "}
+                          </span>
+                          <input
+                            style={{
+                              border: "1px solid #e1e3e5",
+                              width: 80,
+                              padding: 10,
+                            }}
+                            type="text"
+                            name="qty"
+                            placeholder="Qty"
+                            defaultValue="1"
+                            onChange={(e) => setSelectedQty(e.target.value)}
+                          />
                         </div>
                       </div>
-                      <div className="mt-4">
-                        <button
-                          type="button"
-                          className="button primary outline"
-                          onClick={() => addToCart()}
-                        >
-                          <span>ADD TO CART</span>
-                        </button>
-                      </div>
+                    </div>
+                    <div className="mt-4">
+                      <Button
+                        className="btn btn-primary w-100 waves-effect waves-light"
+                        type="button"
+                        style={{
+                          backgroundColor: "#ff5400",
+                          borderColor: "#ff5400",
+                          maxWidth: "50%",
+                        }}
+                        color="primary"
+                        onClick={() => addToCart()}
+                      >
+                        <span>ADD TO CART</span>
+                      </Button>
                     </div>
                   </div>
-                </form>
+                </div>
                 <div className="mt-8 md:mt-12">
                   <div className="product-description">
                     <div className="editor__html">
                       <div className="row__container mt-12 grid md:grid-cols-1 grid-cols-1 gap-8">
                         <div className="column__container md:col-span-1 col-span-1">
                           <div className="prose prose-base max-w-none">
-                            <p>
-                              Lorem ipsum dolor sit amet, consectetur adipiscing
-                              elit. Vestibulum feugiat mi eget elit elementum,
-                              id pulvinar tellus eleifend.
-                            </p>
-                            <p>
-                              Integer porttitor elit id euismod elementum. Nulla
-                              vel molestie massa, eget iaculis elit. Quisque a
-                              tortor vel lectus ultricies pretium quis non
-                              purus. Pellentesque molestie leo eget rutrum
-                              tristique.
-                            </p>
+                            {selectedProduct["Product Description"] !==
+                            undefined ? (
+                              <p>{selectedProduct["Product Description"]}</p>
+                            ) : (
+                              <p>Description not available</p>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -271,7 +277,8 @@ const ProductDetails = ({ cart, ...props }) => {
   );
 };
 
-const mapStateToProps = ({ cart, authentication }) => ({
+const mapStateToProps = ({ app, cart, authentication }) => ({
+  app,
   cart,
   authentication,
 });

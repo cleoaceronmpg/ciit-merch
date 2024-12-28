@@ -67,7 +67,7 @@ const authRoutes = [
   { path: "/product/:id", component: <ProductDetails /> },
   { path: "/cart", component: <ShoppingCart /> },
   { path: "/checkout", component: <Checkout /> },
-  { path: "/checkout/success/:id", component: <Thankyou /> },
+  { path: "/checkout/success", component: <Thankyou /> },
   { path: "/login", component: <MerchLogin /> },
   { path: "/register", component: <Register /> },
   { path: "/terms-condition", component: <TermsAndCondition /> },

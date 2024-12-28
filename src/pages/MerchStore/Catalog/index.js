@@ -1,5 +1,7 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
+import { connect } from "react-redux";
+import { actionCreator, types } from "../../../store";
 
 //import Breadcrumbs
 import Breadcrumbs from "../../../components/MerchStore/Common/Breadcrumb";
@@ -10,13 +12,15 @@ import "./styles.css";
 import { Container } from "reactstrap";
 import { SIZE, COLOR, CatalogProducts } from "./data";
 
-const Catalog = () => {
+const Catalog = ({ app, ...props }) => {
   const location = useLocation();
   const [catalog, setCatalog] = React.useState(null);
   // Access the passed data
   const { collection } = location.state || { collection: "Catalog" };
+  const { products } = app;
 
   React.useEffect(() => {
+    console.log("products", products);
     collection && setCatalog(collection);
   }, []);
 
@@ -256,7 +260,7 @@ const Catalog = () => {
                 width: "100%",
               }}
             >
-              {CatalogProducts.map((item, index) => (
+              {products.map((item, index) => (
                 <div
                   key={index}
                   className="listing-tem"
@@ -265,14 +269,16 @@ const Catalog = () => {
                   }}
                 >
                   <div className="product-thumbnail-listing2">
-                    <a href={`/product/${item.id}`}>
-                      <img
-                        src={item.img}
-                        alt={item.title}
-                        className="catalog-image"
-                        height={200}
-                        width={200}
-                      />
+                    <a href={`/product/${item["Product ID"]}`}>
+                      {item.Images.length > 0 && (
+                        <img
+                          src={item.Images[0].url}
+                          alt={item["Product Name"]}
+                          className="catalog-image"
+                          height={200}
+                          width={200}
+                        />
+                      )}
                     </a>
                   </div>
                   <div
@@ -291,7 +297,7 @@ const Catalog = () => {
                           fontSize: 18,
                         }}
                       >
-                        {item.title}
+                        {item["Product Name"]}
                       </span>
                     </a>
                   </div>
@@ -304,7 +310,7 @@ const Catalog = () => {
                   >
                     <div>
                       <span className="sale-price font-semibold">
-                        ₱ {parseInt(item.price).toLocaleString("en-US")} PHP
+                        ₱ {parseInt(item.Price).toLocaleString("en-US")} PHP
                       </span>
                     </div>
                   </div>
@@ -319,4 +325,8 @@ const Catalog = () => {
   );
 };
 
-export default Catalog;
+const mapStateToProps = ({ app }) => ({
+  app,
+});
+
+export default connect(mapStateToProps, { actionCreator })(Catalog);

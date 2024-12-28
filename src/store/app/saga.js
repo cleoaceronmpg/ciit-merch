@@ -13,9 +13,8 @@ import appServices from "../../api/services/app";
 export function* fnGetProducts() {
   try {
     const response = yield call(appServices.api.fnGetProducts);
-
     if (response) {
-      const newdata = response.map((item) => item.fields);
+      const newdata = response.map((item) => ({ ...item.fields, id: item.id }));
 
       yield put({
         type: GET_PRODUCTS_SUCCESS,

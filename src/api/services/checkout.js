@@ -1,7 +1,11 @@
 import { ciitMerchApi } from "../../api";
 
 class Checkout {
-  fnPostCheckout = async (payload) => {
+  fnPostPlaceOrderItems = async (payload) => {
+    return await ciitMerchApi("OrderItems").create(payload);
+  };
+
+  fnPostPlaceOrder = async (payload) => {
     return await ciitMerchApi("Orders").create(payload);
   };
 }

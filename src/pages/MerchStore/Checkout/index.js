@@ -3,6 +3,7 @@ import Swal from "sweetalert2";
 import { connect } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { actionCreator, types } from "../../../store";
+import { hashChecksum } from "../../../helpers/crypto_helper";
 import {
   Button,
   Col,
@@ -17,7 +18,7 @@ import {
 
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import gcashLogo from "../../../assets/images/gcash.png";
+import dragonpayLogo from "../../../assets/images/dragonpay.png";
 
 //import Breadcrumbs
 import Breadcrumbs from "../../../components/MerchStore/Common/Breadcrumb";
@@ -34,6 +35,7 @@ const Checkout = ({ cart, checkout, authentication, ...props }) => {
   );
   const [selectedPaymentOption, setSelectedPaymentOption] =
     React.useState(null);
+  const [notesToOrders, setNotesToOrders] = React.useState(null);
 
   // validation
   const validation = useFormik({
@@ -99,22 +101,63 @@ const Checkout = ({ cart, checkout, authentication, ...props }) => {
   });
 
   React.useEffect(() => {
+    checkout.loading
+      ? Swal.fire({
+          title: "Loading...",
+          text: "Please wait while we process your request.",
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          showConfirmButton: false,
+          willOpen: () => {
+            Swal.showLoading();
+          },
+        })
+      : Swal.close();
+  }, [checkout.loading]);
+
+  React.useEffect(() => {
+    console.log("checkout", checkout);
+    checkout.data?.fields?.TransactionID &&
+      placeOrderItems(checkout.orderItemsData);
+  }, [checkout.data]);
+
+  React.useEffect(() => {
+    if (checkout.placedOrderItemsData.length > 0 && checkout.data?.fields) {
+      Swal.close();
+      Swal.fire({
+        icon: "success",
+        title: "Done!",
+        text: "You are now redirecting to Payment Process.",
+      });
+
+      setTimeout(() => {
+        digestUrlHandler(checkout.data?.fields);
+      }, 3000);
+    }
+  }, [checkout.placedOrderItemsData]);
+
+  React.useEffect(() => {
+    subTotal && totalAmountHandler(subTotal);
+  }, [subTotal]);
+
+  React.useEffect(() => {
     // collection && setCatalog(collection);
     cart.data && setShoppingCart(cart.data);
     cart.data && computeSubTotalAndQty(cart.data);
-    console.log(cart.data);
   }, [cart.data]);
 
   const computeSubTotalAndQty = async (data) => {
-    const totalPrice = data.reduce((acc, product) => {
+    const TotalAmount = data.reduce((acc, product) => {
       // Remove non-numeric characters from price and convert to number
-      const numericPrice = parseFloat(product.price.replace(/[^0-9.-]+/g, ""));
+      const numericPrice = parseFloat(product.Price.replace(/[^0-9.-]+/g, ""));
       // Add to accumulator: price * quantity
-      return acc + numericPrice * product.quantity;
+      return acc + numericPrice * product.Quantity;
     }, 0);
-    setSubTotal(totalPrice);
+
+    setSubTotal(TotalAmount);
+
     const totalItems = data.reduce((acc, product) => {
-      return acc + parseInt(product.quantity);
+      return acc + parseInt(product.Quantity);
     }, 0);
 
     setTotalItems(totalItems);
@@ -122,6 +165,13 @@ const Checkout = ({ cart, checkout, authentication, ...props }) => {
 
   const handleRadioChange = (e) => {
     setSelectedOption(e.target.value);
+  };
+
+  const totalAmountHandler = async (totalAmount) => {
+    await props.actionCreator({
+      type: types.SET_TOTAL_AMOUNT,
+      payload: totalAmount,
+    });
   };
 
   const changeEmail = async () => {
@@ -153,17 +203,15 @@ const Checkout = ({ cart, checkout, authentication, ...props }) => {
     });
   };
 
+  const saveNotesToOrders = async () => {
+    await props.actionCreator({
+      type: types.SET_ORDER_NOTES,
+      payload: notesToOrders,
+    });
+  };
+
   const placeOrder = async () => {
     if (selectedPaymentOption) {
-      const orderID = generateRandomString();
-
-      await props.actionCreator({
-        type: types.SET_PAYMENT_METHOD,
-        payload: {
-          paymentMethod: selectedPaymentOption,
-        },
-      });
-
       await props.actionCreator({
         type: types.SET_ORDER_ITEMS,
         payload: {
@@ -171,18 +219,26 @@ const Checkout = ({ cart, checkout, authentication, ...props }) => {
         },
       });
 
+      const description = `Order-Items-${shoppingCart.map((item) => item["Product Name"]).join(", ")}`;
+
+      let ShippingAddress = "";
+      if (checkout.shipMethod === "For Pickup") {
+        ShippingAddress = checkout.shipAddressData[0].address;
+      } else {
+        ShippingAddress = `${checkout.shipAddressData[0].fullName}, ${checkout.shipAddressData[0].address}, ${checkout.shipAddressData[0].postalCode}, ${checkout.shipAddressData[0].city}, ${checkout.shipAddressData[0].country} ${checkout.shipAddressData[0].telephone}`;
+      }
+
       await props.actionCreator({
-        type: types.SET_ORDER_ID,
+        type: types.PLACE_ORDER,
         payload: {
-          orderID: orderID,
+          Description: description,
+          TotalAmount: parseFloat(checkout.totalAmount),
+          CustomerEmail: checkout.tempEmail,
+          ShippingMethod: checkout.shipMethod,
+          ShippingAddress: ShippingAddress,
+          CustomerNotes: checkout.notesToOrders,
         },
       });
-
-      await props.actionCreator({
-        type: types.CLEAR_CART,
-      });
-
-      navigate(`/checkout/success/${orderID}`);
     } else {
       Swal.fire({
         icon: "error",
@@ -193,25 +249,82 @@ const Checkout = ({ cart, checkout, authentication, ...props }) => {
     console.log("place order");
   };
 
-  const handlePaymentOption = (e) => {
-    setSelectedPaymentOption(e.target.value);
+  const placeOrderItems = async (orderItems) => {
+    if (checkout.data?.fields?.TransactionID && orderItems.length > 0) {
+      setPreviousCheckoutData();
+
+      const records = orderItems.map((item) => ({
+        fields: {
+          TransactionID: [checkout.data.id],
+          "Product ID": [item.id],
+          Color: item["Color"],
+          Size: item["Size"],
+          Quantity: item["Quantity"],
+          Price: parseFloat(item["Price"]),
+          TotalAmount: item["TotalAmount"],
+        },
+      }));
+
+      await props.actionCreator({
+        type: types.PLACE_ORDER_ITEMS,
+        payload: records,
+      });
+    }
   };
 
-  const generateRandomString = (length = 16) => {
-    const charset =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    let result = "";
-    const cryptoObj = window.crypto || window.msCrypto; // For cross-browser compatibility
+  const digestUrlHandler = async (OrderFields) => {
+    let merchantId = process.env.REACT_APP_DP_MERCHANT_ID;
+    let key = process.env.REACT_APP_DP_KEY;
 
-    for (let i = 0; i < length; i++) {
-      // Generate a random index within the charset length
-      const randomIndex = Math.floor(
-        (cryptoObj.getRandomValues(new Uint32Array(1))[0] / (0xffffffff + 1)) *
-          charset.length
-      );
-      result += charset[randomIndex];
-    }
-    return result;
+    // Get data from the record
+    let txnId = OrderFields.TransactionID;
+    let amount = parseFloat(OrderFields.TotalAmount).toFixed(2);
+    let description = OrderFields.Description;
+    let email = OrderFields.CustomerEmail;
+
+    // Generate checksum
+    let checksumString =
+      merchantId +
+      ":" +
+      txnId +
+      ":" +
+      amount +
+      ":PHP:" +
+      description +
+      ":" +
+      email +
+      ":" +
+      key;
+
+    let checksum = await hashChecksum(checksumString);
+
+    const newPaymentUrl = `${OrderFields.PaymentUrl}&digest=${checksum}`;
+
+    window.location.href = newPaymentUrl;
+  };
+
+  const handlePaymentOption = async (e) => {
+    setSelectedPaymentOption(e.target.value);
+
+    await props.actionCreator({
+      type: types.SET_PAYMENT_METHOD,
+      payload: {
+        paymentMethod: e.target.value,
+      },
+    });
+  };
+
+  const setPreviousCheckoutData = async () => {
+    await props.actionCreator({
+      type: types.SET_PREVIOUS_CHECKOUT,
+      payload: {
+        shipAddressData: checkout.shipAddressData,
+        shipMethod: checkout.shipMethod,
+        tempEmail: checkout.tempEmail,
+        paymentMethod: checkout.paymentMethod,
+        orderItemsData: checkout.orderItemsData,
+      },
+    });
   };
 
   //meta title
@@ -224,7 +337,7 @@ const Checkout = ({ cart, checkout, authentication, ...props }) => {
         className="page-content"
         style={{ paddingLeft: 20, paddingRight: 20 }}
       >
-        <Container fluid>
+        <Container>
           {/* Render Breadcrumbs */}
           <Breadcrumbs
             title="Contact Information"
@@ -422,15 +535,15 @@ const Checkout = ({ cart, checkout, authentication, ...props }) => {
                             <Input
                               type="radio"
                               name="paymentOptions"
-                              value="gcash"
-                              checked={selectedPaymentOption === "gcash"}
+                              value="dragonpay"
+                              checked={selectedPaymentOption === "dragonpay"}
                               onChange={handlePaymentOption}
                               style={{
-                                marginTop: 10,
+                                marginTop: 50,
                                 marginRight: 10,
                               }}
                             />
-                            <img src={gcashLogo} height={40} width={50} />
+                            <img src={dragonpayLogo} height={100} width={200} />
                           </Label>
                         </FormGroup>
                       </div>
@@ -645,7 +758,7 @@ const Checkout = ({ cart, checkout, authentication, ...props }) => {
                           style={{
                             backgroundColor: "#ff5400",
                             borderColor: "#ff5400",
-                            maxWidth: "50%",
+                            maxWidth: "40%",
                           }}
                           color="primary"
                         >
@@ -667,7 +780,7 @@ const Checkout = ({ cart, checkout, authentication, ...props }) => {
                         style={{
                           backgroundColor: "#ff5400",
                           borderColor: "#ff5400",
-                          maxWidth: "50%",
+                          maxWidth: "40%",
                         }}
                         color="primary"
                         onClick={() => continueForPickup()}
@@ -689,10 +802,11 @@ const Checkout = ({ cart, checkout, authentication, ...props }) => {
                         style={{
                           backgroundColor: "#ff5400",
                           borderColor: "#ff5400",
-                          maxWidth: "50%",
+                          maxWidth: "40%",
                         }}
                         color="primary"
                         onClick={() => placeOrder()}
+                        disabled={checkout.placedOrderItemsData.length > 0}
                       >
                         <span>Place Order</span>
                       </Button>
@@ -725,16 +839,18 @@ const Checkout = ({ cart, checkout, authentication, ...props }) => {
                       <Row>
                         <Col xs={12}>
                           <div className="mb-3">
-                            <Label
-                              className="form-label"
-                              style={{
-                                fontWeight: 400,
-                              }}
-                            >
-                              Already have an account?
-                              {"  "}
-                              <Link to={"/login"}>Login</Link>
-                            </Label>
+                            {!authentication.authenticated && (
+                              <Label
+                                className="form-label"
+                                style={{
+                                  fontWeight: 400,
+                                }}
+                              >
+                                Already have an account?
+                                {"  "}
+                                <Link to={"/login"}>Login</Link>
+                              </Label>
+                            )}
                             <Input
                               type="text"
                               name="email"
@@ -772,7 +888,7 @@ const Checkout = ({ cart, checkout, authentication, ...props }) => {
                           style={{
                             backgroundColor: "#ff5400",
                             borderColor: "#ff5400",
-                            maxWidth: "50%",
+                            maxWidth: "40%",
                           }}
                           color="primary"
                         >
@@ -795,20 +911,20 @@ const Checkout = ({ cart, checkout, authentication, ...props }) => {
                             <div className="product-thumbnail">
                               <div className="thumbnail">
                                 <img
-                                  src={item.img}
-                                  alt={item.title}
+                                  src={item.Images[0].url}
+                                  alt={item["Product Name"]}
                                   height={58}
                                   width={58}
                                 />
                               </div>
-                              <span className="qty">{item.quantity}</span>
+                              <span className="qty">{item.Quantity}</span>
                             </div>
                           </td>
                           <td>
                             <div className="product-column">
                               <div>
                                 <span style={{ fontWeight: 600 }}>
-                                  {item.title}
+                                  {item["Product Name"]}
                                 </span>
                               </div>
                               <div className="cart-item-variant-options mt-2">
@@ -823,7 +939,7 @@ const Checkout = ({ cart, checkout, authentication, ...props }) => {
                                     <span className="attribute-name">
                                       Size:{" "}
                                     </span>
-                                    <span>{item.size}</span>
+                                    <span>{item.Size}</span>
                                   </li>
                                   <li>
                                     <span className="attribute-name">
@@ -838,11 +954,11 @@ const Checkout = ({ cart, checkout, authentication, ...props }) => {
                           <td>
                             <span>
                               ₱{" "}
-                              {item?.totalPrice
-                                ? parseInt(item.totalPrice).toLocaleString(
+                              {item?.TotalAmount
+                                ? parseInt(item.TotalAmount).toLocaleString(
                                     "en-US"
                                   )
-                                : parseInt(item.price).toLocaleString("en-US")}
+                                : parseInt(item.Price).toLocaleString("en-US")}
                             </span>
                           </td>
                         </tr>
@@ -919,20 +1035,33 @@ const Checkout = ({ cart, checkout, authentication, ...props }) => {
                         className="form-field"
                         id="note"
                         name="note"
-                        placeholder="Add a note to your order"
+                        placeholder="(Optional) Add a note to your order"
                         style={{
                           padding: 15,
                           width: "100%",
                           borderColor: "#c9cccf",
                           borderWidth: 1,
                         }}
+                        onChange={(event) =>
+                          setNotesToOrders(event.target.value)
+                        }
                       ></textarea>
                     </div>
                   </div>
                   <div className="mt-3">
-                    <button type="button" className="button primary">
+                    <Button
+                      className="btn btn-primary w-100 waves-effect waves-light"
+                      type="button"
+                      style={{
+                        backgroundColor: "#ff5400",
+                        borderColor: "#ff5400",
+                        maxWidth: "40%",
+                      }}
+                      color="primary"
+                      onClick={() => saveNotesToOrders()}
+                    >
                       <span>Save</span>
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </div>

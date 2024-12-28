@@ -36,21 +36,11 @@
   padding: 0px;
   margin: 0px;
 }
-.midTransContainer {
-  margin-top: 25px;
-  border-radius: 8px;
-  background-color: #f2f4f5;
-}
-.midTransContainer .row .col {
-  display: flex;
-  justify-content: center;
-  align-self: center;
-  padding: 20px;
-}
-.midTransContainer .row .col span {
+
+.midTransContainer .col span {
   margin-top: 15px;
   margin-left: 10px;
-  font-size: 20px;
+  font-size: 16px;
 }
 .deliveryBan {
   color: #fff;
@@ -110,22 +100,7 @@
   .bannerTagLineContainer {
     margin-bottom: 20px;
   }
-  .midTransContainer {
-    padding-right: 10px;
-  }
-  .midTransContainer .row .col {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 10px;
-  }
-  .midTransContainer .row .col h5 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-  }
-  .midTransContainer .row .col span {
+  .midTransContainer .col span {
     font-size: 10px;
   }
   .officialFont {

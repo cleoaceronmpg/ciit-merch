@@ -32,23 +32,23 @@ const Cart = ({ cart, ...props }) => {
   };
 
   const computeSubTotal = async (data) => {
-    const totalPrice = data.reduce((acc, product) => {
+    const TotalAmount = data.reduce((acc, product) => {
       // Remove non-numeric characters from price and convert to number
-      const numericPrice = parseFloat(product.price.replace(/[^0-9.-]+/g, ""));
+      const numericPrice = parseFloat(product.Price.replace(/[^0-9.-]+/g, ""));
       // Add to accumulator: price * quantity
-      return acc + numericPrice * product.quantity;
+      return acc + numericPrice * product.Quantity;
     }, 0);
 
-    setSubTotal(totalPrice);
+    setSubTotal(TotalAmount);
   };
 
   const plusQuantity = async (id) => {
     const newCartData = shoppingCart.map((item) =>
-      item.id === id
+      item["Product ID"] === id
         ? {
             ...item,
-            quantity: parseInt(item.quantity) + 1,
-            totalPrice: parseFloat(item.price) * parseInt(item.quantity + 1),
+            Quantity: parseInt(item.Quantity) + 1,
+            TotalAmount: parseFloat(item.Price) * parseInt(item.Quantity + 1),
           }
         : item
     );
@@ -61,12 +61,12 @@ const Cart = ({ cart, ...props }) => {
 
   const minusQuantity = async (id) => {
     const newCartData = shoppingCart.map((item) =>
-      item.id === id
-        ? item.quantity > 1
+      item["Product ID"] === id
+        ? item.Quantity > 1
           ? {
               ...item,
-              quantity: parseInt(item.quantity) - 1,
-              totalPrice: parseFloat(item.price) * parseInt(item.quantity - 1),
+              Quantity: parseInt(item.Quantity) - 1,
+              TotalAmount: parseFloat(item.Price) * parseInt(item.Quantity - 1),
             }
           : item
         : item
@@ -142,8 +142,8 @@ const Cart = ({ cart, ...props }) => {
                                     >
                                       <img
                                         className="self-center"
-                                        src={item.img}
-                                        alt={item.title}
+                                        src={item.Images[0].url}
+                                        alt={item["Product Name"]}
                                         height={100}
                                         width={100}
                                       />
@@ -156,10 +156,12 @@ const Cart = ({ cart, ...props }) => {
                                           color: "inherit",
                                         }}
                                         onClick={() => {
-                                          navigate(`/product/${item.id}`);
+                                          navigate(
+                                            `/product/${item["Product ID"]}`
+                                          );
                                         }}
                                       >
-                                        {item.title}
+                                        {item["Product Name"]}
                                       </a>
                                       <div className="cart-item-variant-options mt-2">
                                         <ul
@@ -173,13 +175,13 @@ const Cart = ({ cart, ...props }) => {
                                             <span className="attribute-name">
                                               Size:{" "}
                                             </span>
-                                            <span>{item.size}</span>
+                                            <span>{item.Size}</span>
                                           </li>
                                           <li>
                                             <span className="attribute-name">
                                               Color:{" "}
                                             </span>
-                                            <span>{item.color}</span>
+                                            <span>{item.Color}</span>
                                           </li>
                                         </ul>
                                       </div>
@@ -188,7 +190,7 @@ const Cart = ({ cart, ...props }) => {
                                           href="#"
                                           className="text-textSubdued underline"
                                           onClick={() =>
-                                            removeItemInCart(item.id)
+                                            removeItemInCart(item["Product ID"])
                                           }
                                         >
                                           <span>Remove</span>
@@ -201,7 +203,7 @@ const Cart = ({ cart, ...props }) => {
                                   <div>
                                     <span className="sale-price">
                                       ₱
-                                      {parseInt(item.price).toLocaleString(
+                                      {parseInt(item.Price).toLocaleString(
                                         "en-US"
                                       )}{" "}
                                       PHP
@@ -227,7 +229,9 @@ const Cart = ({ cart, ...props }) => {
                                         backgroundColor: "transparent",
                                         backgroundImage: "none",
                                       }}
-                                      onClick={() => minusQuantity(item.id)}
+                                      onClick={() =>
+                                        minusQuantity(item["Product ID"])
+                                      }
                                     >
                                       <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -248,7 +252,7 @@ const Cart = ({ cart, ...props }) => {
                                     </button>
                                     {/* <input
                                     type="text"
-                                    defaultValue={item.quantity}
+                                    defaultValue={item.Quantity}
                                     readOnly={true}
                                     style={{
                                       border: "none",
@@ -263,7 +267,7 @@ const Cart = ({ cart, ...props }) => {
                                         alignItems: "center",
                                       }}
                                     >
-                                      <span>{item.quantity}</span>
+                                      <span>{item.Quantity}</span>
                                     </div>
                                     <button
                                       className="flex justify-center items-center"
@@ -273,7 +277,9 @@ const Cart = ({ cart, ...props }) => {
                                         backgroundColor: "transparent",
                                         backgroundImage: "none",
                                       }}
-                                      onClick={() => plusQuantity(item.id)}
+                                      onClick={() =>
+                                        plusQuantity(item["Product ID"])
+                                      }
                                     >
                                       <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -295,18 +301,18 @@ const Cart = ({ cart, ...props }) => {
                                   </div>
                                 </td>
                                 <td className="hidden md-table-cell">
-                                  {item?.totalPrice ? (
+                                  {item?.TotalAmount ? (
                                     <span>
                                       ₱
-                                      {parseInt(item.totalPrice).toLocaleString(
-                                        "en-US"
-                                      )}{" "}
+                                      {parseInt(
+                                        item.TotalAmount
+                                      ).toLocaleString("en-US")}{" "}
                                       PHP
                                     </span>
                                   ) : (
                                     <span>
                                       ₱
-                                      {parseInt(item.price).toLocaleString(
+                                      {parseInt(item.Price).toLocaleString(
                                         "en-US"
                                       )}{" "}
                                       PHP
@@ -444,7 +450,7 @@ const Cart = ({ cart, ...props }) => {
                     <span>Your cart is empty!</span>
                   </div>
                   <div className="flex justify-center mt-8">
-                    <a href="/home" className="button primary">
+                    {/* <a href="/home" className="button primary">
                       <span>
                         <span className="flex space-x-4">
                           <span className="self-center">CONTINUE SHOPPING</span>{" "}
@@ -468,7 +474,21 @@ const Cart = ({ cart, ...props }) => {
                           </svg>
                         </span>
                       </span>
-                    </a>
+                    </a> */}
+                    <Button
+                      className="btn btn-primary w-100 waves-effect waves-light"
+                      onClick={() => {
+                        navigate("/home");
+                      }}
+                      style={{
+                        backgroundColor: "#ff5400",
+                        borderColor: "#ff5400",
+                        maxWidth: "40%",
+                      }}
+                      color="primary"
+                    >
+                      <span>Continue to shipping</span>
+                    </Button>
                   </div>
                 </div>
               </div>

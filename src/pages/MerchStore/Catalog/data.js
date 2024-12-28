@@ -1,42 +1,38 @@
 const SIZE = [
   {
     id: 1,
-    size: "XL",
+    size: "Small",
   },
   {
     id: 2,
-    size: "S",
+    size: "Medium",
   },
   {
     id: 3,
-    size: "L",
+    size: "Large",
   },
   {
     id: 4,
-    size: "M",
+    size: "Extra Large",
   },
   {
     id: 5,
-    size: "X",
+    size: "2X Large",
   },
 ];
 
 const COLOR = [
   {
     id: 1,
-    color: "WHITE",
+    color: "Black",
   },
   {
     id: 2,
-    color: "GRAY",
+    color: "Gray",
   },
   {
     id: 3,
-    color: "BLACK",
-  },
-  {
-    id: 4,
-    color: "DARK BLUE",
+    color: "White",
   },
 ];
 

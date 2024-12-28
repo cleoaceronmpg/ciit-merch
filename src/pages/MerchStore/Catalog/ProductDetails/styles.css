@@ -98,3 +98,9 @@
 .button.primary:hover {
   background-color: #00364d;
 }
+
+img.self-center-details {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}

@@ -5,6 +5,7 @@ import {
   GET_CAMPAIGN,
   GET_CAMPAIGN_SUCCESS,
   GET_CAMPAIGN_FAILED,
+  SET_PREVIOUS_CHECKOUT,
 } from "./types";
 
 const INITIAL_STATE = {
@@ -14,6 +15,7 @@ const INITIAL_STATE = {
   errorMessage: null,
   products: [],
   campaignData: [],
+  previousCheckoutData: null,
 };
 
 const app = (state = INITIAL_STATE, action) => {
@@ -62,6 +64,11 @@ const app = (state = INITIAL_STATE, action) => {
         errorMessage: action.payload.message,
       };
 
+    case SET_PREVIOUS_CHECKOUT:
+      return {
+        ...state,
+        previousCheckoutData: action.payload,
+      };
     default:
       return state;
   }

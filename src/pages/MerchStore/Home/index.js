@@ -63,7 +63,11 @@ const Home = ({ app, authentication, ...props }) => {
     <React.Fragment>
       <Header />
       <div className="pageCustomContent">
-        <Container>
+        <Container
+          style={{
+            padding: 0,
+          }}
+        >
           <Row className="bannerContainer">
             <Col className="bannerTagLineContainer" lg={6}>
               <div className="tagline">
@@ -127,21 +131,39 @@ const Home = ({ app, authentication, ...props }) => {
               )}
             </Col>
           </Row>
-          <div className="midTransContainer">
-            <Row style={{ marginRight: 0, marginLeft: 0 }}>
-              <Col>
-                <h5 className="officialFont">The Official CIIT Merch</h5>
-              </Col>
-              <Col>
-                <img src={deliveryBan} className="deliveryBan" />
-                <span>Delivery or Pick-up</span>
-              </Col>
-              <Col>
-                <img src={securePayment} className="securePayment" />
-                <span>Delivery or Pick-up</span>
-              </Col>
-            </Row>
-          </div>
+          <Row
+            style={{
+              backgroundColor: "#f2f4f5",
+              marginTop: 20,
+              padding: 20,
+              borderRadius: 8,
+            }}
+            className="midTransContainer"
+          >
+            <Col
+              style={{
+                alignSelf: "center",
+              }}
+            >
+              <h5 className="officialFont">The Official CIIT Merch</h5>
+            </Col>
+            <Col
+              style={{
+                alignSelf: "center",
+              }}
+            >
+              <img src={deliveryBan} className="deliveryBan" />
+              <span>Delivery or Pick-up</span>
+            </Col>
+            <Col
+              style={{
+                alignSelf: "center",
+              }}
+            >
+              <img src={securePayment} className="securePayment" />
+              <span>Secured Payment</span>
+            </Col>
+          </Row>
           <div className="featuresContainer">
             <h5>Featured Products</h5>
             <Row>
@@ -163,8 +185,8 @@ const Home = ({ app, authentication, ...props }) => {
                         display: "flex",
                         flexDirection: "column",
                         padding: 10,
-                        flexBasis: "20%", // Each column takes 30% of the row
-                        boxSizing: "border-box", // Includes padding in the width calculation
+                        flexBasis: "20%",
+                        boxSizing: "border-box",
                       }}
                     >
                       <img
@@ -173,7 +195,7 @@ const Home = ({ app, authentication, ...props }) => {
                         className="featureImage"
                       />
                       <Button
-                        type="submit"
+                        type="button"
                         style={{
                           backgroundColor: "#FF5400",
                           borderColor: "#FF5400",
@@ -183,6 +205,9 @@ const Home = ({ app, authentication, ...props }) => {
                           borderRadius: 8,
                         }}
                         color="primary"
+                        onClick={() => {
+                          navigate(`/product/${item["Product ID"]}`);
+                        }}
                       >
                         Order now
                       </Button>
