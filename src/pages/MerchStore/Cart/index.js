@@ -487,7 +487,7 @@ const Cart = ({ cart, ...props }) => {
                       }}
                       color="primary"
                     >
-                      <span>Continue to shipping</span>
+                      <span>Continue to Shopping</span>
                     </Button>
                   </div>
                 </div>

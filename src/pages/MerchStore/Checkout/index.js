@@ -101,6 +101,10 @@ const Checkout = ({ cart, checkout, authentication, ...props }) => {
   });
 
   React.useEffect(() => {
+    authentication.authenticated && initTempEmail();
+  }, [authentication]);
+
+  React.useEffect(() => {
     checkout.loading
       ? Swal.fire({
           title: "Loading...",
@@ -116,7 +120,7 @@ const Checkout = ({ cart, checkout, authentication, ...props }) => {
   }, [checkout.loading]);
 
   React.useEffect(() => {
-    console.log("checkout", checkout);
+    console.log("authentication", authentication);
     checkout.data?.fields?.TransactionID &&
       placeOrderItems(checkout.orderItemsData);
   }, [checkout.data]);
@@ -323,6 +327,15 @@ const Checkout = ({ cart, checkout, authentication, ...props }) => {
         tempEmail: checkout.tempEmail,
         paymentMethod: checkout.paymentMethod,
         orderItemsData: checkout.orderItemsData,
+      },
+    });
+  };
+
+  const initTempEmail = async () => {
+    await props.actionCreator({
+      type: types.SET_TEMP_EMAIL,
+      payload: {
+        email: authentication.data?.fields.Email,
       },
     });
   };

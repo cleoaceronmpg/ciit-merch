@@ -4,7 +4,15 @@ import { Link, useNavigate } from "react-router-dom";
 //Import Icons
 import FeatherIcon from "feather-icons-react";
 // Reactstrap
-import { Container, Row, Col } from "reactstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+} from "reactstrap";
 //redux
 import { actionCreator, types } from "../../store";
 import "./styles.css";
@@ -14,7 +22,8 @@ import cartIcon from "../../assets/images/cart.png";
 
 const Header = ({ authentication, ...props }) => {
   let navigate = useNavigate();
-
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const toggle = () => setDropdownOpen(!dropdownOpen);
   const [search, setsearch] = React.useState(true);
 
   React.useEffect(() => {
@@ -30,6 +39,7 @@ const Header = ({ authentication, ...props }) => {
         }}
       >
         <div
+          className="top-bar"
           style={{
             backgroundColor: "#00364D",
             width: "100%",
@@ -41,6 +51,20 @@ const Header = ({ authentication, ...props }) => {
               miHeight: 30,
             }}
           >
+            <Row>
+              <Col>
+                <Dropdown isOpen={dropdownOpen} toggle={toggle}>
+                  <DropdownToggle caret>
+                    <i className="fa fa-fw fa-bars"></i>
+                  </DropdownToggle>
+                  <DropdownMenu>
+                    <DropdownItem>Action 1</DropdownItem>
+                    <DropdownItem>Action 2</DropdownItem>
+                    <DropdownItem>Action 3</DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+              </Col>
+            </Row>
             <Row>
               <Col lg={6} md={6} sm={12} xxl={6}>
                 <div className="leftUpperHeader">
