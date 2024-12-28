@@ -25,10 +25,19 @@ const Header = ({ authentication, ...props }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const toggle = () => setDropdownOpen(!dropdownOpen);
   const [search, setsearch] = React.useState(true);
+  const [minTopNav, setMinTopNav] = React.useState(false);
 
   React.useEffect(() => {
     console.log("authentication", authentication);
   }, [authentication]);
+
+  const setTopNav = () => {
+    if (minTopNav) {
+      setMinTopNav(false);
+    } else {
+      setMinTopNav(true);
+    }
+  };
 
   return (
     <React.Fragment>
@@ -39,7 +48,45 @@ const Header = ({ authentication, ...props }) => {
         }}
       >
         <div
-          className="top-bar"
+          className="top-bar-min-menu"
+          style={{
+            backgroundColor: "#00364D",
+            width: "100%",
+          }}
+        >
+          <div className="top-nav">
+            <Link onClick={() => setTopNav()}>
+              <i className="dripicons-menu"></i>
+            </Link>
+            <div
+              className={`top-nav-links ${minTopNav ? "top-nav-links-active" : ""}`}
+            >
+              {authentication.authenticated ? (
+                <>
+                  <a href="#news">Profile</a>
+                  <a href="#contact">Notification</a>
+                  <a
+                    href="#"
+                    onClick={() => {
+                      props.actionCreator({
+                        type: types.LOGOUT_USER,
+                      });
+                    }}
+                  >
+                    Logout
+                  </a>
+                </>
+              ) : (
+                <>
+                  <a href="/login">Login</a>
+                  <a href="/register">Sign Up</a>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+        <div
+          className="top-bar-menu"
           style={{
             backgroundColor: "#00364D",
             width: "100%",
@@ -52,27 +99,13 @@ const Header = ({ authentication, ...props }) => {
             }}
           >
             <Row>
-              <Col>
-                <Dropdown isOpen={dropdownOpen} toggle={toggle}>
-                  <DropdownToggle caret>
-                    <i className="fa fa-fw fa-bars"></i>
-                  </DropdownToggle>
-                  <DropdownMenu>
-                    <DropdownItem>Action 1</DropdownItem>
-                    <DropdownItem>Action 2</DropdownItem>
-                    <DropdownItem>Action 3</DropdownItem>
-                  </DropdownMenu>
-                </Dropdown>
-              </Col>
-            </Row>
-            <Row>
-              <Col lg={6} md={6} sm={12} xxl={6}>
-                <div className="leftUpperHeader">
-                  <span className="welcomeContainer">
+              <Col lg={6} md={5} sm={12} xxl={6}>
+                <div className="left-upper-header">
+                  <span className="welcome-container">
                     Welcome to WeAre, CIIT’s Official Merch{" "}
                   </span>
-                  <span> | </span>
-                  <span className="followContainer">
+                  {/* <span className="top-nav-divider"> | </span>
+                  <span className="follow-container">
                     Follow us on{"  "}
                     <a
                       href="https://bit.ly/3D4mPPq"
@@ -96,10 +129,10 @@ const Header = ({ authentication, ...props }) => {
                         style={{ height: 15, width: 15, marginLeft: 8 }}
                       ></i>
                     </a>
-                  </span>
+                  </span> */}
                 </div>
               </Col>
-              <Col lg={6} md={6} sm={12} xxl={6}>
+              <Col lg={6} md={7} sm={12} xxl={6}>
                 <div className="rightUpperHeader">
                   <span>
                     <i className="bx bx-bell"></i> Notifications
@@ -140,7 +173,7 @@ const Header = ({ authentication, ...props }) => {
                       {" "}
                       <span>
                         <a href="/login" style={{ color: "#fff" }}>
-                          Sign-in
+                          Login
                         </a>
                       </span>
                       <span>
@@ -174,14 +207,7 @@ const Header = ({ authentication, ...props }) => {
                 paddingBottom: 25,
               }}
             >
-              <Col
-                lg={4}
-                xxl={4}
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                }}
-              >
+              <Col className="logo-container" lg={4} xxl={4} md={4}>
                 <Link to="/home">
                   <img
                     src={weareLogo}
@@ -193,58 +219,51 @@ const Header = ({ authentication, ...props }) => {
                   />
                 </Link>
                 <h5
-                  className="text-white"
+                  className="ciitMerchLogo text-white"
                   style={{
                     fontSize: 24,
                     fontWeight: 700,
-                    marginTop: 2,
+                    margin: 0,
                   }}
                 >
                   CIIT Merch
                 </h5>
               </Col>
-              <Col
-                className="searchContainer"
-                style={{
-                  justifyContent: "flex-end",
-                }}
-              >
-                <div
-                  style={{
-                    marginRight: 10,
-                  }}
-                >
-                  <form>
-                    <div className="form-group m-0">
-                      <div className="input-group">
-                        <input
-                          type="text"
-                          className="form-control"
-                          placeholder="Search Anything ..."
-                          aria-label="Recipient's username"
-                        />
-                        <div
-                          className="input-group-append"
-                          style={{
-                            backgroundColor: "white",
-                            borderTopRightRadius: 4,
-                            borderBottomRightRadius: 4,
-                          }}
-                        >
-                          <button className="btn" type="submit">
-                            <i className="mdi mdi-magnify" />
-                          </button>
+              <Col>
+                <div className="search-container">
+                  <div className="search-form">
+                    <form>
+                      <div className="form-group m-0">
+                        <div className="input-group">
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Search Anything ..."
+                            aria-label="Recipient's username"
+                          />
+                          <div
+                            className="input-group-append"
+                            style={{
+                              backgroundColor: "white",
+                              borderTopRightRadius: 4,
+                              borderBottomRightRadius: 4,
+                            }}
+                          >
+                            <button className="btn" type="submit">
+                              <i className="mdi mdi-magnify" />
+                            </button>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </form>
+                    </form>
+                  </div>
+                  <Link to="/cart">
+                    <img src={cartIcon} width={35} height={35} />
+                  </Link>
                 </div>
-                <Link to="/cart">
-                  <img src={cartIcon} width={35} height={35} />
-                </Link>
               </Col>
             </Row>
-            {/* <Row className="categoryContainer">
+            {/* <Row className="category-container">
               <Col lg={12} xxl={12}>
                 <ul className="category">
                   <li

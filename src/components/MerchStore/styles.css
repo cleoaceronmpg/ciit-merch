@@ -11,13 +11,13 @@
 .rightUpperHeader span a {
   color: #ffff;
 }
-.leftUpperHeader {
+.left-upper-header {
   color: #ffff;
   text-align: left;
   padding-top: 10px;
   padding-bottom: 10px;
 }
-.leftUpperHeader i {
+.left-upper-header i {
   cursor: pointer;
 }
 .footerStore {
@@ -52,28 +52,95 @@
   color: #fff;
   padding: 0;
 }
-.categoryContainer {
+.category-container {
   margin-top: 10px;
 }
-.searchContainer {
+.search-container {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: flex-end;
 }
-.followContainer {
+.search-form {
+  margin-right: 10px;
+}
+.follow-container {
   margin-left: 15px;
 }
-.welcomeContainer {
+.welcome-container {
   margin-right: 15px;
 }
+.logo-container {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  min-width: 300px;
+}
+.top-nav {
+  overflow: hidden;
+  background-color: #00364d;
+  position: relative;
+  display: none;
+}
+
+.top-nav-links {
+  display: none;
+}
+
+.top-nav a {
+  color: white;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+  display: block;
+}
+
+.top-nav a.icon {
+  background: black;
+  display: block;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.top-nav-links-active {
+  display: block;
+}
+@media (max-width: 992px) {
+  .follow-container {
+    display: none;
+  }
+  .top-nav-divider {
+    display: none;
+  }
+}
 @media (max-width: 768px) {
-  .searchContainer {
+  .top-nav {
+    display: block;
+  }
+  .top-bar-menu {
+    display: none;
+  }
+
+  .top-bar-min-menu {
+    display: show;
+  }
+  .logo-container {
+    display: flex;
     justify-content: center;
+    margin-bottom: 20px;
+  }
+  .search-container {
+    justify-content: center;
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+  .search-form {
+    width: 100%;
   }
   .rightUpperHeader {
     text-align: center;
   }
-  .leftUpperHeader {
+  .left-upper-header {
     text-align: center;
   }
   .leftFooter {
@@ -102,11 +169,5 @@
   }
   .footer-wrapper {
     padding-left: 0px;
-  }
-}
-
-@media (max-width: 750px) {
-  .top-bar {
-    display: none;
   }
 }
