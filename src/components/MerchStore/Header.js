@@ -78,6 +78,13 @@ const Header = ({ authentication, ...props }) => {
                 </>
               ) : (
                 <>
+                  <a
+                    href="https://www.facebook.com/messages/t/502903216233917"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Chat Us
+                  </a>
                   <a href="/login">Login</a>
                   <a href="/register">Sign Up</a>
                 </>

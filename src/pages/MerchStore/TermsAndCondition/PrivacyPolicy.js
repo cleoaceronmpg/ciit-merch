@@ -1,5 +1,7 @@
 import React from "react";
 import { Row, Col, Container } from "reactstrap";
+import Header from "../../../components/MerchStore/Header";
+import Footer from "../../../components/MerchStore/Footer";
 import "./styles.css";
 
 const PrivacyPolicy = ({ account, authentication, ...props }) => {
@@ -8,6 +10,7 @@ const PrivacyPolicy = ({ account, authentication, ...props }) => {
 
   return (
     <React.Fragment>
+      <Header />
       <div className="auth-page">
         <Container fluid className="p-0">
           <Row
@@ -121,6 +124,7 @@ const PrivacyPolicy = ({ account, authentication, ...props }) => {
           </Row>
         </Container>
       </div>
+      <Footer />
     </React.Fragment>
   );
 };

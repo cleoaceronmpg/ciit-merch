@@ -2,9 +2,9 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
 import { Row, Col, Container } from "reactstrap";
-
-import { ToastContainer, toast } from "react-toastify";
-import { actionCreator, types } from "../../../store";
+import { actionCreator } from "../../../store";
+import Header from "../../../components/MerchStore/Header";
+import Footer from "../../../components/MerchStore/Footer";
 import "./styles.css";
 
 const TermsAndCondition = ({ account, authentication, ...props }) => {
@@ -16,6 +16,8 @@ const TermsAndCondition = ({ account, authentication, ...props }) => {
 
   return (
     <React.Fragment>
+      <Header />
+
       <div className="auth-page">
         {/* Render Breadcrumbs */}
         <Container fluid className="p-0">
@@ -303,7 +305,7 @@ const TermsAndCondition = ({ account, authentication, ...props }) => {
           </Row>
         </Container>
       </div>
-      <ToastContainer />
+      <Footer />
     </React.Fragment>
   );
 };
