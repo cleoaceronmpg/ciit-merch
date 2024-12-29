@@ -18,7 +18,7 @@ const Footer = (props) => {
       <div className="footerStore">
         <Container className="footer-wrapper">
           <Row>
-            <Col lg={7} xxl={7} md={7} sm={12} className="leftFooter">
+            <Col lg={6} xxl={7} md={5} sm={12} className="leftFooter">
               <img
                 src={weareLogo}
                 width={94}
@@ -29,15 +29,8 @@ const Footer = (props) => {
               />
               {/* <p>96 Kamuning Road Quezon City inquiry@wearemerch.ph</p> */}
             </Col>
-            <Col lg={5} xxl={5} md={5} sm={12} className="rightFooter">
-              <ul
-                style={{
-                  listStyle: "none",
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
+            <Col lg={6} xxl={5} md={7} sm={12} className="rightFooter">
+              <ul className="footer-links">
                 <li>
                   <Link to="/home" className="dropdown-item">
                     Home

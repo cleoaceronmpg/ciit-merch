@@ -105,6 +105,13 @@
 .top-nav-links-active {
   display: block;
 }
+
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
 @media (max-width: 992px) {
   .follow-container {
     display: none;
@@ -148,6 +155,11 @@
   }
   .rightFooter {
     text-align: center;
+  }
+}
+@media (max-width: 575px) {
+  .footer-links {
+    padding: 0px;
   }
 }
 @media (max-width: 431px) {
