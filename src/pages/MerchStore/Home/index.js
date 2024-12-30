@@ -62,14 +62,14 @@ const Home = ({ app, authentication, ...props }) => {
   return (
     <React.Fragment>
       <Header />
-      <div className="pageCustomContent">
+      <div className="page-custom-content">
         <Container
           style={{
             padding: 0,
           }}
         >
-          <Row className="bannerContainer">
-            <Col className="bannerTagLineContainer" lg={6}>
+          <Row className="banner-container">
+            <Col className="banner-tag-line-container" lg={6}>
               <div className="tagline">
                 <p>Gear Up for a Back-to-School Deal!</p>
                 <h5
@@ -115,7 +115,7 @@ const Home = ({ app, authentication, ...props }) => {
             </Col>
 
             <Col
-              className="bannerImageContainer"
+              className="banner-image-container"
               lg={6}
               style={{
                 paddingLeft: "0px",
@@ -125,7 +125,7 @@ const Home = ({ app, authentication, ...props }) => {
               {bannerAds && (
                 <img
                   src={bannerAds.Image[0]?.url || ""}
-                  className="bannerImage"
+                  className="banner-image"
                   alt="Hero Banner"
                 />
               )}
@@ -138,81 +138,98 @@ const Home = ({ app, authentication, ...props }) => {
               padding: 20,
               borderRadius: 8,
             }}
-            className="midTransContainer"
+            className="mid-trans-container"
           >
-            <Col
-              style={{
-                alignSelf: "center",
-              }}
-            >
-              <h5 className="officialFont">The Official CIIT Merch</h5>
+            <Col className="ciit-merch-feature" lg={4} md={12}>
+              <h5 className="ciit-merch-feature-title">
+                The Official CIIT Merch
+              </h5>
             </Col>
-            <Col
-              style={{
-                alignSelf: "center",
-              }}
-            >
-              <img src={deliveryBan} className="deliveryBan" />
+            <Col className="delivery-pickup" lg={4} md={6}>
+              <img src={deliveryBan} className="delivery-pickup-logo" />
               <span>Delivery or Pick-up</span>
             </Col>
-            <Col
-              style={{
-                alignSelf: "center",
-              }}
-            >
-              <img src={securePayment} className="securePayment" />
+            <Col className="secure-payment" lg={4} md={6}>
+              <img src={securePayment} className="secure-payment-logo" />
               <span>Secured Payment</span>
             </Col>
           </Row>
-          <div className="featuresContainer">
-            <h5>Featured Products</h5>
+          <div className="features-container">
             <Row>
-              <Col xxl={3} xl={3} md={3}>
+              <Col className="feature-products-container">
+                <h5>Featured Products</h5>
+                <div className="feature-products">
+                  {app.products.length > 0 &&
+                    app.products.map((item, index) => (
+                      <div key={index} className="feature-product-item">
+                        <img
+                          className="feature-image"
+                          src={item.Images[0].url}
+                        />
+                        <Button
+                          type="button"
+                          style={{
+                            backgroundColor: "#FF5400",
+                            borderColor: "#FF5400",
+                            fontWeight: 700,
+                            marginLeft: 10,
+                            marginRight: 10,
+                            borderRadius: 8,
+                          }}
+                          color="primary"
+                          onClick={() => {
+                            navigate(`/product/${item["Product ID"]}`);
+                          }}
+                        >
+                          Order now
+                        </Button>
+                      </div>
+                    ))}
+                  {app.products.length > 0 &&
+                    app.products.map((item, index) => (
+                      <div
+                        key={index}
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          padding: 10,
+                          flexBasis: "20%",
+                          boxSizing: "border-box",
+                        }}
+                      >
+                        <img
+                          className="feature-image"
+                          src={item.Images[0].url}
+                        />
+                        <Button
+                          type="button"
+                          style={{
+                            backgroundColor: "#FF5400",
+                            borderColor: "#FF5400",
+                            fontWeight: 700,
+                            marginLeft: 10,
+                            marginRight: 10,
+                            borderRadius: 8,
+                          }}
+                          color="primary"
+                          onClick={() => {
+                            navigate(`/product/${item["Product ID"]}`);
+                          }}
+                        >
+                          Order now
+                        </Button>
+                      </div>
+                    ))}
+                </div>
+              </Col>
+              <Col xxl={4} xl={4} md={4}>
                 {heroBannerAds && heroBannerAds?.Image && (
                   <img
                     src={heroBannerAds.Image[0]?.url || ""}
-                    className="bannerAds"
+                    className="banner-ads"
                     alt="Hero Banner"
                   />
                 )}
-              </Col>
-              <Col className="featureProducts">
-                {app.products.length > 0 &&
-                  app.products.map((item, index) => (
-                    <div
-                      key={index}
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        padding: 10,
-                        flexBasis: "20%",
-                        boxSizing: "border-box",
-                      }}
-                    >
-                      <img
-                        src={item.Images[0].url}
-                        width={160}
-                        className="featureImage"
-                      />
-                      <Button
-                        type="button"
-                        style={{
-                          backgroundColor: "#FF5400",
-                          borderColor: "#FF5400",
-                          fontWeight: 700,
-                          marginLeft: 10,
-                          marginRight: 10,
-                          borderRadius: 8,
-                        }}
-                        color="primary"
-                        onClick={() => {
-                          navigate(`/product/${item["Product ID"]}`);
-                        }}
-                      >
-                        Order now
-                      </Button>
-                    </div>
-                  ))}
               </Col>
             </Row>
           </div>
