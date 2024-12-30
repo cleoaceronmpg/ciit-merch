@@ -11,18 +11,39 @@ import "./styles.css";
 
 import { Button, Container } from "reactstrap";
 
-const Cart = ({ cart, ...props }) => {
+const Cart = ({ app, cart, ...props }) => {
   const [shoppingCart, setShoppingCart] = React.useState([]);
   const [subTotal, setSubTotal] = React.useState(null);
   let navigate = useNavigate();
 
   React.useEffect(() => {
     // collection && setCatalog(collection);
-    cart.data && setShoppingCart(cart.data);
+    cart.data.length > 0 &&
+      app.products.length > 0 &&
+      cartDataHandler(cart.data);
     cart.data && computeSubTotal(cart.data);
 
     console.log(cart.data);
-  }, [cart.data]);
+  }, [cart.data, app.products]);
+
+  const cartDataHandler = async (data) => {
+    const updatedArray = data.map((item) => {
+      const match = app.products.find((second) => second.id === item.id);
+
+      if (match) {
+        // Merge the fields from the second array into the first array item
+        return {
+          ...item,
+          Images: match.Images,
+        };
+      }
+
+      // If no match, return the original item
+      return item;
+    });
+
+    setShoppingCart(updatedArray);
+  };
 
   const removeItemInCart = async (id) => {
     await props.actionCreator({
@@ -501,7 +522,8 @@ const Cart = ({ cart, ...props }) => {
   );
 };
 
-const mapStateToProps = ({ cart, authentication }) => ({
+const mapStateToProps = ({ app, cart, authentication }) => ({
+  app,
   cart,
   authentication,
 });

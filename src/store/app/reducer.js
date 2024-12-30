@@ -6,6 +6,9 @@ import {
   GET_CAMPAIGN_SUCCESS,
   GET_CAMPAIGN_FAILED,
   SET_PREVIOUS_CHECKOUT,
+  GET_ORDER_HISTORY,
+  GET_ORDER_HISTORY_SUCCESS,
+  GET_ORDER_HISTORY_FAILED,
 } from "./types";
 
 const INITIAL_STATE = {
@@ -16,10 +19,34 @@ const INITIAL_STATE = {
   products: [],
   campaignData: [],
   previousCheckoutData: null,
+  orderHistoryData: [],
 };
 
 const app = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case GET_ORDER_HISTORY:
+      return {
+        ...state,
+        loading: false,
+      };
+
+    case GET_ORDER_HISTORY_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        orderHistoryData: action.payload.orderHistory,
+        error: null,
+        errorMessage: null,
+      };
+
+    case GET_ORDER_HISTORY_FAILED:
+      return {
+        ...state,
+        error: true,
+        errorMessage: action.payload.message,
+        orderHistoryData: [],
+      };
+
     case GET_PRODUCTS:
       return {
         ...state,

@@ -63,8 +63,8 @@ const Header = ({ authentication, ...props }) => {
             >
               {authentication.authenticated ? (
                 <>
-                  <a href="#news">Profile</a>
-                  <a href="#contact">Notification</a>
+                  <a href="/profile">Profile</a>
+                  <a href="#">Notification</a>
                   <a
                     href="#"
                     onClick={() => {
@@ -156,7 +156,7 @@ const Header = ({ authentication, ...props }) => {
                     <>
                       {" "}
                       <span>
-                        <a href="/login" style={{ color: "#fff" }}>
+                        <a href="/profile" style={{ color: "#fff" }}>
                           Hello! {authentication.data?.fields?.FullName || ""}
                         </a>
                       </span>

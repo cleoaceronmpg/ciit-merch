@@ -25,7 +25,7 @@ import Breadcrumbs from "../../../components/MerchStore/Common/Breadcrumb";
 import Header from "../../../components/MerchStore/Header";
 import "./styles.css";
 
-const Checkout = ({ cart, checkout, authentication, ...props }) => {
+const Checkout = ({ app, cart, checkout, authentication, ...props }) => {
   let navigate = useNavigate();
   const [shoppingCart, setShoppingCart] = React.useState([]);
   const [subTotal, setSubTotal] = React.useState(null);
@@ -146,9 +146,30 @@ const Checkout = ({ cart, checkout, authentication, ...props }) => {
 
   React.useEffect(() => {
     // collection && setCatalog(collection);
-    cart.data && setShoppingCart(cart.data);
+    cart.data.length > 0 &&
+      app.products.length > 0 &&
+      cartDataHandler(cart.data);
     cart.data && computeSubTotalAndQty(cart.data);
-  }, [cart.data]);
+  }, [cart.data, app.products]);
+
+  const cartDataHandler = async (data) => {
+    const updatedArray = data.map((item) => {
+      const match = app.products.find((second) => second.id === item.id);
+
+      if (match) {
+        // Merge the fields from the second array into the first array item
+        return {
+          ...item,
+          Images: match.Images,
+        };
+      }
+
+      // If no match, return the original item
+      return item;
+    });
+
+    setShoppingCart(updatedArray);
+  };
 
   const computeSubTotalAndQty = async (data) => {
     const TotalAmount = data.reduce((acc, product) => {
@@ -1116,7 +1137,8 @@ const Checkout = ({ cart, checkout, authentication, ...props }) => {
   );
 };
 
-const mapStateToProps = ({ cart, checkout, authentication }) => ({
+const mapStateToProps = ({ app, cart, checkout, authentication }) => ({
+  app,
   cart,
   checkout,
   authentication,

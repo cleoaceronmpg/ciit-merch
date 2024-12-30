@@ -6,6 +6,9 @@ import {
   GET_CAMPAIGN,
   GET_CAMPAIGN_SUCCESS,
   GET_CAMPAIGN_FAILED,
+  GET_ORDER_HISTORY,
+  GET_ORDER_HISTORY_SUCCESS,
+  GET_ORDER_HISTORY_FAILED,
 } from "./types";
 
 import appServices from "../../api/services/app";
@@ -49,7 +52,26 @@ export function* fnGetCampaign() {
   }
 }
 
+export function* fnGetOrderHistory({ payload }) {
+  try {
+    const response = yield call(appServices.api.fnGetOrderHistory, payload);
+
+    if (response) {
+      yield put({
+        type: GET_ORDER_HISTORY_SUCCESS,
+        payload: { orderHistory: response },
+      });
+    }
+  } catch (error) {
+    yield put({
+      type: GET_ORDER_HISTORY_FAILED,
+      payload: error,
+    });
+  }
+}
+
 export default function* watcher() {
   yield takeLatest(GET_PRODUCTS, fnGetProducts);
   yield takeLatest(GET_CAMPAIGN, fnGetCampaign);
+  yield takeLatest(GET_ORDER_HISTORY, fnGetOrderHistory);
 }

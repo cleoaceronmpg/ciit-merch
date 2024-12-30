@@ -30,7 +30,6 @@ function* fnPostLogin({ payload }) {
       fields: response[0].fields,
       id: response[0].id,
     };
-    console.log("data", data);
 
     yield put({
       type: LOGIN_SUCCESS,
