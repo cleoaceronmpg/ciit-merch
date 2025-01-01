@@ -32,7 +32,7 @@ const cart = (state = INIT_STATE, action) => {
         ...state,
         loading: false,
         data: state.data
-          .filter((item) => item["Product ID"] !== action.payload.id)
+          .filter((item) => item.uid !== action.payload.uid)
           .map((item) => item),
         error: false,
         errorMessage: null,

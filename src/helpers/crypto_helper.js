@@ -121,3 +121,19 @@ export async function hashChecksum(message) {
     toHexStr(H0) + toHexStr(H1) + toHexStr(H2) + toHexStr(H3) + toHexStr(H4)
   );
 }
+
+export async function generateRandomString(length = 10) {
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let result = "";
+
+  // Generate random string of the specified length
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    result += characters[randomIndex];
+  }
+
+  // Add a timestamp for uniqueness
+  const timestamp = Date.now().toString(36); // Convert timestamp to base 36
+  return result + timestamp; // Combine random string with timestamp
+}

@@ -18,7 +18,12 @@ class Profile {
 
   fnUpdateShippingAddress = async (values) => {
     const payload = {
-      ShippingAddress: `${values.address}, ${values.city}, ${values.country} ${values.postalCode}`,
+      RecipientName: values.RecipientName,
+      Telephone: values.Telephone,
+      Address: values.Address,
+      Brgy: values.Brgy,
+      City: values.City,
+      PostalCode: values.PostalCode,
     };
 
     return await ciitMerchApi("Users").update(values.id, payload);

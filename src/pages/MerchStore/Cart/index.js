@@ -52,7 +52,7 @@ const Cart = ({ app, cart, ...props }) => {
   const removeItemInCart = async (id) => {
     await props.actionCreator({
       type: types.REMOVE_CART,
-      payload: { id: id },
+      payload: { uid: id },
     });
   };
 
@@ -69,7 +69,7 @@ const Cart = ({ app, cart, ...props }) => {
 
   const plusQuantity = async (id) => {
     const newCartData = shoppingCart.map((item) =>
-      item["Product ID"] === id
+      item.uid === id
         ? {
             ...item,
             Quantity: parseInt(item.Quantity) + 1,
@@ -86,7 +86,7 @@ const Cart = ({ app, cart, ...props }) => {
 
   const minusQuantity = async (id) => {
     const newCartData = shoppingCart.map((item) =>
-      item["Product ID"] === id
+      item.uid === id
         ? item.Quantity > 1
           ? {
               ...item,
@@ -215,7 +215,7 @@ const Cart = ({ app, cart, ...props }) => {
                                           href="#"
                                           className="text-textSubdued underline"
                                           onClick={() =>
-                                            removeItemInCart(item["Product ID"])
+                                            removeItemInCart(item.uid)
                                           }
                                         >
                                           <span>Remove</span>
@@ -254,9 +254,7 @@ const Cart = ({ app, cart, ...props }) => {
                                         backgroundColor: "transparent",
                                         backgroundImage: "none",
                                       }}
-                                      onClick={() =>
-                                        minusQuantity(item["Product ID"])
-                                      }
+                                      onClick={() => minusQuantity(item.uid)}
                                     >
                                       <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -302,9 +300,7 @@ const Cart = ({ app, cart, ...props }) => {
                                         backgroundColor: "transparent",
                                         backgroundImage: "none",
                                       }}
-                                      onClick={() =>
-                                        plusQuantity(item["Product ID"])
-                                      }
+                                      onClick={() => plusQuantity(item.uid)}
                                     >
                                       <svg
                                         xmlns="http://www.w3.org/2000/svg"

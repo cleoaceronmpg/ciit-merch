@@ -37,25 +37,26 @@ const Checkout = ({ app, cart, checkout, authentication, ...props }) => {
     React.useState(null);
   const [notesToOrders, setNotesToOrders] = React.useState(null);
 
+  const { fields } = authentication.data;
+
   // validation
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
     initialValues: {
-      fullName: "",
-      telephone: "",
-      address: "",
-      city: "",
-      country: "",
-      postalCode: "",
-      options: "",
+      fullName: fields?.RecipientName || "",
+      telephone: fields?.Telephone || "",
+      address: fields?.Address || "",
+      city: fields?.City || "",
+      brgy: fields?.Brgy || "",
+      postalCode: fields?.PostalCode || "",
     },
     validationSchema: Yup.object({
       fullName: Yup.string().required("Full name is required"),
       telephone: Yup.string().required("Telephone is required"),
       address: Yup.string().required("Address is required"),
       city: Yup.string().required("City is required"),
-      country: Yup.string().required("Country is required"),
+      brgy: Yup.string().required("Brgy is required"),
       postalCode: Yup.string().required("Postal Code is required"),
     }),
     onSubmit: async (values) => {
@@ -69,7 +70,7 @@ const Checkout = ({ app, cart, checkout, authentication, ...props }) => {
               telephone: values.telephone,
               address: values.address,
               city: values.city,
-              country: values.country,
+              brgy: values.brgy,
               postalCode: values.postalCode,
             },
           ],
@@ -250,7 +251,7 @@ const Checkout = ({ app, cart, checkout, authentication, ...props }) => {
       if (checkout.shipMethod === "For Pickup") {
         ShippingAddress = checkout.shipAddressData[0].address;
       } else {
-        ShippingAddress = `${checkout.shipAddressData[0].fullName}, ${checkout.shipAddressData[0].address}, ${checkout.shipAddressData[0].postalCode}, ${checkout.shipAddressData[0].city}, ${checkout.shipAddressData[0].country} ${checkout.shipAddressData[0].telephone}`;
+        ShippingAddress = `${checkout.shipAddressData[0].fullName}, ${checkout.shipAddressData[0].address}, ${checkout.shipAddressData[0].brgy}, ${checkout.shipAddressData[0].postalCode}, ${checkout.shipAddressData[0].city}, ${checkout.shipAddressData[0].telephone}`;
       }
 
       await props.actionCreator({
@@ -502,11 +503,10 @@ const Checkout = ({ app, cart, checkout, authentication, ...props }) => {
                             For Pickup at{" "}
                             <span
                               style={{
-                                fontWeight: 400,
-                                fontStyle: "italic",
+                                fontWeight: 700,
                               }}
                             >
-                              "94 Kamuning St. Quezon City"
+                              Seoulful Sweets Cafe (96 Kamuning Rd)
                             </span>
                           </Label>
                         </FormGroup>
@@ -607,12 +607,12 @@ const Checkout = ({ app, cart, checkout, authentication, ...props }) => {
                           >
                             Shipping Address
                           </h4>
-                          <div>
+                          <div className="mt-3">
                             <Row>
                               <Col xs={6}>
                                 <div className="mb-3">
                                   <Label className="form-label">
-                                    Full Name{" "}
+                                    Recipient Full Name{" "}
                                   </Label>
                                   <Input
                                     type="text"
@@ -694,6 +694,33 @@ const Checkout = ({ app, cart, checkout, authentication, ...props }) => {
                             <Row>
                               <Col xs={12}>
                                 <div className="mb-3">
+                                  <Label className="form-label">Brgy </Label>
+                                  <Input
+                                    type="text"
+                                    name="brgy"
+                                    onChange={validation.handleChange}
+                                    onBlur={validation.handleBlur}
+                                    value={validation.values.brgy || ""}
+                                    invalid={
+                                      validation.touched.brgy &&
+                                      validation.errors.brgy
+                                        ? true
+                                        : false
+                                    }
+                                  />
+
+                                  {validation.touched.brgy &&
+                                  validation.errors.brgy ? (
+                                    <FormFeedback type="invalid">
+                                      {validation.errors.brgy}
+                                    </FormFeedback>
+                                  ) : null}
+                                </div>
+                              </Col>
+                            </Row>
+                            <Row>
+                              <Col xs={12}>
+                                <div className="mb-3">
                                   <Label className="form-label">City </Label>
                                   <Input
                                     type="text"
@@ -718,33 +745,7 @@ const Checkout = ({ app, cart, checkout, authentication, ...props }) => {
                                 </div>
                               </Col>
                             </Row>
-                            <Row>
-                              <Col xs={12}>
-                                <div className="mb-3">
-                                  <Label className="form-label">Country </Label>
-                                  <Input
-                                    type="text"
-                                    name="country"
-                                    onChange={validation.handleChange}
-                                    onBlur={validation.handleBlur}
-                                    value={validation.values.country || ""}
-                                    invalid={
-                                      validation.touched.country &&
-                                      validation.errors.country
-                                        ? true
-                                        : false
-                                    }
-                                  />
 
-                                  {validation.touched.country &&
-                                  validation.errors.country ? (
-                                    <FormFeedback type="invalid">
-                                      {validation.errors.country}
-                                    </FormFeedback>
-                                  ) : null}
-                                </div>
-                              </Col>
-                            </Row>
                             <Row>
                               <Col xs={6}>
                                 <div className="mb-3">

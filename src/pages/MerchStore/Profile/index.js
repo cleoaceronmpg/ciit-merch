@@ -93,16 +93,20 @@ const Profile = ({ app, authentication, profile, ...props }) => {
     enableReinitialize: true,
     initialValues: {
       id: authentication.data?.id,
-      address: "",
-      city: "",
-      country: "",
-      postalCode: "",
+      RecipientName: fields?.RecipientName || "",
+      Telephone: fields?.Telephone || "",
+      Address: fields?.Address || "",
+      Brgy: fields?.Brgy || "",
+      City: fields?.City || "",
+      PostalCode: fields?.PostalCode || "",
     },
     validationSchema: Yup.object({
-      address: Yup.string().required("Address is required"),
-      city: Yup.string().required("City is required"),
-      country: Yup.string().required("Country is required"),
-      postalCode: Yup.string().required("Postal Code is required"),
+      RecipientName: Yup.string().required("Recipient Name is required"),
+      Telephone: Yup.string().required("Telephone is required"),
+      Address: Yup.string().required("Address is required"),
+      City: Yup.string().required("City is required"),
+      Brgy: Yup.string().required("Brgy is required"),
+      PostalCode: Yup.string().required("Postal Code is required"),
     }),
     onSubmit: async (values) => {
       await props.actionCreator({
@@ -111,6 +115,7 @@ const Profile = ({ app, authentication, profile, ...props }) => {
           ...values,
         },
       });
+
       setUpdateShippingAddress(!updateShippingAddress);
     },
   });
@@ -276,9 +281,9 @@ const Profile = ({ app, authentication, profile, ...props }) => {
                       maxWidth: "40%",
                     }}
                     color="primary"
-                    disabled={authentication.loading}
+                    disabled={profile.loading}
                   >
-                    {authentication.loading ? (
+                    {profile.loading ? (
                       <>
                         <Spinner size="sm">Loading...</Spinner>
                         <span> Loading</span>
@@ -292,10 +297,12 @@ const Profile = ({ app, authentication, profile, ...props }) => {
             </Col>
             <Col sm={12} md={12} lg={6} xxl={6}>
               <h5>Shipping Address</h5>
-              {!updateShippingAddress && fields?.ShippingAddress ? (
+              {!updateShippingAddress && fields?.Address ? (
                 <>
                   <p className="waves-effect waves-light">
-                    {fields.ShippingAddress}
+                    {fields?.RecipientName} {fields?.Telephone},{" "}
+                    {fields?.Address}, {fields?.Brgy}, {fields?.City},{" "}
+                    {fields?.PostalCode}
                   </p>
                   <div
                     style={{
@@ -332,25 +339,71 @@ const Profile = ({ app, authentication, profile, ...props }) => {
                   }}
                 >
                   <div className="mb-3">
-                    <Label className="form-label">Address </Label>
+                    <Label className="form-label">Recipient Name </Label>
                     <Input
                       type="text"
-                      name="address"
+                      name="RecipientName"
                       onChange={validationShippAddress.handleChange}
                       onBlur={validationShippAddress.handleBlur}
-                      value={validationShippAddress.values.address || ""}
+                      value={validationShippAddress.values.RecipientName || ""}
                       invalid={
-                        validationShippAddress.touched.address &&
-                        validationShippAddress.errors.address
+                        validationShippAddress.touched.RecipientName &&
+                        validationShippAddress.errors.RecipientName
                           ? true
                           : false
                       }
                     />
 
-                    {validationShippAddress.touched.address &&
-                    validationShippAddress.errors.address ? (
+                    {validationShippAddress.touched.RecipientName &&
+                    validationShippAddress.errors.RecipientName ? (
                       <FormFeedback type="invalid">
-                        {validationShippAddress.errors.address}
+                        {validationShippAddress.errors.RecipientName}
+                      </FormFeedback>
+                    ) : null}
+                  </div>
+                  <div className="mb-3">
+                    <Label className="form-label">Telephone </Label>
+                    <Input
+                      type="text"
+                      name="Telephone"
+                      onChange={validationShippAddress.handleChange}
+                      onBlur={validationShippAddress.handleBlur}
+                      value={validationShippAddress.values.Telephone || ""}
+                      invalid={
+                        validationShippAddress.touched.Telephone &&
+                        validationShippAddress.errors.Telephone
+                          ? true
+                          : false
+                      }
+                    />
+
+                    {validationShippAddress.touched.Telephone &&
+                    validationShippAddress.errors.Telephone ? (
+                      <FormFeedback type="invalid">
+                        {validationShippAddress.errors.Telephone}
+                      </FormFeedback>
+                    ) : null}
+                  </div>
+                  <div className="mb-3">
+                    <Label className="form-label">Address </Label>
+                    <Input
+                      type="text"
+                      name="Address"
+                      onChange={validationShippAddress.handleChange}
+                      onBlur={validationShippAddress.handleBlur}
+                      value={validationShippAddress.values.Address || ""}
+                      invalid={
+                        validationShippAddress.touched.Address &&
+                        validationShippAddress.errors.Address
+                          ? true
+                          : false
+                      }
+                    />
+
+                    {validationShippAddress.touched.Address &&
+                    validationShippAddress.errors.Address ? (
+                      <FormFeedback type="invalid">
+                        {validationShippAddress.errors.Address}
                       </FormFeedback>
                     ) : null}
                   </div>
@@ -358,45 +411,45 @@ const Profile = ({ app, authentication, profile, ...props }) => {
                     <Label className="form-label">City </Label>
                     <Input
                       type="text"
-                      name="city"
+                      name="City"
                       onChange={validationShippAddress.handleChange}
                       onBlur={validationShippAddress.handleBlur}
-                      value={validationShippAddress.values.city || ""}
+                      value={validationShippAddress.values.City || ""}
                       invalid={
-                        validationShippAddress.touched.city &&
-                        validationShippAddress.errors.city
+                        validationShippAddress.touched.City &&
+                        validationShippAddress.errors.City
                           ? true
                           : false
                       }
                     />
 
-                    {validationShippAddress.touched.city &&
-                    validationShippAddress.errors.city ? (
+                    {validationShippAddress.touched.City &&
+                    validationShippAddress.errors.City ? (
                       <FormFeedback type="invalid">
-                        {validationShippAddress.errors.city}
+                        {validationShippAddress.errors.City}
                       </FormFeedback>
                     ) : null}
                   </div>
                   <div className="mb-3">
-                    <Label className="form-label">Country </Label>
+                    <Label className="form-label">Brgy </Label>
                     <Input
                       type="text"
-                      name="country"
+                      name="Brgy"
                       onChange={validationShippAddress.handleChange}
                       onBlur={validationShippAddress.handleBlur}
-                      value={validationShippAddress.values.country || ""}
+                      value={validationShippAddress.values.Brgy || ""}
                       invalid={
-                        validationShippAddress.touched.country &&
-                        validationShippAddress.errors.country
+                        validationShippAddress.touched.Brgy &&
+                        validationShippAddress.errors.Brgy
                           ? true
                           : false
                       }
                     />
 
-                    {validationShippAddress.touched.country &&
-                    validationShippAddress.errors.country ? (
+                    {validationShippAddress.touched.Brgy &&
+                    validationShippAddress.errors.Brgy ? (
                       <FormFeedback type="invalid">
-                        {validationShippAddress.errors.country}
+                        {validationShippAddress.errors.Brgy}
                       </FormFeedback>
                     ) : null}
                   </div>
@@ -404,22 +457,22 @@ const Profile = ({ app, authentication, profile, ...props }) => {
                     <Label className="form-label">Postal Code </Label>
                     <Input
                       type="text"
-                      name="postalCode"
+                      name="PostalCode"
                       onChange={validationShippAddress.handleChange}
                       onBlur={validationShippAddress.handleBlur}
-                      value={validationShippAddress.values.postalCode || ""}
+                      value={validationShippAddress.values.PostalCode || ""}
                       invalid={
-                        validationShippAddress.touched.postalCode &&
-                        validationShippAddress.errors.postalCode
+                        validationShippAddress.touched.PostalCode &&
+                        validationShippAddress.errors.PostalCode
                           ? true
                           : false
                       }
                     />
 
-                    {validationShippAddress.touched.postalCode &&
-                    validationShippAddress.errors.postalCode ? (
+                    {validationShippAddress.touched.PostalCode &&
+                    validationShippAddress.errors.PostalCode ? (
                       <FormFeedback type="invalid">
-                        {validationShippAddress.errors.postalCode}
+                        {validationShippAddress.errors.PostalCode}
                       </FormFeedback>
                     ) : null}
                   </div>
@@ -456,8 +509,16 @@ const Profile = ({ app, authentication, profile, ...props }) => {
                         maxWidth: "40%",
                       }}
                       color="primary"
+                      disabled={profile.loading}
                     >
-                      <span>Save Shipping Address</span>
+                      {profile.loading ? (
+                        <>
+                          <Spinner size="sm">Loading...</Spinner>
+                          <span> Loading</span>
+                        </>
+                      ) : (
+                        <span>Save Shipping Address</span>
+                      )}
                     </Button>
                   </div>
                 </Form>

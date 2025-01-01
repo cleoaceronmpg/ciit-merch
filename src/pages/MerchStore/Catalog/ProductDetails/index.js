@@ -3,6 +3,7 @@ import Swal from "sweetalert2";
 import { useParams } from "react-router-dom";
 import { connect } from "react-redux";
 import { actionCreator, types } from "../../../../store";
+import { generateRandomString } from "../../../../helpers/crypto_helper";
 
 //import Breadcrumbs
 import Breadcrumbs from "../../../../components/MerchStore/Common/Breadcrumb";
@@ -61,19 +62,52 @@ const ProductDetails = ({ app, cart, ...props }) => {
       const sizeDetails = SIZE.find((item) => item.id === selectedSize);
       const colorDetails = COLOR.find((item) => item.id === selectedColor);
 
-      await props.actionCreator({
-        type: types.ADD_TO_CART,
-        payload: [
-          {
-            ...selectedProduct,
-            Size: sizeDetails.size,
-            Color: colorDetails.color,
-            Quantity: parseInt(selectedQty),
-            TotalAmount:
-              parseFloat(selectedProduct.Price) * parseInt(selectedQty),
-          },
-        ],
-      });
+      const sameCartVariant = cart.data.find(
+        (item) =>
+          item["Product ID"] === selectedProduct["Product ID"] &&
+          item["Color"] === colorDetails.color &&
+          item["Size"] === sizeDetails.size
+      );
+      console.log("selectedProduct --------------", selectedProduct);
+      console.log("existing cart --------------", cart.data);
+      console.log("sameCartVariant --------------", sameCartVariant);
+
+      if (sameCartVariant) {
+        const newCartData = cart.data.map((item) =>
+          item["Product ID"] === selectedProduct["Product ID"] &&
+          item["Color"] === colorDetails.color &&
+          item["Size"] === sizeDetails.size
+            ? {
+                ...item,
+                Quantity: parseInt(item.Quantity) + parseInt(selectedQty),
+                TotalAmount:
+                  parseFloat(item.Price) *
+                  parseInt(item.Quantity + parseInt(selectedQty)),
+              }
+            : item
+        );
+
+        await props.actionCreator({
+          type: types.UPDATE_CART,
+          payload: newCartData,
+        });
+      } else {
+        await props.actionCreator({
+          type: types.ADD_TO_CART,
+          payload: [
+            {
+              uid: generateRandomString(15),
+              ...selectedProduct,
+              Size: sizeDetails.size,
+              Color: colorDetails.color,
+              Quantity: parseInt(selectedQty),
+              TotalAmount:
+                parseFloat(selectedProduct.Price) * parseInt(selectedQty),
+            },
+          ],
+        });
+      }
+
       setSelectedSize(null);
       setSelectedColor(null);
       setSelectedQty(1);
