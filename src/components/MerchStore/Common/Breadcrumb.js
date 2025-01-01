@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { Row, Col, BreadcrumbItem } from "reactstrap";
 
+import "./styles.css";
+
 const Breadcrumb = ({ addedStyle = {}, breadcrumbItem, title }) => {
   return (
     <Row>

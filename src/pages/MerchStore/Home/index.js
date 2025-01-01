@@ -185,41 +185,6 @@ const Home = ({ app, authentication, ...props }) => {
                         </Button>
                       </div>
                     ))}
-                  {app.products.length > 0 &&
-                    app.products.map((item, index) => (
-                      <div
-                        key={index}
-                        style={{
-                          display: "flex",
-                          flexDirection: "column",
-                          padding: 10,
-                          flexBasis: "20%",
-                          boxSizing: "border-box",
-                        }}
-                      >
-                        <img
-                          className="feature-image"
-                          src={item.Images[0].url}
-                        />
-                        <Button
-                          type="button"
-                          style={{
-                            backgroundColor: "#FF5400",
-                            borderColor: "#FF5400",
-                            fontWeight: 700,
-                            marginLeft: 10,
-                            marginRight: 10,
-                            borderRadius: 8,
-                          }}
-                          color="primary"
-                          onClick={() => {
-                            navigate(`/product/${item["Product ID"]}`);
-                          }}
-                        >
-                          Order now
-                        </Button>
-                      </div>
-                    ))}
                 </div>
               </Col>
               <Col xxl={4} xl={4} md={4}>

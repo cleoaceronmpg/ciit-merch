@@ -109,10 +109,7 @@ const Cart = ({ app, cart, ...props }) => {
   return (
     <React.Fragment>
       <Header />
-      <div
-        className="page-content"
-        style={{ paddingLeft: 20, paddingRight: 20 }}
-      >
+      <div style={{ paddingLeft: 20, paddingRight: 20 }}>
         <Container>
           {/* Render Breadcrumbs */}
           <Breadcrumbs title="Home" breadcrumbItem={"Shopping cart"} />
@@ -126,224 +123,135 @@ const Cart = ({ app, cart, ...props }) => {
               <div className="cart page-width">
                 <div className="cart-page-top"></div>
                 <div className="cart-page-middle">
-                  <div
-                    className="grid gap-16 grid-cols-1 grid-cols-4 cart-container"
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      flexWrap: "wrap",
-                      width: "100%",
-                    }}
-                  >
-                    <div className="col-span-1 col-span-3">
+                  <div className="cart-container">
+                    <div className="shopping-cart">
                       <div id="shopping-cart-items">
-                        <table className="items-table listing">
-                          <thead>
-                            <tr>
-                              <td>
-                                <span>Product</span>
-                              </td>
-                              <td>
-                                <span>Price</span>
-                              </td>
-                              <td className="hidden md-table-cell">
-                                <span>Quantity</span>
-                              </td>
-                              <td className="hidden md-table-cell">
-                                <span>Total</span>
-                              </td>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {shoppingCart.map((item, index) => (
-                              <tr key={index}>
-                                <td>
-                                  <div className="flex justify-start space-x-4 product-info">
-                                    <div
-                                      className="product-image flex justify-center items-center"
+                        {shoppingCart.map((item, index) => (
+                          <div className="product-item" key={index}>
+                            <div className="product-item__remove-item">
+                              <a
+                                href="#"
+                                className="text-textSubdued underline"
+                                onClick={() => removeItemInCart(item.uid)}
+                              >
+                                <span>Remove</span>
+                              </a>
+                            </div>
+                            <div className="product-item__product-info">
+                              <div className="product-item__product-details">
+                                <div className="product-image">
+                                  <img
+                                    className="self-center"
+                                    src={item.Images[0].url}
+                                    alt={item["Product Name"]}
+                                  />
+                                </div>
+                                <div className="product-item__product-description">
+                                  <div className="product-item__product-name">
+                                    <a
+                                      href="#"
                                       style={{
-                                        marginRight: 10,
+                                        fontWeight: 600,
+                                        color: "inherit",
+                                      }}
+                                      onClick={() => {
+                                        navigate(
+                                          `/product/${item["Product ID"]}`
+                                        );
                                       }}
                                     >
-                                      <img
-                                        className="self-center"
-                                        src={item.Images[0].url}
-                                        alt={item["Product Name"]}
-                                        height={100}
-                                        width={100}
-                                      />
-                                    </div>
-                                    <div className="cart-tem-info">
-                                      <a
-                                        href="#"
-                                        style={{
-                                          fontWeight: 600,
-                                          color: "inherit",
-                                        }}
-                                        onClick={() => {
-                                          navigate(
-                                            `/product/${item["Product ID"]}`
-                                          );
-                                        }}
-                                      >
-                                        {item["Product Name"]}
-                                      </a>
-                                      <div className="cart-item-variant-options mt-2">
-                                        <ul
-                                          style={{
-                                            listStyle: "none",
-                                            margin: 0,
-                                            padding: 0,
-                                          }}
-                                        >
-                                          <li>
-                                            <span className="attribute-name">
-                                              Size:{" "}
-                                            </span>
-                                            <span>{item.Size}</span>
-                                          </li>
-                                          <li>
-                                            <span className="attribute-name">
-                                              Color:{" "}
-                                            </span>
-                                            <span>{item.Color}</span>
-                                          </li>
-                                        </ul>
-                                      </div>
-                                      <div className="mt-2">
-                                        <a
-                                          href="#"
-                                          className="text-textSubdued underline"
-                                          onClick={() =>
-                                            removeItemInCart(item.uid)
-                                          }
-                                        >
-                                          <span>Remove</span>
-                                        </a>
-                                      </div>
-                                    </div>
+                                      {item["Product Name"]}
+                                    </a>
                                   </div>
-                                </td>
-                                <td>
-                                  <div>
-                                    <span className="sale-price">
-                                      ₱
-                                      {parseInt(item.Price).toLocaleString(
-                                        "en-US"
-                                      )}{" "}
-                                      PHP
-                                    </span>
+                                  <div className="shopping-cart-items__options">
+                                    <ul className="shopping-cart-items__options-list">
+                                      <li className="shopping-cart-items__option">
+                                        <span className="attribute-name">
+                                          Size:{" "}
+                                        </span>
+                                        <span>{item.Size}</span>
+                                      </li>
+                                      <li className="shopping-cart-items__option">
+                                        <span className="attribute-name">
+                                          Color:{" "}
+                                        </span>
+                                        <span>{item.Color}</span>
+                                      </li>
+                                    </ul>
                                   </div>
-                                </td>
-                                <td className="hidden md-table-cell">
-                                  <div
-                                    className="qty-box grid grid-cols-3 border"
-                                    style={{
-                                      borderColor: "rgb(204 204 204)",
-                                      display: "flex",
-                                      flexDirection: "row",
-                                      justifyContent: "center",
-                                      padding: 10,
-                                    }}
-                                  >
-                                    <button
-                                      className="flex justify-center items-center"
-                                      type="button"
-                                      style={{
-                                        border: "none",
-                                        backgroundColor: "transparent",
-                                        backgroundImage: "none",
-                                      }}
-                                      onClick={() => minusQuantity(item.uid)}
-                                    >
-                                      <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        aria-hidden="true"
-                                        focusable="false"
-                                        role="presentation"
-                                        className="icon icon-minus"
-                                        fill="none"
-                                        viewBox="0 0 10 2"
-                                      >
-                                        <path
-                                          fillRule="evenodd"
-                                          clipRule="evenodd"
-                                          d="M.5 1C.5.7.7.5 1 .5h8a.5.5 0 110 1H1A.5.5 0 01.5 1z"
-                                          fill="currentColor"
-                                        ></path>
-                                      </svg>
-                                    </button>
-                                    {/* <input
-                                    type="text"
-                                    defaultValue={item.Quantity}
-                                    readOnly={true}
+                                </div>
+                              </div>
+                              <div className="quantity-input-container">
+                                <div className="quantity-input qty-box border">
+                                  <button
+                                    className="flex justify-center items-center"
+                                    type="button"
                                     style={{
                                       border: "none",
-                                      textAlign: "center",
+                                      backgroundColor: "transparent",
+                                      backgroundImage: "none",
                                     }}
-                                  /> */}
-                                    <div
-                                      style={{
-                                        width: 130,
-                                        display: "flex",
-                                        justifyContent: "center",
-                                        alignItems: "center",
-                                      }}
+                                    onClick={() => minusQuantity(item.uid)}
+                                  >
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      aria-hidden="true"
+                                      focusable="false"
+                                      role="presentation"
+                                      className="icon icon-minus"
+                                      fill="none"
+                                      viewBox="0 0 10 2"
                                     >
-                                      <span>{item.Quantity}</span>
-                                    </div>
-                                    <button
-                                      className="flex justify-center items-center"
-                                      type="button"
-                                      style={{
-                                        border: "none",
-                                        backgroundColor: "transparent",
-                                        backgroundImage: "none",
-                                      }}
-                                      onClick={() => plusQuantity(item.uid)}
-                                    >
-                                      <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        aria-hidden="true"
-                                        focusable="false"
-                                        role="presentation"
-                                        className="icon icon-plus"
-                                        fill="none"
-                                        viewBox="0 0 10 10"
-                                      >
-                                        <path
-                                          fillRule="evenodd"
-                                          clipRule="evenodd"
-                                          d="M1 4.51a.5.5 0 000 1h3.5l.01 3.5a.5.5 0 001-.01V5.5l3.5-.01a.5.5 0 00-.01-1H5.5L5.49.99a.5.5 0 00-1 .01v3.5l-3.5.01H1z"
-                                          fill="currentColor"
-                                        ></path>
-                                      </svg>
-                                    </button>
+                                      <path
+                                        fillRule="evenodd"
+                                        clipRule="evenodd"
+                                        d="M.5 1C.5.7.7.5 1 .5h8a.5.5 0 110 1H1A.5.5 0 01.5 1z"
+                                        fill="currentColor"
+                                      ></path>
+                                    </svg>
+                                  </button>
+                                  <div
+                                    style={{
+                                      width: 130,
+                                      display: "flex",
+                                      justifyContent: "center",
+                                      alignItems: "center",
+                                    }}
+                                  >
+                                    <span>{item.Quantity}</span>
                                   </div>
-                                </td>
-                                <td className="hidden md-table-cell">
-                                  {item?.TotalAmount ? (
-                                    <span>
-                                      ₱
-                                      {parseInt(
-                                        item.TotalAmount
-                                      ).toLocaleString("en-US")}{" "}
-                                      PHP
-                                    </span>
-                                  ) : (
-                                    <span>
-                                      ₱
-                                      {parseInt(item.Price).toLocaleString(
-                                        "en-US"
-                                      )}{" "}
-                                      PHP
-                                    </span>
-                                  )}
-                                </td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
+                                  <button
+                                    className="flex justify-center items-center"
+                                    type="button"
+                                    style={{
+                                      border: "none",
+                                      backgroundColor: "transparent",
+                                      backgroundImage: "none",
+                                    }}
+                                    onClick={() => plusQuantity(item.uid)}
+                                  >
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      aria-hidden="true"
+                                      focusable="false"
+                                      role="presentation"
+                                      className="icon icon-plus"
+                                      fill="none"
+                                      viewBox="0 0 10 10"
+                                    >
+                                      <path
+                                        fillRule="evenodd"
+                                        clipRule="evenodd"
+                                        d="M1 4.51a.5.5 0 000 1h3.5l.01 3.5a.5.5 0 001-.01V5.5l3.5-.01a.5.5 0 00-.01-1H5.5L5.49.99a.5.5 0 00-1 .01v3.5l-3.5.01H1z"
+                                        fill="currentColor"
+                                      ></path>
+                                    </svg>
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
                       </div>
                       <div
                         style={{
@@ -356,84 +264,45 @@ const Cart = ({ app, cart, ...props }) => {
                           method="POST"
                         >
                           <p style={{ fontWeight: 600 }}>Promotion code?</p>
-                          <div
-                            className="grid grid-cols-3 gap-8"
-                            style={{ width: "300px" }}
-                          >
-                            <div className="col-span-2">
-                              <div className="form-field-container null">
-                                <div className="field-wrapper flex flex-grow">
-                                  <input
-                                    type="text"
-                                    name="coupon"
-                                    placeholder="Enter coupon code"
-                                    defaultValue=""
-                                    style={{
-                                      border: "#c9cccf solid 1px",
-                                      borderTopColor: "#aeb4b9",
-                                      borderRadius: "4px",
-                                      padding: "1rem 1.2rem",
-                                    }}
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                            <div className="col-span-1">
-                              <Button
-                                className="btn btn-primary w-100 waves-effect waves-light"
-                                type="button"
-                                style={{
-                                  backgroundColor: "#ff5400",
-                                  borderColor: "#ff5400",
-                                  maxWidth: "50%",
-                                }}
-                                color="primary"
-                              >
-                                <span>Apply</span>
-                              </Button>
-                            </div>
+                          <div className="promotion-code-form">
+                            <input
+                              className="promotion-code-form__input"
+                              type="text"
+                              name="coupon"
+                              placeholder="Enter coupon code"
+                            />
+                            <Button
+                              className="btn btn-primary w-100 waves-effect waves-light"
+                              type="button"
+                              style={{
+                                backgroundColor: "#ff5400",
+                                borderColor: "#ff5400",
+                                maxWidth: "50%",
+                              }}
+                              color="primary"
+                            >
+                              <span>Apply</span>
+                            </Button>
                           </div>
                         </form>
                       </div>
                     </div>
-                    <div className="col-span-1 col-span-3">
+                    <div className="order-summary">
                       <div className="summary">
-                        <div className="grid grid-cols-1 gap-8">
-                          <h4>Order summary</h4>
-                          <div className="flex justify-between gap-12">
-                            <div>Sub total</div>
-                            <div className="text-right">
-                              ₱ {parseInt(subTotal).toLocaleString("en-US")}
-                            </div>
+                        <div>
+                          <h4 className="order-summary-header">
+                            Order summary
+                          </h4>
+                          <div className="subtotal">
+                            <h5>Subtotal</h5>
+                            <h5>₱ {parseFloat(subTotal).toFixed(2)}</h5>
                           </div>
-                          <div className="summary-row grand-total flex justify-between">
-                            <div>
-                              <div>
-                                <div className="font-bold">
-                                  <span
-                                    style={{
-                                      fontWeight: 700,
-                                    }}
-                                  >
-                                    Total
-                                  </span>
-                                </div>
-                                <div>
-                                  <span className="italic">
-                                    (Inclusive of tax ₱0.00)
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
-                            <div>
-                              <div></div>
-                              <div className="grand-total-value">
-                                ₱ {parseInt(subTotal).toLocaleString("en-US")}
-                              </div>
-                            </div>
+                          <div className="grand-total">
+                            <h5>Total</h5>
+                            <h3>₱ {parseFloat(subTotal).toFixed(2)}</h3>
                           </div>
                         </div>
-                        <div className="shopping-cart-checkout-btn flex justify-between mt-8">
+                        <div className="shopping-cart__checkout-btn">
                           <Button
                             className="btn btn-primary w-100 waves-effect waves-light"
                             type="button"
