@@ -1,17 +1,28 @@
 import { ciitMerchApi } from "..";
-import { PROFILE_SERVICE } from "../constants";
 
 class Profile {
-  async fnGetProfile() {
-    return await ciitMerchApi.get(PROFILE_SERVICE.GET_PROFILE);
-  }
+  fnUpdateProfile = async (values) => {
+    const payload = {
+      Email: values.Email,
+      FullName: values.FullName,
+      Password: values.Password,
+      ContactNumber: values.ContactNumber,
+    };
 
-  async fneditProfile(values) {
-    return await ciitMerchApi.patch(
-      `${PROFILE_SERVICE.EDIT_PROFILE}/${values.id}`,
-      values
-    );
-  }
+    return await ciitMerchApi("Users").update(values.id, payload);
+  };
+
+  fnGetProfileDetails = async (values) => {
+    return await ciitMerchApi("Users").find(values.id);
+  };
+
+  fnUpdateShippingAddress = async (values) => {
+    const payload = {
+      ShippingAddress: `${values.address}, ${values.city}, ${values.country} ${values.postalCode}`,
+    };
+
+    return await ciitMerchApi("Users").update(values.id, payload);
+  };
 }
 
 Profile.api = new Profile();

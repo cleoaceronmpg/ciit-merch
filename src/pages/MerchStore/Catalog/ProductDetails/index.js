@@ -26,11 +26,19 @@ const ProductDetails = ({ app, cart, ...props }) => {
       selectedSize &&
       selectedColor &&
       Swal.fire({
-        position: "top-end",
         icon: "success",
         title: "JUST ADDED TO YOUR CART",
-        showConfirmButton: false,
+        showConfirmButton: true,
+        confirmButtonText: "Go to Cart",
         footer: '<a href="/catalog">Continue Shopping</a>',
+        customClass: {
+          confirmButton: "custom-confirm-button", // Add a custom class
+        },
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Redirect to /cart
+          window.location.href = "/cart";
+        }
       });
   }, [cart]);
 

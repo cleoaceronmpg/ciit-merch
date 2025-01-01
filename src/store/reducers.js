@@ -12,6 +12,7 @@ import authentication from "./authentication/reducer";
 import cart from "./cart/reducer";
 import checkout from "./checkout/reducer";
 import app from "./app/reducer";
+import profile from "./profile/reducer";
 
 const rootReducer = combineReducers({
   app,
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
   authentication,
   cart,
   checkout,
+  profile,
 });
 
 export default rootReducer;

@@ -17,32 +17,36 @@ const Cart = ({ app, cart, ...props }) => {
   let navigate = useNavigate();
 
   React.useEffect(() => {
-    // collection && setCatalog(collection);
-    cart.data.length > 0 &&
-      app.products.length > 0 &&
-      cartDataHandler(cart.data);
-    cart.data && computeSubTotal(cart.data);
-
     console.log(cart.data);
+  }, [cart.data]);
+
+  React.useEffect(() => {
+    // collection && setCatalog(collection);
+    app.products.length > 0 && cartDataHandler(cart.data);
+    cart.data && computeSubTotal(cart.data);
   }, [cart.data, app.products]);
 
   const cartDataHandler = async (data) => {
-    const updatedArray = data.map((item) => {
-      const match = app.products.find((second) => second.id === item.id);
+    if (data.length > 0) {
+      const updatedArray = data.map((item) => {
+        const match = app.products.find((second) => second.id === item.id);
 
-      if (match) {
-        // Merge the fields from the second array into the first array item
-        return {
-          ...item,
-          Images: match.Images,
-        };
-      }
+        if (match) {
+          // Merge the fields from the second array into the first array item
+          return {
+            ...item,
+            Images: match.Images,
+          };
+        }
 
-      // If no match, return the original item
-      return item;
-    });
+        // If no match, return the original item
+        return item;
+      });
 
-    setShoppingCart(updatedArray);
+      setShoppingCart(updatedArray);
+    } else {
+      setShoppingCart([]);
+    }
   };
 
   const removeItemInCart = async (id) => {

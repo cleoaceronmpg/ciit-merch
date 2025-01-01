@@ -1,10 +1,10 @@
 import React from "react";
 import moment from "moment";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { actionCreator, types } from "../../../store";
 import { connect } from "react-redux";
+import Swal from "sweetalert2";
 import {
-  Alert,
   Button,
   Label,
   Row,
@@ -25,21 +25,47 @@ import Header from "../../../components/MerchStore/Header";
 import Footer from "../../../components/MerchStore/Footer";
 import "./styles.css";
 
-const Profile = ({ app, authentication, ...props }) => {
+const Profile = ({ app, authentication, profile, ...props }) => {
   let navigate = useNavigate();
 
-  const { fields } = authentication.data;
+  const { fields } = profile.data;
   const [updateShippingAddress, setUpdateShippingAddress] =
     React.useState(false);
 
   React.useEffect(() => {
-    fields?.Email && fetchOrderHistory();
+    clearProfile();
+    authentication.data?.id && fetchProfileDetails();
   }, []);
+
+  React.useEffect(() => {
+    if (!profile.loading) {
+      profile.error &&
+        profile.errorMessage &&
+        Swal.fire({
+          icon: "error",
+          title: "Update Profile Error",
+          text: profile.errorMessage,
+        });
+
+      !profile.error &&
+        profile.successMessage &&
+        Swal.fire({
+          icon: "success",
+          title: "Update Profile Success",
+          text: profile.successMessage,
+        });
+    }
+  }, [profile]);
+
+  React.useEffect(() => {
+    fields?.Email && fetchOrderHistory();
+  }, [fields]);
 
   const validationPersonalDetails = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
     initialValues: {
+      id: authentication.data?.id,
       Email: fields?.Email || "",
       FullName: fields?.FullName || "",
       Password: fields?.Password || "",
@@ -52,12 +78,12 @@ const Profile = ({ app, authentication, ...props }) => {
       ContactNumber: Yup.string().required("Contact Number is required"),
     }),
     onSubmit: async (values) => {
-      console.log("values", values);
-
-      //   await props.actionCreator({
-      //     type: types.REGISTER,
-      //     payload: values,
-      //   });
+      await props.actionCreator({
+        type: types.POST_UPDATE_PROFILE,
+        payload: {
+          ...values,
+        },
+      });
     },
   });
 
@@ -66,42 +92,37 @@ const Profile = ({ app, authentication, ...props }) => {
     // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
     initialValues: {
-      fullName: "",
-      telephone: "",
+      id: authentication.data?.id,
       address: "",
       city: "",
       country: "",
       postalCode: "",
-      options: "",
     },
     validationSchema: Yup.object({
-      fullName: Yup.string().required("Full name is required"),
-      telephone: Yup.string().required("Telephone is required"),
       address: Yup.string().required("Address is required"),
       city: Yup.string().required("City is required"),
       country: Yup.string().required("Country is required"),
       postalCode: Yup.string().required("Postal Code is required"),
     }),
     onSubmit: async (values) => {
-      console.log("values", values);
-      //   await props.actionCreator({
-      //     type: types.SET_SHIP_ADDRESS,
-      //     payload: {
-      //       shipMethod: "For Delivery",
-      //       data: [
-      //         {
-      //           fullName: values.fullName,
-      //           telephone: values.telephone,
-      //           address: values.address,
-      //           city: values.city,
-      //           country: values.country,
-      //           postalCode: values.postalCode,
-      //         },
-      //       ],
-      //     },
-      //   });
+      await props.actionCreator({
+        type: types.POST_UPDATE_SHIPPING_ADDRESS,
+        payload: {
+          ...values,
+        },
+      });
+      setUpdateShippingAddress(!updateShippingAddress);
     },
   });
+
+  const fetchProfileDetails = async () => {
+    await props.actionCreator({
+      type: types.GET_PROFILE_INFO,
+      payload: {
+        id: authentication.data?.id,
+      },
+    });
+  };
 
   const fetchOrderHistory = async () => {
     await props.actionCreator({
@@ -112,15 +133,14 @@ const Profile = ({ app, authentication, ...props }) => {
     });
   };
 
+  const clearProfile = async () => {
+    await props.actionCreator({
+      type: types.CLEAR_USER_PROFILE,
+    });
+  };
+
   //meta title
   document.title = "CIIT Merch | Profile";
-
-  React.useEffect(() => {
-    console.log(
-      "app.orderHistoryData ------------------",
-      app.orderHistoryData
-    );
-  }, [app.orderHistoryData]);
 
   return (
     <React.Fragment>
@@ -446,12 +466,13 @@ const Profile = ({ app, authentication, ...props }) => {
           </Row>
           <Row className="mt-5" sm={12} md={12} lg={12} xxl={12}>
             <Col>
-              {app.orderHistoryData.length > 0 ? (
+              {app.orderHistoryData !== undefined &&
+              app.orderHistoryData.length > 0 ? (
                 <Card>
                   <CardHeader>
                     <h4 className="card-title">Order History</h4>
                     <p className="card-title-desc">
-                      This is all the list of your order history.
+                      List of your order history.
                     </p>
                   </CardHeader>
                   <CardBody>
@@ -539,9 +560,10 @@ const Profile = ({ app, authentication, ...props }) => {
   );
 };
 
-const mapStateToProps = ({ app, authentication }) => ({
+const mapStateToProps = ({ app, authentication, profile }) => ({
   app,
   authentication,
+  profile,
 });
 
 export default connect(mapStateToProps, { actionCreator })(Profile);

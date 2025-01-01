@@ -289,7 +289,7 @@ const Catalog = ({ app, ...props }) => {
                     }}
                   >
                     <a
-                      href="/kids/continental-80-shoes-54"
+                      href={`/product/${item["Product ID"]}`}
                       className="font-bold hover:underline h5"
                     >
                       <span
