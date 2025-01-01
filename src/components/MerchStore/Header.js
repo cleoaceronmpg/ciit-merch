@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 //Import Icons
@@ -22,10 +22,11 @@ import cartIcon from "../../assets/images/cart.png";
 
 const Header = ({ authentication, ...props }) => {
   let navigate = useNavigate();
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const toggle = () => setDropdownOpen(!dropdownOpen);
-  const [search, setsearch] = React.useState(true);
+  const [dropdownOpen, setDropdownOpen] = React.useState(false);
+  const [searchKey, setSearchKey] = React.useState(null);
   const [minTopNav, setMinTopNav] = React.useState(false);
+  const typingTimeoutRef = React.useRef(null);
+  const toggle = () => setDropdownOpen(!dropdownOpen);
 
   React.useEffect(() => {
     console.log("authentication", authentication);
@@ -37,6 +38,18 @@ const Header = ({ authentication, ...props }) => {
     } else {
       setMinTopNav(true);
     }
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      searchHandler(searchKey);
+    }
+  };
+
+  const searchHandler = (searchKey) => {
+    const searchNewMetaSearch = searchKey || "jacket";
+    navigate(`/search/${searchNewMetaSearch}`);
   };
 
   return (
@@ -246,7 +259,9 @@ const Header = ({ authentication, ...props }) => {
                             type="text"
                             className="form-control"
                             placeholder="Search Anything ..."
-                            aria-label="Recipient's username"
+                            aria-label="Search Product"
+                            onChange={(e) => setSearchKey(e.target.value)}
+                            onKeyDown={handleKeyPress}
                           />
                           <div
                             className="input-group-append"
@@ -256,7 +271,13 @@ const Header = ({ authentication, ...props }) => {
                               borderBottomRightRadius: 4,
                             }}
                           >
-                            <button className="btn" type="submit">
+                            <button
+                              className="btn"
+                              type="button"
+                              onClick={() => {
+                                searchHandler(searchKey);
+                              }}
+                            >
                               <i className="mdi mdi-magnify" />
                             </button>
                           </div>

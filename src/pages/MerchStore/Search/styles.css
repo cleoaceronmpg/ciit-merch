@@ -1,0 +1,9 @@
+.searchResult {
+  display: flex;
+  flex-direction: row;
+}
+.metaKey {
+  margin-left: 20px;
+  font-style: italic;
+  font-size: 16px;
+}

@@ -9,6 +9,9 @@ import {
   GET_ORDER_HISTORY,
   GET_ORDER_HISTORY_SUCCESS,
   GET_ORDER_HISTORY_FAILED,
+  SEARCH_PRODUCTS,
+  SEARCH_PRODUCTS_SUCCESS,
+  SEARCH_PRODUCTS_FAILED,
 } from "./types";
 
 const INITIAL_STATE = {
@@ -20,6 +23,7 @@ const INITIAL_STATE = {
   campaignData: [],
   previousCheckoutData: null,
   orderHistoryData: [],
+  searchData: [],
 };
 
 const app = (state = INITIAL_STATE, action) => {
@@ -95,6 +99,29 @@ const app = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         previousCheckoutData: action.payload,
+      };
+
+    case SEARCH_PRODUCTS:
+      return {
+        ...state,
+        loading: false,
+      };
+
+    case SEARCH_PRODUCTS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        searchData: action.payload.searchData,
+        error: null,
+        errorMessage: null,
+      };
+
+    case SEARCH_PRODUCTS_FAILED:
+      return {
+        ...state,
+        error: true,
+        errorMessage: action.payload.message,
+        searchData: [],
       };
     default:
       return state;

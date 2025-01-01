@@ -68,9 +68,6 @@ const ProductDetails = ({ app, cart, ...props }) => {
           item["Color"] === colorDetails.color &&
           item["Size"] === sizeDetails.size
       );
-      console.log("selectedProduct --------------", selectedProduct);
-      console.log("existing cart --------------", cart.data);
-      console.log("sameCartVariant --------------", sameCartVariant);
 
       if (sameCartVariant) {
         const newCartData = cart.data.map((item) =>

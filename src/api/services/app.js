@@ -54,6 +54,14 @@ class App {
   fnGetOrderItemsHistory = async (id) => {
     return await ciitMerchApi("OrderItems").find(id);
   };
+
+  fnSearchProducts = async (search) => {
+    return await ciitMerchApi("Products")
+      .select({
+        filterByFormula: `SEARCH("${search}", ARRAYJOIN({Tags}, ","))`,
+      })
+      .firstPage();
+  };
 }
 
 App.api = new App();

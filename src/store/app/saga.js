@@ -9,6 +9,9 @@ import {
   GET_ORDER_HISTORY,
   GET_ORDER_HISTORY_SUCCESS,
   GET_ORDER_HISTORY_FAILED,
+  SEARCH_PRODUCTS,
+  SEARCH_PRODUCTS_SUCCESS,
+  SEARCH_PRODUCTS_FAILED,
 } from "./types";
 
 import appServices from "../../api/services/app";
@@ -70,8 +73,29 @@ export function* fnGetOrderHistory({ payload }) {
   }
 }
 
+export function* fnSearchProducts({ payload }) {
+  try {
+    const response = yield call(appServices.api.fnSearchProducts, payload);
+
+    if (response) {
+      const newdata = response.map((item) => ({ ...item.fields, id: item.id }));
+
+      yield put({
+        type: SEARCH_PRODUCTS_SUCCESS,
+        payload: { searchData: newdata },
+      });
+    }
+  } catch (error) {
+    yield put({
+      type: SEARCH_PRODUCTS_FAILED,
+      payload: error,
+    });
+  }
+}
+
 export default function* watcher() {
   yield takeLatest(GET_PRODUCTS, fnGetProducts);
   yield takeLatest(GET_CAMPAIGN, fnGetCampaign);
   yield takeLatest(GET_ORDER_HISTORY, fnGetOrderHistory);
+  yield takeLatest(SEARCH_PRODUCTS, fnSearchProducts);
 }
