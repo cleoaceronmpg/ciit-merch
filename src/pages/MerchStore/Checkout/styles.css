@@ -23,13 +23,12 @@
   border-radius: 100%;
   text-align: center;
 }
-.checkout-summary {
-  padding-top: 3rem;
-  padding-bottom: 2rem;
-  border-left: 1px solid #e1e3e5;
-  position: relative;
-  padding-left: 2rem;
+.checkout-details {
+  background-color: #f2f4f5;
+  border: 1px solid #e1e3e5;
   min-height: calc(100vh - 50px);
+  padding: 30px;
+  margin-left: 20px;
 }
 table {
   text-indent: 0;
@@ -63,11 +62,6 @@ table th {
   padding: 0.5rem;
   text-align: left;
 }
-
-.checkout-summary-block {
-  border-top: 1px solid "#e1e3e5";
-  padding-top: 1rem;
-}
 .summary-row {
   display: grid;
   margin-bottom: 1rem;
@@ -93,15 +87,98 @@ table th {
   background-color: #fff;
   position: relative;
 }
-.checkout-summary-block {
+.checkout-details-block {
   border-top: 1px solid #e1e3e5;
   padding-top: 1rem;
 }
 .button.primary:hover {
   background-color: #006e52;
 }
+
+.checkout-details-block__subtotal, .checkout-details-block__total {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.checkout-details__item {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 10px;
+  border-bottom: 1px solid #e1e3e5;
+}
+
+.checkout-details__product-details {
+  display: flex;
+  justify-content: space-between;
+}
+
+.checkout-details__product-image {
+  width: 15%;
+}
+
+.checkout-details__product-info {
+  width: 65%;
+}
+
+.checkout-details__quantity {
+  margin-top: 10px;
+}
+
+.checkout-details__product-total {
+  width: 20%;
+  text-align: right;
+}
+
 @media (min-width: 768px) {
   .grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1200px) {
+  .checkout-details {
+    border: 0px;
+    padding: 20px;
+    margin-left: 0px;
+    margin-top: 20px;
+  }
+
+  .checkout-details__product-details {
+    display: flex;
+    align-items: center;
+  }
+}
+
+@media (max-width: 482px) {
+  .checkout-details__product-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+  }
+
+  .checkout-details__product-total {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+  }
+
+  .checkout-details__product-image {
+    display: flex;
+    justify-content: center;
+  }
+
+  .checkout-details__product-name {
+    text-align: center;
+  }
+
+  .checkout-details__product-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 }

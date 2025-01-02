@@ -161,6 +161,7 @@ svg {
 
 .summary {
   background-color: #f2f4f5;
+  border: 1px solid #e1e3e5;
   padding: 20px;
   width: 100%;
 }
