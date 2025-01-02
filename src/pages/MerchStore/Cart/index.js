@@ -132,13 +132,7 @@ const Cart = ({ app, cart, ...props }) => {
                               <a
                                 href="#"
                                 className="text-textSubdued underline"
-<<<<<<< Updated upstream
                                 onClick={() => removeItemInCart(item.uid)}
-=======
-                                onClick={() =>
-                                  removeItemInCart(item["Product ID"])
-                                }
->>>>>>> Stashed changes
                               >
                                 <span>Remove</span>
                               </a>
@@ -197,13 +191,7 @@ const Cart = ({ app, cart, ...props }) => {
                                       backgroundColor: "transparent",
                                       backgroundImage: "none",
                                     }}
-<<<<<<< Updated upstream
                                     onClick={() => minusQuantity(item.uid)}
-=======
-                                    onClick={() =>
-                                      minusQuantity(item["Product ID"])
-                                    }
->>>>>>> Stashed changes
                                   >
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"
@@ -240,13 +228,7 @@ const Cart = ({ app, cart, ...props }) => {
                                       backgroundColor: "transparent",
                                       backgroundImage: "none",
                                     }}
-<<<<<<< Updated upstream
                                     onClick={() => plusQuantity(item.uid)}
-=======
-                                    onClick={() =>
-                                      plusQuantity(item["Product ID"])
-                                    }
->>>>>>> Stashed changes
                                   >
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"
