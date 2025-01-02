@@ -134,7 +134,7 @@ const Cart = ({ app, cart, ...props }) => {
                                 className="text-textSubdued underline"
                                 onClick={() => removeItemInCart(item.uid)}
                               >
-                                <span>Remove</span>
+                                <i className="dripicons-trash"></i>
                               </a>
                             </div>
                             <div className="product-item__product-info">

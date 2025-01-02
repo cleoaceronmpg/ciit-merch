@@ -212,6 +212,9 @@ svg {
 .product-item {
   display: flex;
   flex-direction: column;
+  border: 1px solid #e1e1e1;
+  padding: 10px;
+  margin-bottom: 20px;
 }
 
 .product-item__remove-item {
@@ -222,7 +225,6 @@ svg {
 .product-item__product-info {
   display: flex;
   justify-content: space-between;
-  margin-top: 10px;
 }
 
 .product-item__product-details {
