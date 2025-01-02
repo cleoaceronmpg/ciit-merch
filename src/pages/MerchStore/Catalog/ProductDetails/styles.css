@@ -71,29 +71,7 @@
   padding: 0;
   height: 40px;
 }
-.variant-option-list li {
-  border: 1px solid #e1e3e5;
-  border-radius: 2px;
-  background-color: #fff;
-  font-size: 12px;
-  text-decoration: none;
-  list-style: none;
-}
 
-.variant-option-list li a {
-  padding: 1rem 1.5rem;
-  display: block;
-  text-align: center;
-  color: inherit;
-  cursor: pointer;
-}
-
-.variant-option-list li.selected {
-  background-color: #00364d;
-  border-color: #00364d;
-  color: #fff;
-  cursor: pointer;
-}
 
 .button.primary:hover {
   background-color: #00364d;
@@ -118,4 +96,78 @@ img.self-center-details {
 
 .custom-confirm-button:hover {
   background-color: #45a049;
+}
+
+.product-details {
+  display: flex;
+  flex-direction: row;
+}
+
+.product-details__image {
+  max-width: 550px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+}
+
+.product-details__info {
+  padding: 100px 0px;
+  margin-left: 20px;
+}
+
+.product-details__name, .product-details__price, .product-details__sku, .product-details__sizes, product-details__colors, .product-details__sizes h6, .product-details__colors h6,
+.product-details__quantity, .product-details__actions {
+  margin-bottom: 20px;
+}
+
+.product-details__variant-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding-left: 0;
+}
+
+.product-details__variant-options li {
+  border: 1px solid #e1e3e5;
+  border-radius: 2px;
+  background-color: #fff;
+  font-size: 12px;
+  text-decoration: none;
+  list-style: none;
+}
+
+.product-details__variant-options li span {
+  padding: 1rem 1.5rem;
+  display: block;
+  text-align: center;
+  color: inherit;
+  cursor: pointer;
+}
+
+.product-details__variant-options li.selected {
+  background-color: #00364d;
+  border-color: #00364d;
+  color: #fff;
+  cursor: pointer;
+}
+
+@media (max-width: 991px) {
+  .product-details {
+    flex-direction: column;
+  }
+
+  .product-details__image {
+    max-width: 1000px;
+  }
+
+  .product-details__info {
+    padding: 20px;
+    margin-left: 0px;
+  }
+
+  .product-description {
+    padding: 0px 20px;
+  }
 }

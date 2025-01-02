@@ -9,6 +9,7 @@ import { generateRandomString } from "../../../../helpers/crypto_helper";
 import Breadcrumbs from "../../../../components/MerchStore/Common/Breadcrumb";
 import Header from "../../../../components/MerchStore/Header";
 import Footer from "../../../../components/MerchStore/Footer";
+import QuantityButton from "../../../../components/MerchStore/Common/QuantityButton";
 import "./styles.css";
 
 import { Button, Container } from "reactstrap";
@@ -123,194 +124,100 @@ const ProductDetails = ({ app, cart, ...props }) => {
   return (
     <React.Fragment>
       <Header />
-      <div
-        className="page-content"
-        style={{ paddingLeft: 20, paddingRight: 20 }}
-      >
-        <Container>
-          {/* Render Breadcrumbs */}
-          <Breadcrumbs
-            title="Catalog"
-            breadcrumbItem={selectedProduct["Product Name"] || ""}
-          />
+      <Container>
+        {/* Render Breadcrumbs */}
+        <Breadcrumbs
+          title="Catalog"
+          breadcrumbItem={selectedProduct["Product Name"] || ""}
+        />
 
-          <div
-            className="gap-12"
-            style={{
-              marginBottom: 4,
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-              flexWrap: "wrap",
-            }}
-          >
-            <div>
-              {selectedProduct?.Images && selectedProduct.Images.length > 0 && (
-                <div
-                  id="product-current-image"
-                  style={{
-                    backgroundColor: "rgb(246, 246, 246)",
-                    minHeight: "450px",
-                  }}
-                  className="product-image product-single-page-image flex justify-center items-center"
-                >
-                  <img
-                    src={selectedProduct.Images[0].url}
-                    alt={selectedProduct["Product Name"]}
-                    className="self-center-details"
-                  />
-                </div>
-              )}
-            </div>
-            {selectedProduct["Product ID"] && (
-              <div className="">
-                <div className="flex flex-col ">
-                  <h1 className="product-single-name">
-                    {selectedProduct["Product Name"]}
-                  </h1>
-                  <h4 className="product-single-price">
-                    <div>
-                      <span className="sale-price">
-                        ₱{" "}
-                        {parseInt(selectedProduct.Price).toLocaleString(
-                          "en-US"
-                        )}{" "}
-                        PHP
-                      </span>
-                    </div>
-                  </h4>
-                  <div
-                    className="product-single-sku text-textSubdued"
-                    style={{
-                      marginBottom: 20,
-                    }}
-                  >
-                    <span>Sku</span>
-                    <span>: </span>
-                    {selectedProduct["Product ID"]}
-                  </div>
-                  {/* <div
-                    className="specification"
-                    style={{
-                      marginTop: 10,
-                    }}
-                  >
-                    <ul className="list-disc list-inside">
-                      <li>
-                        <strong>Color</strong>{" "}
-                        <span>{selectedProduct.color}</span>
-                      </li>
-                    </ul>
-                  </div> */}
-                </div>
-                <div className="">
-                  <div id="size">
-                    <ul className="variant-option-list flex justify-start gap-2 flex-wrap">
-                      {SIZE.map((item, index) => (
-                        <li
-                          key={index}
-                          className={selectedSize === item.id ? "selected" : ""}
-                        >
-                          <a
-                            href="#size"
-                            onClick={() => setSelectedSize(item.id)}
-                          >
-                            {item.size}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div id="color">
-                    <ul className="variant-option-list flex justify-start gap-2 flex-wrap">
-                      {COLOR.map((item, index) => (
-                        <li
-                          key={index}
-                          className={
-                            selectedColor === item.id ? "selected" : ""
-                          }
-                        >
-                          <a
-                            href="#color"
-                            onClick={() => setSelectedColor(item.id)}
-                          >
-                            {item.color}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-
-                <div className="">
-                  <div className="add-to-cart mt-8">
-                    <div style={{ width: "5rem" }}>
-                      <div className="form-field-container null">
-                        <div className="field-wrapper flex flex-grow">
-                          <span
-                            style={{
-                              marginRight: 10,
-                              marginTop: 10,
-                            }}
-                          >
-                            Quantity:{" "}
-                          </span>
-                          <input
-                            style={{
-                              border: "1px solid #e1e3e5",
-                              width: 80,
-                              padding: 10,
-                            }}
-                            type="text"
-                            name="qty"
-                            placeholder="Qty"
-                            defaultValue="1"
-                            onChange={(e) => setSelectedQty(e.target.value)}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="mt-4">
-                      <Button
-                        className="btn btn-primary w-100 waves-effect waves-light"
-                        type="button"
-                        style={{
-                          backgroundColor: "#ff5400",
-                          borderColor: "#ff5400",
-                          maxWidth: "50%",
-                        }}
-                        color="primary"
-                        onClick={() => addToCart()}
-                      >
-                        <span>ADD TO CART</span>
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-                <div className="mt-8 md:mt-12">
-                  <div className="product-description">
-                    <div className="editor__html">
-                      <div className="row__container mt-12 grid md:grid-cols-1 grid-cols-1 gap-8">
-                        <div className="column__container md:col-span-1 col-span-1">
-                          <div className="prose prose-base max-w-none">
-                            {selectedProduct["Product Description"] !==
-                            undefined ? (
-                              <p>{selectedProduct["Product Description"]}</p>
-                            ) : (
-                              <p>Description not available</p>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+        <div>
+          <div className="product-details">
+            {selectedProduct?.Images && selectedProduct.Images.length > 0 && (
+              <div className="product-details__image">
+                <img
+                  src={selectedProduct.Images[0].url}
+                  alt={selectedProduct["Product Name"]}
+                  className="self-center-details"
+                />
               </div>
             )}
+
+            <div className="product-details__info">
+              <div className="product-details__name">
+                <h1>{selectedProduct["Product Name"]}</h1>
+              </div>
+              <div className="product-details__sku">
+                <h6>SKU: {selectedProduct["Product ID"]}</h6>
+              </div>
+              <div className="product-details__price">
+                <h3>₱ {parseFloat(selectedProduct.Price).toFixed(2)}</h3>
+              </div>
+              <div className="product-details__sizes">
+                <h6>Sizes:</h6>
+                <ul className="product-details__variant-options">
+                  {SIZE.map((item, index) => (
+                    <li
+                      key={index}
+                      className={selectedSize === item.id ? "selected" : ""}
+                    >
+                      <span onClick={() => setSelectedSize(item.id)}>
+                        {item.size}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="product-details__colors">
+                <h6>Colors:</h6>
+                <ul className="product-details__variant-options">
+                  {COLOR.map((item, index) => (
+                    <li
+                      key={index}
+                      className={selectedColor === item.id ? "selected" : ""}
+                    >
+                      <span onClick={() => setSelectedColor(item.id)}>
+                        {item.color}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="product-details__quantity">
+                <label>Quantity:</label>
+                <QuantityButton
+                  quantity={selectedQty}
+                  setSelectedQty={setSelectedQty}
+                />
+              </div>
+              <div className="product-details__actions">
+                <Button
+                  className="btn btn-primary w-100 waves-effect waves-light"
+                  type="button"
+                  style={{
+                    backgroundColor: "#ff5400",
+                    borderColor: "#ff5400",
+                    maxWidth: "50%",
+                    padding: "15px",
+                  }}
+                  color="primary"
+                  onClick={() => addToCart()}
+                >
+                  <span>ADD TO CART</span>
+                </Button>
+              </div>
+            </div>
           </div>
-        </Container>
-      </div>
+          <div className="product-description">
+            <h5>Description:</h5>
+            {selectedProduct["Product Description"] !== undefined ? (
+              <p>{selectedProduct["Product Description"]}</p>
+            ) : (
+              <p>Description not available</p>
+            )}
+          </div>
+        </div>
+      </Container>
       <Footer />
     </React.Fragment>
   );
