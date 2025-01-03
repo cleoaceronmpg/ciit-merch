@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import {
   Button,
@@ -22,7 +22,7 @@ import { useFormik } from "formik";
 import weareLogo from "../../../assets/images/weare-logo.png";
 
 const MerchLogin = ({ authentication, ...props }) => {
-  const [passwordShow, setPasswordShow] = useState(false);
+  const [passwordShow, setPasswordShow] = React.useState(false);
   let navigate = useNavigate();
 
   const validation = useFormik({
@@ -44,9 +44,6 @@ const MerchLogin = ({ authentication, ...props }) => {
   });
 
   React.useEffect(() => {
-    // props.actionCreator({
-    //   type: types.CLEAR_AUTH,
-    // });
     // notify after error
     if (!authentication.loading && authentication.error) {
       toast(authentication.errorMessage, {

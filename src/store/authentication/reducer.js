@@ -8,6 +8,12 @@ import {
   REGISTER,
   REGISTER_SUCCESS,
   REGISTER_FAILED,
+  POST_VERIFY_ACCOUNT,
+  POST_VERIFY_ACCOUNT_SUCCESS,
+  POST_VERIFY_ACCOUNT_FAILED,
+  POST_UPDATE_VERIFIED_ACCOUNT,
+  POST_UPDATE_VERIFIED_ACCOUNT_SUCCESS,
+  POST_UPDATE_VERIFIED_ACCOUNT_FAILED,
 } from "./types";
 
 const initialState = {
@@ -19,6 +25,8 @@ const initialState = {
   error: null,
   errorMessage: null,
   tempUsers: [],
+  emailVerifyData: [],
+  emailVerified: false,
 };
 
 const authentication = (state = initialState, action) => {
@@ -39,10 +47,10 @@ const authentication = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        authenticated: true,
-        data: action.payload,
         error: null,
         errorMessage: null,
+        authenticated: false,
+        tempUsers: action.payload,
       };
 
     case REGISTER_FAILED:
@@ -61,7 +69,6 @@ const authentication = (state = initialState, action) => {
         loading: false,
         authenticated: true,
         data: action.payload,
-        // token: action.payload.token,
         error: null,
         errorMessage: null,
       };
@@ -83,6 +90,56 @@ const authentication = (state = initialState, action) => {
         ...state,
         error: action.payload.error,
         loading: false,
+      };
+
+    case POST_VERIFY_ACCOUNT:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case POST_VERIFY_ACCOUNT_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        errorMessage: null,
+        emailVerifyData: action.payload,
+      };
+
+    case POST_VERIFY_ACCOUNT_FAILED:
+      return {
+        ...state,
+        error: true,
+        errorMessage: action.payload,
+        loading: false,
+        emailVerifyData: [],
+      };
+
+    case POST_UPDATE_VERIFIED_ACCOUNT:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case POST_UPDATE_VERIFIED_ACCOUNT_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        errorMessage: null,
+        data: action.payload,
+        emailVerified: true,
+        authenticated: true,
+      };
+
+    case POST_UPDATE_VERIFIED_ACCOUNT_FAILED:
+      return {
+        ...state,
+        error: true,
+        errorMessage: action.payload,
+        loading: false,
+        emailVerified: false,
       };
 
     case CLEAR_AUTH:

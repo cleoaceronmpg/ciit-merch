@@ -9,3 +9,16 @@ export const CLEAR_AUTH = "@authentication/CLEAR_AUTH";
 export const REGISTER = "@authentication/REGISTER";
 export const REGISTER_SUCCESS = "@authentication/REGISTER_SUCCESS";
 export const REGISTER_FAILED = "@authentication/REGISTER_FAILED";
+
+export const POST_VERIFY_ACCOUNT = "@authentication/POST_VERIFY_ACCOUNT";
+export const POST_VERIFY_ACCOUNT_SUCCESS =
+  "@authentication/POST_VERIFY_ACCOUNT_SUCCESS";
+export const POST_VERIFY_ACCOUNT_FAILED =
+  "@authentication/POST_VERIFY_ACCOUNT_FAILED";
+
+export const POST_UPDATE_VERIFIED_ACCOUNT =
+  "@authentication/POST_UPDATE_VERIFIED_ACCOUNT";
+export const POST_UPDATE_VERIFIED_ACCOUNT_SUCCESS =
+  "@authentication/POST_UPDATE_VERIFIED_ACCOUNT_SUCCESS";
+export const POST_UPDATE_VERIFIED_ACCOUNT_FAILED =
+  "@authentication/POST_UPDATE_VERIFIED_ACCOUNT_FAILED";

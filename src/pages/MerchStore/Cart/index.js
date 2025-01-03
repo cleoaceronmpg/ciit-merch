@@ -57,9 +57,12 @@ const Cart = ({ app, cart, ...props }) => {
   };
 
   const computeSubTotal = async (data) => {
+    console.log("data ---------------", data);
     const TotalAmount = data.reduce((acc, product) => {
       // Remove non-numeric characters from price and convert to number
-      const numericPrice = parseFloat(product.Price.replace(/[^0-9.-]+/g, ""));
+      const numericPrice = product?.Price
+        ? parseFloat(product?.Price.replace(/[^0-9.-]+/g, ""))
+        : parseFloat(product?.price.replace(/[^0-9.-]+/g, ""));
       // Add to accumulator: price * quantity
       return acc + numericPrice * product.Quantity;
     }, 0);
@@ -140,11 +143,15 @@ const Cart = ({ app, cart, ...props }) => {
                             <div className="product-item__product-info">
                               <div className="product-item__product-details">
                                 <div className="product-image">
-                                  <img
-                                    className="self-center"
-                                    src={item.Images[0].url}
-                                    alt={item["Product Name"]}
-                                  />
+                                  {item?.Images ? (
+                                    <img
+                                      className="self-center"
+                                      src={item?.Images[0]?.url || ""}
+                                      alt={item["Product Name"]}
+                                    />
+                                  ) : (
+                                    <p className="text-muted">No Image</p>
+                                  )}
                                 </div>
                                 <div className="product-item__product-description">
                                   <div className="product-item__product-name">

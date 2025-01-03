@@ -158,18 +158,21 @@ table th {
 
 .thank-banner__check-icon {
   align-items: center;
-  color:#00985d;
+  color: #00985d;
   display: flex;
   font-size: 50px;
   justify-content: center;
   margin-right: 20px;
 }
 
-.thank-banner__order-reference, .thank-banner__transaction-number {
+.thank-banner__order-reference,
+.thank-banner__transaction-number {
   margin-bottom: 20px;
 }
 
-.thank-details-block__subtotal, .thank-details-block__total, .thank-details-block__total-items {
+.thank-details-block__subtotal,
+.thank-details-block__total,
+.thank-details-block__total-items {
   display: flex;
   justify-content: space-between;
   margin-top: 20px;
@@ -211,7 +214,10 @@ table th {
   margin-bottom: 10px;
 }
 
-.customer-info__contacts, .customer-info__ship-method, .customer-info__payment-method, .customer-info__billing-address {
+.customer-info__contacts,
+.customer-info__ship-method,
+.customer-info__payment-method,
+.customer-info__billing-address {
   width: 50%;
 }
 
@@ -248,12 +254,14 @@ table th {
 }
 
 @media (max-width: 482px) {
-
   .customer-info__row {
     flex-direction: column;
   }
 
-  .customer-info__contacts, .customer-info__ship-method, .customer-info__payment-method, .customer-info__billing-address {
+  .customer-info__contacts,
+  .customer-info__ship-method,
+  .customer-info__payment-method,
+  .customer-info__billing-address {
     width: 100%;
     margin-bottom: 20px;
   }
@@ -270,7 +278,7 @@ table th {
     width: 50%;
     display: flex;
     align-items: center;
-    justify-content: end;
+    justify-content: flex-end;
   }
 
   .thank-details__product-image {

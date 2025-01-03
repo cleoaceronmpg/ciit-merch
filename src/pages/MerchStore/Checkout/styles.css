@@ -95,7 +95,8 @@ table th {
   background-color: #006e52;
 }
 
-.checkout-details-block__subtotal, .checkout-details-block__total {
+.checkout-details-block__subtotal,
+.checkout-details-block__total {
   display: flex;
   justify-content: space-between;
   margin-top: 20px;
@@ -163,7 +164,7 @@ table th {
     width: 50%;
     display: flex;
     align-items: center;
-    justify-content: end;
+    justify-content: flex-end;
   }
 
   .checkout-details__product-image {

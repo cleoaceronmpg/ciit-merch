@@ -4,7 +4,7 @@ class Authentication {
   fnPostLogin = async (payload) => {
     return await ciitMerchApi("Users")
       .select({
-        filterByFormula: `AND({Email} = '${payload.email}', {Password} = '${payload.password}')`,
+        filterByFormula: `AND({Email} = '${payload.email}')`,
         maxRecords: 1,
       })
       .firstPage();
@@ -12,6 +12,21 @@ class Authentication {
 
   fnPostRegister = async (payload) => {
     return await ciitMerchApi("Users").create(payload);
+  };
+
+  fnPostVerifyAccountViaToken = async (payload) => {
+    return await ciitMerchApi("Users")
+      .select({
+        filterByFormula: `AND({Token} = '${payload.token}', {EmailVerified} = 'false')`,
+        maxRecords: 1,
+      })
+      .firstPage();
+  };
+
+  fnUpdateVerifiedAccount = async (values) => {
+    return await ciitMerchApi("Users").update(values.id, {
+      EmailVerified: "true",
+    });
   };
 }
 

@@ -34,6 +34,7 @@ import TermsAndCondition from "../pages/MerchStore/TermsAndCondition";
 import PrivacyPolicy from "../pages/MerchStore/TermsAndCondition/PrivacyPolicy";
 import Profile from "../pages/MerchStore/Profile";
 import Search from "../pages/MerchStore/Search";
+import Verify from "../pages/MerchStore/Register/Verify";
 
 const userRoutes = [
   //dashboard
@@ -76,6 +77,7 @@ const authRoutes = [
   { path: "/privacy-policy", component: <PrivacyPolicy /> },
   { path: "/profile", component: <Profile /> },
   { path: "/search/:key", component: <Search /> },
+  { path: "/verify", component: <Verify /> },
 ];
 
 export { userRoutes, authRoutes };

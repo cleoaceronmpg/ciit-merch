@@ -1,3 +1,5 @@
+import CryptoJS from "crypto-js";
+
 // Function to compute SHA-1 hash
 export async function hashChecksum(message) {
   function rotateLeft(n, s) {
@@ -137,3 +139,9 @@ export async function generateRandomString(length = 10) {
   const timestamp = Date.now().toString(36); // Convert timestamp to base 36
   return result + timestamp; // Combine random string with timestamp
 }
+
+export const encrypt = (key) => {
+  const salt = process.env.REACT_APP_SALTROUNDS || "defaultSalt";
+  const hashedPassword = CryptoJS.HmacSHA256(key, salt).toString();
+  return hashedPassword;
+};

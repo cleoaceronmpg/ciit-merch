@@ -20,6 +20,7 @@ import { useFormik } from "formik";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { actionCreator, types } from "../../../store";
+import { encrypt } from "../../../helpers/crypto_helper";
 import logoSvg from "../../../assets/images/weare-logo.png";
 import "./styles.css";
 
@@ -33,21 +34,31 @@ const Register = ({ account, authentication, ...props }) => {
   }, []);
 
   React.useEffect(() => {
-    if (authentication.authenticated) {
-      if (authentication.data?.id) {
-        toast(
-          "Thank you for signing up! You're all set to continue your shopping adventure!",
-          {
-            position: "top-right",
-            hideProgressBar: true,
-            className: "bg-success text-white",
-          }
-        );
+    if (authentication.tempUsers?.id) {
+      toast(
+        "Thank you for signing up! Please check your email inbox to verify your account.",
+        {
+          position: "top-right",
+          hideProgressBar: true,
+          className: "bg-success text-white",
+        }
+      );
 
-        setTimeout(() => {
-          navigate("/home");
-        }, 2000);
-      }
+      validation.resetForm();
+      setTimeout(() => {
+        clearAuthBeforeRegister();
+        navigate("/home");
+      }, 2500);
+    }
+  }, [authentication]);
+
+  React.useEffect(() => {
+    if (authentication.error && authentication.errorMessage) {
+      toast(authentication.errorMessage, {
+        position: "top-right",
+        hideProgressBar: true,
+        className: "bg-danger text-white",
+      });
     }
   }, [authentication]);
 
@@ -68,7 +79,8 @@ const Register = ({ account, authentication, ...props }) => {
       ContactNumber: Yup.string().required("Enter Your Contact Number"),
     }),
     onSubmit: async (values) => {
-      console.log("values", values);
+      values.Password = encrypt(values.Password);
+      values.Token = encrypt(process.env.REACT_APP_SECRET_KEY);
 
       await props.actionCreator({
         type: types.REGISTER,

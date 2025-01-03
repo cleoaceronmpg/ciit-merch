@@ -455,7 +455,7 @@ const Checkout = ({ app, cart, checkout, authentication, ...props }) => {
                     </div>
                   )}
                 </div>
-                {!checkout.shipAddressData.length ? (
+                {!checkout.shipAddressData.length && (
                   <div
                     style={{
                       marginTop: "1rem",
@@ -528,59 +528,8 @@ const Checkout = ({ app, cart, checkout, authentication, ...props }) => {
                       </FormGroup>
                     </div>
                   </div>
-                ) : (
-                  <div
-                    style={{
-                      marginTop: "1rem",
-                      marginBottom: "2rem",
-                    }}
-                  >
-                    <h4
-                      style={{
-                        fontWeight: "inherit",
-                      }}
-                    >
-                      Payment Method
-                    </h4>
-                    <div
-                      style={{
-                        justifyContent: "space-between",
-                        marginTop: 10,
-                        border: "#ccc solid 1px",
-                        padding: 15,
-                        borderColor: "rgb(225 227 229)",
-                        borderRadius: ".25rem",
-                      }}
-                    >
-                      <FormGroup
-                        check
-                        style={{
-                          marginBottom: 10,
-                        }}
-                      >
-                        <Label
-                          style={{
-                            fontWeight: 400,
-                          }}
-                          check
-                        >
-                          <Input
-                            type="radio"
-                            name="paymentOptions"
-                            value="dragonpay"
-                            checked={selectedPaymentOption === "dragonpay"}
-                            onChange={handlePaymentOption}
-                            style={{
-                              marginTop: 50,
-                              marginRight: 10,
-                            }}
-                          />
-                          <img src={dragonpayLogo} height={100} width={200} />
-                        </Label>
-                      </FormGroup>
-                    </div>
-                  </div>
                 )}
+
                 {selectedOption === "for-delivery" &&
                 !checkout.shipAddressData.length ? (
                   <Form
@@ -793,7 +742,7 @@ const Checkout = ({ app, cart, checkout, authentication, ...props }) => {
                         }}
                         color="primary"
                       >
-                        <span>Continue to payment</span>
+                        <span>Place Order</span>
                       </Button>
                     </div>
                   </Form>
@@ -816,7 +765,11 @@ const Checkout = ({ app, cart, checkout, authentication, ...props }) => {
                       color="primary"
                       onClick={() => continueForPickup()}
                     >
-                      <span>Continue to shipping</span>
+                      {checkout.tempEmail ? (
+                        <span>Place Order</span>
+                      ) : (
+                        <span>Continue to shipping</span>
+                      )}
                     </Button>
                   </div>
                 ) : (
@@ -839,7 +792,7 @@ const Checkout = ({ app, cart, checkout, authentication, ...props }) => {
                       onClick={() => placeOrder()}
                       disabled={checkout.placedOrderItemsData.length > 0}
                     >
-                      <span>Place Order</span>
+                      <span>Continue Checkout</span>
                     </Button>
                   </div>
                 )}

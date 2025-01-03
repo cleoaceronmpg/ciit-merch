@@ -25,7 +25,7 @@ const initialState = {
   shipAddressData: [],
   orderItemsData: [],
   orderID: null,
-  paymentMethod: null,
+  paymentMethod: "dragonpay",
   notesToOrders: null,
   totalAmount: null,
   placedOrderItemsData: [],
