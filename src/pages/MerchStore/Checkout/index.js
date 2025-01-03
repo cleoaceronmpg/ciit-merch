@@ -34,8 +34,9 @@ const Checkout = ({ app, cart, checkout, authentication, ...props }) => {
   const [selectedOption, setSelectedOption] = React.useState(
     !checkout.shipAddressData.length && "for-pickup"
   );
-  const [selectedPaymentOption, setSelectedPaymentOption] =
-    React.useState(null);
+  const [selectedPaymentOption, setSelectedPaymentOption] = React.useState(
+    checkout.paymentMethod
+  );
   const [notesToOrders, setNotesToOrders] = React.useState(null);
 
   const { fields } = authentication.data;

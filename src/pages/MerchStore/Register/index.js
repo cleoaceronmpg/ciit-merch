@@ -23,6 +23,7 @@ import { actionCreator, types } from "../../../store";
 import { encrypt } from "../../../helpers/crypto_helper";
 import logoSvg from "../../../assets/images/weare-logo.png";
 import "./styles.css";
+import moment from "moment";
 
 const Register = ({ account, authentication, ...props }) => {
   let navigate = useNavigate();
@@ -79,8 +80,15 @@ const Register = ({ account, authentication, ...props }) => {
       ContactNumber: Yup.string().required("Enter Your Contact Number"),
     }),
     onSubmit: async (values) => {
-      values.Password = encrypt(values.Password);
-      values.Token = encrypt(process.env.REACT_APP_SECRET_KEY);
+      values.Password = encrypt(
+        values.Password,
+        process.env.REACT_APP_SECRET_KEY
+      );
+
+      values.Token = encrypt(
+        moment().format("HH:mm:ss"),
+        process.env.REACT_APP_SECRET_KEY
+      );
 
       await props.actionCreator({
         type: types.REGISTER,

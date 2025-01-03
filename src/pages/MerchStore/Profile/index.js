@@ -2,7 +2,7 @@ import React from "react";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import { actionCreator, types } from "../../../store";
-import { encrypt } from "../../../helpers/crypto_helper";
+import { encrypt, decrypt } from "../../../helpers/crypto_helper";
 import { connect } from "react-redux";
 import Swal from "sweetalert2";
 import {
@@ -69,7 +69,9 @@ const Profile = ({ app, authentication, profile, ...props }) => {
       id: authentication.data?.id,
       Email: fields?.Email || "",
       FullName: fields?.FullName || "",
-      Password: fields?.Password || "",
+      Password: fields?.Password
+        ? decrypt(fields?.Password, process.env.REACT_APP_SECRET_KEY)
+        : "",
       ContactNumber: fields?.ContactNumber || "",
     },
     validationSchema: Yup.object({
@@ -79,7 +81,10 @@ const Profile = ({ app, authentication, profile, ...props }) => {
       ContactNumber: Yup.string().required("Contact Number is required"),
     }),
     onSubmit: async (values) => {
-      values.Password = encrypt(values.Password);
+      values.Password = encrypt(
+        values.Password,
+        process.env.REACT_APP_SECRET_KEY
+      );
 
       await props.actionCreator({
         type: types.POST_UPDATE_PROFILE,

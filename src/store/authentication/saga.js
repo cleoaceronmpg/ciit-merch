@@ -1,5 +1,5 @@
 import { call, put, takeLatest } from "redux-saga/effects";
-import CryptoJS from "crypto-js";
+import { decrypt } from "../../helpers/crypto_helper";
 
 // Login Redux States
 import {
@@ -34,16 +34,12 @@ function* fnPostLogin({ payload }) {
       throw "Your account needs to be verified. Please check your email inbox to complete the verification process.";
     }
 
-    // Hash the provided password with the same salt used during encryption
-    const hashedInputPassword = CryptoJS.HmacSHA256(
-      payload.password,
-      process.env.REACT_APP_SALTROUNDS || "defaultSalt"
-    ).toString();
+    const storedPassword = decrypt(
+      response[0].fields?.Password,
+      process.env.REACT_APP_SECRET_KEY
+    );
 
-    // Compare the hashed password with the stored password
-    const storedPassword = response[0].fields.Password;
-
-    if (hashedInputPassword !== storedPassword) {
+    if (payload.password !== storedPassword) {
       throw "Invalid Password.";
     }
 
