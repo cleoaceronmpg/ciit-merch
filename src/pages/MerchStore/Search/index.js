@@ -12,15 +12,24 @@ const SearchScreen = ({ app, authentication, ...props }) => {
   let navigate = useNavigate();
   const { key } = useParams();
   const [searchResults, setSearchResults] = React.useState([]);
+  const [screenHeight, setScreenHeight] = React.useState(window.innerHeight);
 
   React.useEffect(() => {
-    console.log("app.searchData ---- ", app.searchData);
     setSearchResults(app.searchData);
   }, [app.searchData]);
 
   React.useEffect(() => {
-    console.log("key", key);
     searchProducts(key);
+    const handleResize = () => {
+      setScreenHeight(window.innerHeight);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, [key]);
 
   const searchProducts = async (searchKey) => {
@@ -39,7 +48,12 @@ const SearchScreen = ({ app, authentication, ...props }) => {
 
       <div className="auth-page">
         {/* Render Breadcrumbs */}
-        <Container className="container">
+        <Container
+          className="container"
+          style={{
+            height: screenHeight,
+          }}
+        >
           <Row>
             <Col className="searchResult">
               <h5 className="mb-3">Search Result:</h5>

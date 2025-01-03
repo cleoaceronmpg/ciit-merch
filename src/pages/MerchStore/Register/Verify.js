@@ -12,6 +12,7 @@ import "./styles.css";
 const Thankyou = ({ app, authentication, ...props }) => {
   let navigate = useNavigate();
   const [urlParamData, setUrlParamData] = React.useState(null);
+  const [screenHeight, setScreenHeight] = React.useState(window.innerHeight);
 
   React.useEffect(() => {
     clearAuthBeforeVerify();
@@ -30,6 +31,17 @@ const Thankyou = ({ app, authentication, ...props }) => {
   React.useEffect(() => {
     const urlParams = getAllUrlParams();
     setUrlParamData(urlParams);
+
+    const handleResize = () => {
+      setScreenHeight(window.innerHeight);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   // Get all URL parameters
@@ -82,10 +94,8 @@ const Thankyou = ({ app, authentication, ...props }) => {
             marginBottom: 4,
             display: "flex",
             flexDirection: "column",
-            flexWrap: "wrap",
-            justifyContent: "center",
             alignItems: "center",
-            height: 300,
+            height: screenHeight,
           }}
         >
           {authentication.emailVerified &&
@@ -99,29 +109,47 @@ const Thankyou = ({ app, authentication, ...props }) => {
                 Your account has been successfully verified.{" "}
               </p>
               <p>You can now continue shopping.</p>
+              <Button
+                className="btn btn-primary w-100 waves-effect waves-light"
+                onClick={() => {
+                  navigate("/home");
+                }}
+                style={{
+                  backgroundColor: "#ff5400",
+                  borderColor: "#ff5400",
+                  maxWidth: "50%",
+                  height: 50,
+                  marginTop: 20,
+                }}
+                color="primary"
+              >
+                <span>Continue to Shopping</span>
+              </Button>
             </>
           ) : (
             authentication.errorMessage && (
-              <p>Oops! Sorry, your {authentication.errorMessage}</p>
+              <>
+                <p>Oops! Sorry, your {authentication.errorMessage}</p>
+
+                <Button
+                  className="btn btn-primary w-100 waves-effect waves-light"
+                  onClick={() => {
+                    navigate("/home");
+                  }}
+                  style={{
+                    backgroundColor: "#ff5400",
+                    borderColor: "#ff5400",
+                    maxWidth: "50%",
+                    height: 50,
+                    marginTop: 20,
+                  }}
+                  color="primary"
+                >
+                  <span>Continue to Shopping</span>
+                </Button>
+              </>
             )
           )}
-
-          <Button
-            className="btn btn-primary w-100 waves-effect waves-light"
-            onClick={() => {
-              navigate("/home");
-            }}
-            style={{
-              backgroundColor: "#ff5400",
-              borderColor: "#ff5400",
-              maxWidth: "50%",
-              height: 50,
-              marginTop: 20,
-            }}
-            color="primary"
-          >
-            <span>Continue to Shopping</span>
-          </Button>
         </div>
       </Container>
       <Footer />
