@@ -11,12 +11,13 @@ import "./styles.css";
 const SearchScreen = ({ app, authentication, ...props }) => {
   let navigate = useNavigate();
   const { key } = useParams();
+  const { products } = app;
   const [searchResults, setSearchResults] = React.useState([]);
   const [screenHeight, setScreenHeight] = React.useState(window.innerHeight);
 
-  React.useEffect(() => {
-    setSearchResults(app.searchData);
-  }, [app.searchData]);
+  // React.useEffect(() => {
+  //   setSearchResults(app.searchData);
+  // }, [app.searchData]);
 
   React.useEffect(() => {
     searchProducts(key);
@@ -33,10 +34,27 @@ const SearchScreen = ({ app, authentication, ...props }) => {
   }, [key]);
 
   const searchProducts = async (searchKey) => {
-    await props.actionCreator({
-      type: types.SEARCH_PRODUCTS,
-      payload: searchKey,
-    });
+    const lowercaseSearchKey = searchKey.toLowerCase();
+
+    setSearchResults(
+      products
+        .filter((item) => {
+          const lowercaseTags =
+            item?.Tags?.map((tag) => tag.toLowerCase()) || []; // Lowercase each tag
+          const lowercaseProductName = item["Product Name"].toLowerCase();
+
+          return (
+            lowercaseTags.some((tag) => tag.includes(lowercaseSearchKey)) ||
+            lowercaseProductName.includes(lowercaseSearchKey)
+          );
+        })
+        .map((product) => product)
+    );
+
+    // await props.actionCreator({
+    //   type: types.SEARCH_PRODUCTS,
+    //   payload: searchKey,
+    // });
   };
 
   //meta title
