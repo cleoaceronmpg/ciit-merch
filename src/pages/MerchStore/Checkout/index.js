@@ -327,7 +327,7 @@ const Checkout = ({ app, cart, checkout, authentication, ...props }) => {
     let checksum = await hashChecksum(checksumString);
 
     const newPaymentUrl = `${OrderFields.PaymentUrl}&digest=${checksum}`;
-
+    console.log("newPaymentUrl", newPaymentUrl);
     window.location.href = newPaymentUrl;
   };
 

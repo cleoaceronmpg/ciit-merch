@@ -17,7 +17,7 @@ class Authentication {
   fnPostVerifyAccountViaToken = async (payload) => {
     return await ciitMerchApi("Users")
       .select({
-        filterByFormula: `AND({Token} = '${payload.token}', {EmailVerified} = 'false')`,
+        filterByFormula: `AND({Token} = '${encodeURIComponent(payload.token)}', {EmailVerified} = 'false')`,
         maxRecords: 1,
       })
       .firstPage();

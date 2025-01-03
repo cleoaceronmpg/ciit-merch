@@ -162,10 +162,14 @@ const Home = ({ app, authentication, ...props }) => {
                   {app.products.length > 0 &&
                     app.products.map((item, index) => (
                       <div key={index} className="feature-product-item">
-                        <img
-                          className="feature-image"
-                          src={item.Images[0].url}
-                        />
+                        {item?.Images ? (
+                          <img
+                            className="feature-image"
+                            src={item.Images[0].url}
+                          />
+                        ) : (
+                          <p className="text-muted">No Image</p>
+                        )}
                         <Button
                           type="button"
                           style={{

@@ -85,10 +85,12 @@ const Register = ({ account, authentication, ...props }) => {
         process.env.REACT_APP_SECRET_KEY
       );
 
-      values.Token = encrypt(
+      const encryptedToken = encrypt(
         moment().format("HH:mm:ss"),
         process.env.REACT_APP_SECRET_KEY
       );
+
+      values.Token = encodeURIComponent(encryptedToken);
 
       await props.actionCreator({
         type: types.REGISTER,
