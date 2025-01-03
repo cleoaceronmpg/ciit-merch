@@ -26,7 +26,14 @@ import Header from "../../../components/MerchStore/Header";
 import Footer from "../../../components/MerchStore/Footer";
 import "./styles.css";
 
-const Checkout = ({ app, cart, checkout, authentication, ...props }) => {
+const Checkout = ({
+  app,
+  cart,
+  checkout,
+  authentication,
+  profile,
+  ...props
+}) => {
   let navigate = useNavigate();
   const [shoppingCart, setShoppingCart] = React.useState([]);
   const [subTotal, setSubTotal] = React.useState(null);
@@ -39,7 +46,7 @@ const Checkout = ({ app, cart, checkout, authentication, ...props }) => {
   );
   const [notesToOrders, setNotesToOrders] = React.useState(null);
 
-  const { fields } = authentication.data;
+  const { fields } = profile.data;
 
   // validation
   const validation = useFormik({
@@ -104,6 +111,7 @@ const Checkout = ({ app, cart, checkout, authentication, ...props }) => {
   });
 
   React.useEffect(() => {
+    console.log("profile --------------------", profile);
     authentication.authenticated && initTempEmail();
   }, [authentication]);
 
@@ -327,7 +335,7 @@ const Checkout = ({ app, cart, checkout, authentication, ...props }) => {
     let checksum = await hashChecksum(checksumString);
 
     const newPaymentUrl = `${OrderFields.PaymentUrl}&digest=${checksum}`;
-    console.log("newPaymentUrl", newPaymentUrl);
+
     window.location.href = newPaymentUrl;
   };
 
@@ -1003,11 +1011,12 @@ const Checkout = ({ app, cart, checkout, authentication, ...props }) => {
   );
 };
 
-const mapStateToProps = ({ app, cart, checkout, authentication }) => ({
+const mapStateToProps = ({ app, cart, checkout, authentication, profile }) => ({
   app,
   cart,
   checkout,
   authentication,
+  profile,
 });
 
 export default connect(mapStateToProps, { actionCreator })(Checkout);

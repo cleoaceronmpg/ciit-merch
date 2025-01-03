@@ -124,7 +124,7 @@ const Profile = ({ app, authentication, profile, ...props }) => {
         },
       });
 
-      setUpdateShippingAddress(!updateShippingAddress);
+      setUpdateShippingAddress(false);
     },
   });
 
