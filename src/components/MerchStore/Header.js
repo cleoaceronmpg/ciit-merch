@@ -20,7 +20,7 @@ import "./styles.css";
 import weareLogo from "../../assets/images/weare-logo-white.png";
 import cartIcon from "../../assets/images/cart.png";
 
-const Header = ({ authentication, ...props }) => {
+const Header = ({ authentication, cart, ...props }) => {
   let navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = React.useState(false);
   const [searchKey, setSearchKey] = React.useState(null);
@@ -31,6 +31,12 @@ const Header = ({ authentication, ...props }) => {
   React.useEffect(() => {
     console.log("authentication", authentication);
   }, [authentication]);
+
+  React.useEffect(() => {
+    console.log(cart.data);
+  }, [cart.data]);
+
+  const numberOfCartItems = cart.data.length || 0;
 
   const setTopNav = () => {
     if (minTopNav) {
@@ -285,9 +291,16 @@ const Header = ({ authentication, ...props }) => {
                       </div>
                     </form>
                   </div>
-                  <Link to="/cart">
-                    <img src={cartIcon} width={35} height={35} />
-                  </Link>
+                  <div className="cart-icon">
+                    {numberOfCartItems > 0 && (
+                      <span className="cart-item-number">
+                        {numberOfCartItems}
+                      </span>
+                    )}
+                    <Link to="/cart">
+                      <img src={cartIcon} width={35} height={35} />
+                    </Link>
+                  </div>
                 </div>
               </Col>
             </Row>
@@ -361,9 +374,9 @@ const Header = ({ authentication, ...props }) => {
   );
 };
 
-const mapStateToProps = ({ layout, app, authentication, ...state }) => {
+const mapStateToProps = ({ layout, app, authentication, cart, ...state }) => {
   const { layoutMode } = layout;
-  return { app, authentication, layout, layoutMode };
+  return { app, authentication, cart, layout, layoutMode };
 };
 
 export default connect(mapStateToProps, { actionCreator })(Header);
