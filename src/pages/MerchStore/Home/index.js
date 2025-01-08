@@ -96,7 +96,8 @@ const Home = ({ app, authentication, ...props }) => {
                   </span>{" "}
                   a CIIT Old School Hoodie or
                 </p>
-                <p>Oversized T-shirt on January 4 to January 7, 2025!</p>
+                <p>Oversized T-shirt on January 10 to January 15, 2025!</p>
+                <p>📅 ETA January 30, 2025!</p>
               </div>
               <div className="orderNow">
                 <Button

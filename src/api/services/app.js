@@ -1,7 +1,74 @@
 import { ciitMerchApi } from "../../api";
 class App {
   fnGetProducts = async () => {
-    return await ciitMerchApi("Products").select().firstPage();
+    const response = await ciitMerchApi("Products").select().firstPage();
+
+    if (response) {
+      const fullProductsPromises = response.map(async (item) => {
+        const colorIds = item.fields?.Colors || [];
+        const sizesIds = item.fields?.Sizes || [];
+        const categoryId = item.fields?.Categories || [];
+
+        // Fetch the OrderItems details
+        const colorPromises = colorIds.map((id) =>
+          ciitMerchApi("Colors").find(id)
+        );
+        const sizesPromises = sizesIds.map((id) =>
+          ciitMerchApi("Sizes").find(id)
+        );
+        const categoryPromises = categoryId.map((id) =>
+          ciitMerchApi("Category").find(id)
+        );
+
+        const colorItems = await Promise.all(colorPromises);
+        const sizeItems = await Promise.all(sizesPromises);
+        const categoryItems = await Promise.all(categoryPromises);
+
+        // Use a Set to ensure uniqueness
+        const uniqueSizesSet = new Set();
+        const uniqueColorsSet = new Set();
+
+        const fullProductsDetails = {
+          ...item.fields,
+          Colors:
+            !colorIds || colorIds.length === 0
+              ? []
+              : colorItems.reduce((acc, currentItem) => {
+                  const color = currentItem.fields?.Color;
+                  if (color && !uniqueColorsSet.has(color)) {
+                    uniqueColorsSet.add(color);
+                    acc.push(color);
+                  }
+                  return acc;
+                }, []),
+          Sizes:
+            !sizesIds || sizesIds.length === 0
+              ? []
+              : sizeItems.reduce((acc, currentItem) => {
+                  const size = currentItem.fields?.Size;
+                  if (size && !uniqueSizesSet.has(size)) {
+                    uniqueSizesSet.add(size);
+                    acc.push(size);
+                  }
+                  return acc;
+                }, []),
+          VariantOptions:
+            categoryItems.length > 0
+              ? categoryItems[0]?.fields["Variants Option"]
+              : "No",
+          id: item.id,
+        };
+
+        return fullProductsDetails;
+      });
+
+      // Wait for all orders to be processed
+      const fullProductsDetails = await Promise.all(fullProductsPromises);
+
+      return fullProductsDetails;
+    } else {
+      throw "No Products available.";
+    }
   };
 
   fnGetCampaign = async () => {
@@ -22,7 +89,6 @@ class App {
         if (!orderItemIds || orderItemIds.length === 0) {
           console.log("No OrderItems found for this order.");
           return { ...item.fields, OrderItemsDetails: [] };
-          return;
         }
 
         // Fetch the OrderItems details
@@ -59,6 +125,37 @@ class App {
     return await ciitMerchApi("Products")
       .select({
         filterByFormula: `SEARCH("${search}", ARRAYJOIN({Tags}, ","))`,
+      })
+      .firstPage();
+  };
+
+  fnGetRemainingStocks = async (values) => {
+    const conditions = [];
+
+    // Add conditions dynamically based on available values
+    if (values.recordId && values.size && values.color) {
+      conditions.push(
+        `AND({Product IDs} = '${values.recordId}', {Size} = '${values.size}', {Colors} = '${values.color}')`
+      );
+    } else if (values.recordId && values.size) {
+      conditions.push(
+        `AND({Product IDs} = '${values.recordId}', {Size} = '${values.size}')`
+      );
+    } else if (values.recordId && values.color) {
+      conditions.push(
+        `AND({Product IDs} = '${values.recordId}', {Colors} = '${values.color}')`
+      );
+    }
+
+    // Construct the filter formula
+    const filterByFormula =
+      conditions.length > 1
+        ? `OR(${conditions.join(",")})`
+        : conditions[0] || "";
+
+    return await ciitMerchApi("Sizes")
+      .select({
+        filterByFormula,
       })
       .firstPage();
   };

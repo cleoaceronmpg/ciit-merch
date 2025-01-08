@@ -12,6 +12,9 @@ import {
   SEARCH_PRODUCTS,
   SEARCH_PRODUCTS_SUCCESS,
   SEARCH_PRODUCTS_FAILED,
+  GET_REMAINING_STOCKS,
+  GET_REMAINING_STOCKS_SUCCESS,
+  GET_REMAINING_STOCKS_FAILED,
 } from "./types";
 
 import appServices from "../../api/services/app";
@@ -20,11 +23,9 @@ export function* fnGetProducts() {
   try {
     const response = yield call(appServices.api.fnGetProducts);
     if (response) {
-      const newdata = response.map((item) => ({ ...item.fields, id: item.id }));
-
       yield put({
         type: GET_PRODUCTS_SUCCESS,
-        payload: { products: newdata },
+        payload: { products: response },
       });
     }
   } catch (error) {
@@ -93,9 +94,34 @@ export function* fnSearchProducts({ payload }) {
   }
 }
 
+export function* fnGetRemainingStocks({ payload }) {
+  try {
+    const response = yield call(appServices.api.fnGetRemainingStocks, payload);
+
+    if (response) {
+      //const newdata = response.map((item) => ({ ...item.fields, id: item.id }));
+      const newdata = response.reduce((acc, currentItem) => {
+        const remainingStocks = currentItem?.fields["Remaining Stocks"];
+        return acc + parseInt(remainingStocks, 10);
+      }, 0);
+
+      yield put({
+        type: GET_REMAINING_STOCKS_SUCCESS,
+        payload: { remainingStocks: newdata },
+      });
+    }
+  } catch (error) {
+    yield put({
+      type: GET_REMAINING_STOCKS_FAILED,
+      payload: error,
+    });
+  }
+}
+
 export default function* watcher() {
   yield takeLatest(GET_PRODUCTS, fnGetProducts);
   yield takeLatest(GET_CAMPAIGN, fnGetCampaign);
   yield takeLatest(GET_ORDER_HISTORY, fnGetOrderHistory);
   yield takeLatest(SEARCH_PRODUCTS, fnSearchProducts);
+  yield takeLatest(GET_REMAINING_STOCKS, fnGetRemainingStocks);
 }

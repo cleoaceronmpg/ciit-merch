@@ -53,7 +53,6 @@ const QuantityButton = ({ quantity, setSelectedQty }) => {
 };
 
 QuantityButton.propTypes = {
-  quantity: PropTypes.integer,
   setSelectedQty: PropTypes.func,
 };
 

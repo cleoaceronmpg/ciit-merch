@@ -5,7 +5,7 @@ import { Row, Col, BreadcrumbItem } from "reactstrap";
 
 import "./styles.css";
 
-const Breadcrumb = ({ addedStyle = {}, breadcrumbItem, title }) => {
+const Breadcrumb = ({ addedStyle = {}, breadcrumbItem, title, url = "#" }) => {
   return (
     <Row>
       <Col xs="12">
@@ -17,7 +17,7 @@ const Breadcrumb = ({ addedStyle = {}, breadcrumbItem, title }) => {
           <div className="page-title-right">
             <ol className="breadcrumb m-0">
               <BreadcrumbItem>
-                <Link to="#">{title}</Link>
+                <Link to={url}>{title}</Link>
               </BreadcrumbItem>
               <BreadcrumbItem active>
                 {/* <Link to="#"> */}

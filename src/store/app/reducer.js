@@ -12,6 +12,9 @@ import {
   SEARCH_PRODUCTS,
   SEARCH_PRODUCTS_SUCCESS,
   SEARCH_PRODUCTS_FAILED,
+  GET_REMAINING_STOCKS,
+  GET_REMAINING_STOCKS_SUCCESS,
+  GET_REMAINING_STOCKS_FAILED,
 } from "./types";
 
 const INITIAL_STATE = {
@@ -24,6 +27,7 @@ const INITIAL_STATE = {
   previousCheckoutData: null,
   orderHistoryData: [],
   searchData: [],
+  selectedProductRemainingStock: null,
 };
 
 const app = (state = INITIAL_STATE, action) => {
@@ -123,6 +127,30 @@ const app = (state = INITIAL_STATE, action) => {
         errorMessage: action.payload.message,
         searchData: [],
       };
+
+    case GET_REMAINING_STOCKS:
+      return {
+        ...state,
+        loading: false,
+      };
+
+    case GET_REMAINING_STOCKS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        selectedProductRemainingStock: action.payload.remainingStocks,
+        error: null,
+        errorMessage: null,
+      };
+
+    case GET_REMAINING_STOCKS_FAILED:
+      return {
+        ...state,
+        error: true,
+        errorMessage: action.payload.message,
+        selectedProductRemainingStock: [],
+      };
+
     default:
       return state;
   }

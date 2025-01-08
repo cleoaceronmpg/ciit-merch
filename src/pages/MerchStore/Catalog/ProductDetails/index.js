@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { connect } from "react-redux";
 import { actionCreator, types } from "../../../../store";
 import { generateRandomString } from "../../../../helpers/crypto_helper";
+import { Button, Container } from "reactstrap";
 
 //import Breadcrumbs
 import Breadcrumbs from "../../../../components/MerchStore/Common/Breadcrumb";
@@ -11,9 +12,6 @@ import Header from "../../../../components/MerchStore/Header";
 import Footer from "../../../../components/MerchStore/Footer";
 import QuantityButton from "../../../../components/MerchStore/Common/QuantityButton";
 import "./styles.css";
-
-import { Button, Container } from "reactstrap";
-import { SIZE, COLOR, CatalogProducts } from "../data";
 
 const ProductDetails = ({ app, cart, ...props }) => {
   const { id } = useParams();
@@ -48,33 +46,103 @@ const ProductDetails = ({ app, cart, ...props }) => {
     id && filterProduct(id);
   }, [id]);
 
+  React.useEffect(() => {
+    console.log("selectedProduct -------------------", selectedProduct);
+    selectedProduct?.id && fetchRemainingStocks(selectedProduct["Product ID"]);
+  }, [selectedSize, selectedColor, selectedProduct]);
+
+  const fetchRemainingStocks = async (recordId) => {
+    if (selectedSize || selectedColor) {
+      await props.actionCreator({
+        type: types.GET_REMAINING_STOCKS,
+        payload: {
+          recordId: recordId,
+          size: selectedSize,
+          color: selectedColor,
+        },
+      });
+    }
+  };
+
   const filterProduct = (id) => {
     const filteredProduct = products.find((item) => item["Product ID"] === id);
-    console.log("filteredProduct", filteredProduct);
     setSelectedProduct(filteredProduct);
   };
 
-  React.useEffect(() => {
-    console.log(selectedQty);
-  }, [selectedQty]);
-
   const addToCart = async () => {
-    if (selectedSize && selectedColor) {
-      const sizeDetails = SIZE.find((item) => item.id === selectedSize);
-      const colorDetails = COLOR.find((item) => item.id === selectedColor);
+    if (selectedProduct.VariantOptions === "Yes") {
+      if (selectedSize && selectedColor) {
+        const sameCartVariant = cart.data.find(
+          (item) =>
+            item["Product ID"] === selectedProduct["Product ID"] &&
+            item["Color"] === selectedColor &&
+            item["Size"] === selectedSize
+        );
 
+        if (sameCartVariant) {
+          const newCartData = cart.data.map((item) =>
+            item["Product ID"] === selectedProduct["Product ID"] &&
+            item["Color"] === selectedColor &&
+            item["Size"] === selectedSize
+              ? {
+                  ...item,
+                  Quantity: parseInt(item.Quantity) + parseInt(selectedQty),
+                  TotalAmount:
+                    parseFloat(item.Price) *
+                    parseInt(item.Quantity + parseInt(selectedQty)),
+                }
+              : item
+          );
+
+          await props.actionCreator({
+            type: types.UPDATE_CART,
+            payload: newCartData,
+          });
+        } else {
+          await props.actionCreator({
+            type: types.ADD_TO_CART,
+            payload: [
+              {
+                uid: generateRandomString(15),
+                ...selectedProduct,
+                Size: selectedSize,
+                Color: selectedColor,
+                Quantity: parseInt(selectedQty),
+                TotalAmount:
+                  parseFloat(selectedProduct.Price) * parseInt(selectedQty),
+              },
+            ],
+          });
+        }
+
+        setSelectedSize(null);
+        setSelectedColor(null);
+        setSelectedQty(1);
+      } else {
+        if (!selectedSize) {
+          Swal.fire({
+            icon: "error",
+            title: "Size Option",
+            text: "Please select size variant options",
+          });
+        } else {
+          if (!selectedColor) {
+            Swal.fire({
+              icon: "error",
+              title: "Color Option",
+              text: "Please select color variant options",
+            });
+          }
+        }
+      }
+    } else {
       const sameCartVariant = cart.data.find(
-        (item) =>
-          item["Product ID"] === selectedProduct["Product ID"] &&
-          item["Color"] === colorDetails.color &&
-          item["Size"] === sizeDetails.size
+        (item) => item["Product ID"] === selectedProduct["Product ID"]
       );
 
       if (sameCartVariant) {
         const newCartData = cart.data.map((item) =>
-          item["Product ID"] === selectedProduct["Product ID"] &&
-          item["Color"] === colorDetails.color &&
-          item["Size"] === sizeDetails.size
+          item["Product ID"] === selectedProduct["Product ID"]
             ? {
                 ...item,
                 Quantity: parseInt(item.Quantity) + parseInt(selectedQty),
@@ -96,8 +164,8 @@ const ProductDetails = ({ app, cart, ...props }) => {
             {
               uid: generateRandomString(15),
               ...selectedProduct,
-              Size: sizeDetails.size,
-              Color: colorDetails.color,
+              Size: selectedSize || "No Size",
+              Color: selectedColor || "No Color",
               Quantity: parseInt(selectedQty),
               TotalAmount:
                 parseFloat(selectedProduct.Price) * parseInt(selectedQty),
@@ -109,11 +177,21 @@ const ProductDetails = ({ app, cart, ...props }) => {
       setSelectedSize(null);
       setSelectedColor(null);
       setSelectedQty(1);
-    } else {
+
       Swal.fire({
-        icon: "error",
-        title: "Add to Cart",
-        text: "Please select variant options",
+        icon: "success",
+        title: "JUST ADDED TO YOUR CART",
+        showConfirmButton: true,
+        confirmButtonText: "Go to Cart",
+        footer: '<a href="/catalog">Continue Shopping</a>',
+        customClass: {
+          confirmButton: "custom-confirm-button", // Add a custom class
+        },
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Redirect to /cart
+          window.location.href = "/cart";
+        }
       });
     }
   };
@@ -129,6 +207,7 @@ const ProductDetails = ({ app, cart, ...props }) => {
         <Breadcrumbs
           title="Catalog"
           breadcrumbItem={selectedProduct["Product Name"] || ""}
+          url="/catalog"
         />
 
         <div>
@@ -153,42 +232,57 @@ const ProductDetails = ({ app, cart, ...props }) => {
               <div className="product-details__price">
                 <h3>₱ {parseFloat(selectedProduct.Price).toFixed(2)}</h3>
               </div>
-              <div className="product-details__sizes">
-                <h6>Sizes:</h6>
-                <ul className="product-details__variant-options">
-                  {SIZE.map((item, index) => (
-                    <li
-                      key={index}
-                      className={selectedSize === item.id ? "selected" : ""}
-                    >
-                      <span onClick={() => setSelectedSize(item.id)}>
-                        {item.size}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="product-details__colors">
-                <h6>Colors:</h6>
-                <ul className="product-details__variant-options">
-                  {COLOR.map((item, index) => (
-                    <li
-                      key={index}
-                      className={selectedColor === item.id ? "selected" : ""}
-                    >
-                      <span onClick={() => setSelectedColor(item.id)}>
-                        {item.color}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              {selectedProduct.VariantOptions === "Yes" && (
+                <>
+                  <div className="product-details__sizes">
+                    <h6>Sizes:</h6>
+                    <ul className="product-details__variant-options">
+                      {selectedProduct?.Sizes &&
+                        selectedProduct.Sizes.map((item, index) => (
+                          <li
+                            key={index}
+                            className={selectedSize === item ? "selected" : ""}
+                          >
+                            <span onClick={() => setSelectedSize(item)}>
+                              {item}
+                            </span>
+                          </li>
+                        ))}
+                    </ul>
+                  </div>
+                  <div className="product-details__colors">
+                    <h6>Colors:</h6>
+                    <ul className="product-details__variant-options">
+                      {selectedProduct?.Colors &&
+                        selectedProduct.Colors.map((item, index) => (
+                          <li
+                            key={index}
+                            className={selectedColor === item ? "selected" : ""}
+                          >
+                            <span onClick={() => setSelectedColor(item)}>
+                              {item}
+                            </span>
+                          </li>
+                        ))}
+                    </ul>
+                  </div>
+                </>
+              )}
+
               <div className="product-details__quantity">
-                <label>Quantity:</label>
-                <QuantityButton
-                  quantity={selectedQty}
-                  setSelectedQty={setSelectedQty}
-                />
+                <div>
+                  <label>Quantity:</label>
+                  <QuantityButton
+                    quantity={selectedQty}
+                    setSelectedQty={setSelectedQty}
+                  />
+                </div>
+                {selectedSize && (
+                  <div className="product-details__stocks-container">
+                    <label>Remaining Stocks:</label>
+                    <h4>{app.selectedProductRemainingStock}</h4>
+                  </div>
+                )}
               </div>
               <div className="product-details__actions">
                 <Button
@@ -202,6 +296,11 @@ const ProductDetails = ({ app, cart, ...props }) => {
                   }}
                   color="primary"
                   onClick={() => addToCart()}
+                  disabled={
+                    selectedProduct.VariantOptions === "No"
+                      ? false
+                      : !app.selectedProductRemainingStock
+                  }
                 >
                   <span>ADD TO CART</span>
                 </Button>
@@ -209,9 +308,11 @@ const ProductDetails = ({ app, cart, ...props }) => {
             </div>
           </div>
           <div className="product-description">
-            <h5>Description:</h5>
+            <h4>Description</h4>
             {selectedProduct["Product Description"] !== undefined ? (
-              <p>{selectedProduct["Product Description"]}</p>
+              <p className="text-muted">
+                {selectedProduct["Product Description"]}
+              </p>
             ) : (
               <p>Description not available</p>
             )}
