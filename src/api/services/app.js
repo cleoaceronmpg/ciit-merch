@@ -87,7 +87,6 @@ class App {
         const orderItemIds = item.fields.OrderItems;
 
         if (!orderItemIds || orderItemIds.length === 0) {
-          console.log("No OrderItems found for this order.");
           return { ...item.fields, OrderItemsDetails: [] };
         }
 

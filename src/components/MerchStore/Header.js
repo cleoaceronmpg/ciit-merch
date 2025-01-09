@@ -28,14 +28,6 @@ const Header = ({ authentication, cart, ...props }) => {
   const typingTimeoutRef = React.useRef(null);
   const toggle = () => setDropdownOpen(!dropdownOpen);
 
-  React.useEffect(() => {
-    console.log("authentication", authentication);
-  }, [authentication]);
-
-  React.useEffect(() => {
-    console.log(cart.data);
-  }, [cart.data]);
-
   const numberOfCartItems = cart.data.length || 0;
 
   const setTopNav = () => {

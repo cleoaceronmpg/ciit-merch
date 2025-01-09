@@ -20,7 +20,6 @@ const Catalog = ({ app, ...props }) => {
   const { products } = app;
 
   React.useEffect(() => {
-    console.log("products", products);
     collection && setCatalog(collection);
   }, []);
 

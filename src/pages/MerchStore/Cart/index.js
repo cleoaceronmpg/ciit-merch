@@ -17,10 +17,6 @@ const Cart = ({ app, cart, ...props }) => {
   let navigate = useNavigate();
 
   React.useEffect(() => {
-    console.log(cart.data);
-  }, [cart.data]);
-
-  React.useEffect(() => {
     // collection && setCatalog(collection);
     app.products.length > 0 && cartDataHandler(cart.data);
     cart.data && computeSubTotal(cart.data);
@@ -57,7 +53,6 @@ const Cart = ({ app, cart, ...props }) => {
   };
 
   const computeSubTotal = async (data) => {
-    console.log("data ---------------", data);
     const TotalAmount = data.reduce((acc, product) => {
       // Remove non-numeric characters from price and convert to number
       const numericPrice = product?.Price

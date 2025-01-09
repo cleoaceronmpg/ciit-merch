@@ -320,7 +320,6 @@ const Checkout = ({
         text: "Please select your payment method",
       });
     }
-    console.log("place order");
   };
 
   const placeOrderItems = async (orderItems) => {
