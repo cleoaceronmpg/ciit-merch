@@ -159,6 +159,10 @@ class App {
       })
       .firstPage();
   };
+
+  fnGetShippingRate = async () => {
+    return await ciitMerchApi("ShippingRate").select().firstPage();
+  };
 }
 
 App.api = new App();

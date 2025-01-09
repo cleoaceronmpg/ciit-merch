@@ -36,7 +36,7 @@ const Catalog = ({ app, ...props }) => {
       >
         <Container>
           {/* Render Breadcrumbs */}
-          <Breadcrumbs title="Home" breadcrumbItem={catalog} />
+          <Breadcrumbs title="Home" breadcrumbItem={catalog} url="/home" />
 
           <div
             style={{

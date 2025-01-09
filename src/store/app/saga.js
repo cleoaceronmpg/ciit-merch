@@ -15,6 +15,9 @@ import {
   GET_REMAINING_STOCKS,
   GET_REMAINING_STOCKS_SUCCESS,
   GET_REMAINING_STOCKS_FAILED,
+  GET_SHIPPING_RATE,
+  GET_SHIPPING_RATE_SUCCESS,
+  GET_SHIPPING_RATE_FAILED,
 } from "./types";
 
 import appServices from "../../api/services/app";
@@ -118,10 +121,31 @@ export function* fnGetRemainingStocks({ payload }) {
   }
 }
 
+export function* fnGetShippingRate({ payload }) {
+  try {
+    const response = yield call(appServices.api.fnGetShippingRate, payload);
+
+    if (response) {
+      const newdata = response.map((item) => ({ ...item.fields, id: item.id }));
+
+      yield put({
+        type: GET_SHIPPING_RATE_SUCCESS,
+        payload: { shippingRate: newdata },
+      });
+    }
+  } catch (error) {
+    yield put({
+      type: GET_SHIPPING_RATE_FAILED,
+      payload: error,
+    });
+  }
+}
+
 export default function* watcher() {
   yield takeLatest(GET_PRODUCTS, fnGetProducts);
   yield takeLatest(GET_CAMPAIGN, fnGetCampaign);
   yield takeLatest(GET_ORDER_HISTORY, fnGetOrderHistory);
   yield takeLatest(SEARCH_PRODUCTS, fnSearchProducts);
   yield takeLatest(GET_REMAINING_STOCKS, fnGetRemainingStocks);
+  yield takeLatest(GET_SHIPPING_RATE, fnGetShippingRate);
 }

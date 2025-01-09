@@ -115,7 +115,11 @@ const Cart = ({ app, cart, ...props }) => {
       <div style={{ paddingLeft: 20, paddingRight: 20 }}>
         <Container>
           {/* Render Breadcrumbs */}
-          <Breadcrumbs title="Home" breadcrumbItem={"Shopping cart"} />
+          <Breadcrumbs
+            title="Home"
+            breadcrumbItem={"Shopping cart"}
+            url="/home"
+          />
 
           <div
             style={{

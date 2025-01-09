@@ -35,6 +35,7 @@ import PrivacyPolicy from "../pages/MerchStore/TermsAndCondition/PrivacyPolicy";
 import Profile from "../pages/MerchStore/Profile";
 import Search from "../pages/MerchStore/Search";
 import Verify from "../pages/MerchStore/Register/Verify";
+import ForgotPassword from "../pages/MerchStore/MerchLogin/ForgotPassword";
 
 const userRoutes = [
   //dashboard
@@ -51,7 +52,7 @@ const authRoutes = [
   { path: "/home", component: <Home /> },
   //authencation page
   { path: "/logout", component: <Logout /> },
-  { path: "/forgot-password", component: <ForgetPwd /> },
+  // { path: "/forgot-password", component: <ForgetPwd /> },
 
   //AuthenticationInner pages
   { path: "/page-login", component: <PageLogin /> },
@@ -78,6 +79,7 @@ const authRoutes = [
   { path: "/profile", component: <Profile /> },
   { path: "/search/:key", component: <Search /> },
   { path: "/verify", component: <Verify /> },
+  { path: "/forgot-password", component: <ForgotPassword /> },
 ];
 
 export { userRoutes, authRoutes };

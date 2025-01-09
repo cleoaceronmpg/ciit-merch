@@ -15,6 +15,9 @@ import {
   GET_REMAINING_STOCKS,
   GET_REMAINING_STOCKS_SUCCESS,
   GET_REMAINING_STOCKS_FAILED,
+  GET_SHIPPING_RATE,
+  GET_SHIPPING_RATE_SUCCESS,
+  GET_SHIPPING_RATE_FAILED,
 } from "./types";
 
 const INITIAL_STATE = {
@@ -28,6 +31,7 @@ const INITIAL_STATE = {
   orderHistoryData: [],
   searchData: [],
   selectedProductRemainingStock: null,
+  shippingRate: [],
 };
 
 const app = (state = INITIAL_STATE, action) => {
@@ -149,6 +153,29 @@ const app = (state = INITIAL_STATE, action) => {
         error: true,
         errorMessage: action.payload.message,
         selectedProductRemainingStock: [],
+      };
+
+    case GET_SHIPPING_RATE:
+      return {
+        ...state,
+        loading: false,
+      };
+
+    case GET_SHIPPING_RATE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        shippingRate: action.payload.shippingRate,
+        error: null,
+        errorMessage: null,
+      };
+
+    case GET_SHIPPING_RATE_FAILED:
+      return {
+        ...state,
+        error: true,
+        errorMessage: action.payload.message,
+        shippingRate: [],
       };
 
     default:

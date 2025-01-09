@@ -47,7 +47,6 @@ const ProductDetails = ({ app, cart, ...props }) => {
   }, [id]);
 
   React.useEffect(() => {
-    console.log("selectedProduct -------------------", selectedProduct);
     selectedProduct?.id && fetchRemainingStocks(selectedProduct["Product ID"]);
   }, [selectedSize, selectedColor, selectedProduct]);
 
@@ -71,7 +70,11 @@ const ProductDetails = ({ app, cart, ...props }) => {
 
   const addToCart = async () => {
     if (selectedProduct.VariantOptions === "Yes") {
-      if (selectedSize && selectedColor) {
+      if (
+        selectedSize &&
+        selectedColor &&
+        app.selectedProductRemainingStock > 0
+      ) {
         const sameCartVariant = cart.data.find(
           (item) =>
             item["Product ID"] === selectedProduct["Product ID"] &&
@@ -124,6 +127,12 @@ const ProductDetails = ({ app, cart, ...props }) => {
             icon: "error",
             title: "Size Option",
             text: "Please select size variant options",
+          });
+        } else if (!app.selectedProductRemainingStock) {
+          Swal.fire({
+            icon: "error",
+            title: "Remaining Stocks",
+            text: "This product has 0 remaining stock.",
           });
         } else {
           if (!selectedColor) {

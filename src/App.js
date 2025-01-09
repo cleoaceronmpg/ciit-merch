@@ -28,11 +28,18 @@ fakeBackend();
 const App = ({ authentication, app, ...props }) => {
   React.useEffect(() => {
     fetchProducts();
+    fetchShippingRate();
   }, []);
 
   const fetchProducts = async () => {
     await props.actionCreator({
       type: types.GET_PRODUCTS,
+    });
+  };
+
+  const fetchShippingRate = async () => {
+    await props.actionCreator({
+      type: types.GET_SHIPPING_RATE,
     });
   };
 

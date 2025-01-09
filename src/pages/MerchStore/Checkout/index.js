@@ -37,6 +37,8 @@ const Checkout = ({
   let navigate = useNavigate();
   const [shoppingCart, setShoppingCart] = React.useState([]);
   const [subTotal, setSubTotal] = React.useState(null);
+  const [total, setTotal] = React.useState(null);
+  const [shippingTotalRate, setShippingTotalRate] = React.useState(null);
   const [totalItems, setTotalItems] = React.useState(null);
   const [selectedOption, setSelectedOption] = React.useState(
     !checkout.shipAddressData.length && "for-pickup"
@@ -47,6 +49,7 @@ const Checkout = ({
   const [notesToOrders, setNotesToOrders] = React.useState(null);
 
   const { fields } = profile.data;
+  const { shippingRate } = app;
 
   // validation
   const validation = useFormik({
@@ -111,7 +114,6 @@ const Checkout = ({
   });
 
   React.useEffect(() => {
-    console.log("profile --------------------", profile);
     authentication.authenticated && initTempEmail();
   }, [authentication]);
 
@@ -131,7 +133,6 @@ const Checkout = ({
   }, [checkout.loading]);
 
   React.useEffect(() => {
-    console.log("authentication", authentication);
     checkout.data?.fields?.TransactionID &&
       placeOrderItems(checkout.orderItemsData);
   }, [checkout.data]);
@@ -152,8 +153,8 @@ const Checkout = ({
   }, [checkout.placedOrderItemsData]);
 
   React.useEffect(() => {
-    subTotal && totalAmountHandler(subTotal);
-  }, [subTotal]);
+    total && totalAmountHandler(total);
+  }, [total]);
 
   React.useEffect(() => {
     // collection && setCatalog(collection);
@@ -162,6 +163,10 @@ const Checkout = ({
       cartDataHandler(cart.data);
     cart.data && computeSubTotalAndQty(cart.data);
   }, [cart.data, app.products]);
+
+  React.useEffect(() => {
+    cart.data && computeSubTotalAndShippingRate(cart.data);
+  }, [selectedOption]);
 
   const cartDataHandler = async (data) => {
     const updatedArray = data.map((item) => {
@@ -180,6 +185,37 @@ const Checkout = ({
     });
 
     setShoppingCart(updatedArray);
+  };
+
+  const computeSubTotalAndShippingRate = async (data) => {
+    const TotalAmount = data.reduce((acc, product) => {
+      // Remove non-numeric characters from price and convert to number
+      const numericPrice = parseFloat(product.Price.replace(/[^0-9.-]+/g, ""));
+      // Add to accumulator: price * quantity
+      return acc + numericPrice * product.Quantity;
+    }, 0);
+
+    const totalItems = data.reduce((acc, product) => {
+      return acc + parseInt(product.Quantity);
+    }, 0);
+
+    if (selectedOption === "for-delivery") {
+      const filteredShippingRate = shippingRate
+        .filter(
+          (item) => item["Start"] <= totalItems && item["End"] >= totalItems
+        )
+        .map((rate) => rate["Shipping Rate"]);
+
+      if (filteredShippingRate.length > 0) {
+        setShippingTotalRate(filteredShippingRate[0]);
+        const newTotalAmount =
+          parseFloat(TotalAmount) + parseFloat(filteredShippingRate[0]);
+
+        setTotal(newTotalAmount);
+      }
+    } else {
+      setTotal(TotalAmount);
+    }
   };
 
   const computeSubTotalAndQty = async (data) => {
@@ -273,6 +309,8 @@ const Checkout = ({
           ShippingMethod: checkout.shipMethod,
           ShippingAddress: ShippingAddress,
           CustomerNotes: checkout.notesToOrders,
+          ShippingFee:
+            selectedOption === "for-delivery" ? shippingTotalRate : 0,
         },
       });
     } else {
@@ -961,9 +999,15 @@ const Checkout = ({
                   <h5>Subtotal</h5>
                   <h5>₱ {parseFloat(subTotal).toFixed(2)}</h5>
                 </div>
+                {selectedOption === "for-delivery" && (
+                  <div className="checkout-details-block__total">
+                    <h5>Shipping Fee</h5>
+                    <h5>₱ {parseFloat(shippingTotalRate).toFixed(2)}</h5>
+                  </div>
+                )}
                 <div className="checkout-details-block__total">
                   <h5>Total</h5>
-                  <h5>₱ {parseFloat(subTotal).toFixed(2)}</h5>
+                  <h5>₱ {parseFloat(total).toFixed(2)}</h5>
                 </div>
               </div>
               <div className="shipping-note mt-8">
