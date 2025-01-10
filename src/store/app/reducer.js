@@ -18,6 +18,9 @@ import {
   GET_SHIPPING_RATE,
   GET_SHIPPING_RATE_SUCCESS,
   GET_SHIPPING_RATE_FAILED,
+  POST_CUSTOMER_REQUEST,
+  POST_CUSTOMER_REQUEST_SUCCESS,
+  POST_CUSTOMER_REQUEST_FAILED,
 } from "./types";
 
 const INITIAL_STATE = {
@@ -176,6 +179,28 @@ const app = (state = INITIAL_STATE, action) => {
         error: true,
         errorMessage: action.payload.message,
         shippingRate: [],
+      };
+
+    case POST_CUSTOMER_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case POST_CUSTOMER_REQUEST_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        errorMessage: null,
+      };
+
+    case POST_CUSTOMER_REQUEST_FAILED:
+      return {
+        ...state,
+        loading: false,
+        error: true,
+        errorMessage: action.payload.message,
       };
 
     default:

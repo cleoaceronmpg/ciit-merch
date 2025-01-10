@@ -18,6 +18,9 @@ import {
   GET_SHIPPING_RATE,
   GET_SHIPPING_RATE_SUCCESS,
   GET_SHIPPING_RATE_FAILED,
+  POST_CUSTOMER_REQUEST,
+  POST_CUSTOMER_REQUEST_SUCCESS,
+  POST_CUSTOMER_REQUEST_FAILED,
 } from "./types";
 
 import appServices from "../../api/services/app";
@@ -141,6 +144,23 @@ export function* fnGetShippingRate({ payload }) {
   }
 }
 
+export function* fnPostCustomerRequest({ payload }) {
+  try {
+    const response = yield call(appServices.api.fnPostCustomerRequest, payload);
+
+    if (response) {
+      yield put({
+        type: POST_CUSTOMER_REQUEST_SUCCESS,
+      });
+    }
+  } catch (error) {
+    yield put({
+      type: POST_CUSTOMER_REQUEST_FAILED,
+      payload: error,
+    });
+  }
+}
+
 export default function* watcher() {
   yield takeLatest(GET_PRODUCTS, fnGetProducts);
   yield takeLatest(GET_CAMPAIGN, fnGetCampaign);
@@ -148,4 +168,5 @@ export default function* watcher() {
   yield takeLatest(SEARCH_PRODUCTS, fnSearchProducts);
   yield takeLatest(GET_REMAINING_STOCKS, fnGetRemainingStocks);
   yield takeLatest(GET_SHIPPING_RATE, fnGetShippingRate);
+  yield takeLatest(POST_CUSTOMER_REQUEST, fnPostCustomerRequest);
 }

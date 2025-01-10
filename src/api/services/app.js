@@ -162,6 +162,10 @@ class App {
   fnGetShippingRate = async () => {
     return await ciitMerchApi("ShippingRate").select().firstPage();
   };
+
+  fnPostCustomerRequest = async (payload) => {
+    return await ciitMerchApi("Customer Requests").create(payload);
+  };
 }
 
 App.api = new App();

@@ -10,7 +10,6 @@ import "./styles.css";
 import { Button, Container, Row, Col } from "reactstrap";
 import deliveryBan from "../../../assets/images/delivery-ban.png";
 import securePayment from "../../../assets/images/secure-payment.png";
-import bannerHeroAds from "../../../assets/images/banner-ads.png";
 
 const Home = ({ app, authentication, ...props }) => {
   let navigate = useNavigate();
@@ -21,11 +20,6 @@ const Home = ({ app, authentication, ...props }) => {
   const [heroBannerAds, setHeroBannerAds] = React.useState(null);
 
   React.useEffect(() => {
-    //console.log("bannerAds", bannerAds);
-  }, [bannerAds]);
-
-  React.useEffect(() => {
-    console.log("app", app);
     app.campaignData.length > 0 && bannerAdsHandler();
   }, [app]);
 
