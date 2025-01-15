@@ -11,6 +11,7 @@ import Breadcrumbs from "../../../../components/MerchStore/Common/Breadcrumb";
 import Header from "../../../../components/MerchStore/Header";
 import Footer from "../../../../components/MerchStore/Footer";
 import QuantityButton from "../../../../components/MerchStore/Common/QuantityButton";
+import ProductImageSlide from "../../../../components/MerchStore/Common/ProductImageSlide";
 import "./styles.css";
 
 const ProductDetails = ({ app, cart, ...props }) => {
@@ -208,6 +209,8 @@ const ProductDetails = ({ app, cart, ...props }) => {
   //meta title
   document.title = "CIIT Merch | Product Details";
 
+  console.log("images:", selectedProduct.Images);
+
   return (
     <React.Fragment>
       <Header />
@@ -223,11 +226,7 @@ const ProductDetails = ({ app, cart, ...props }) => {
           <div className="product-details">
             {selectedProduct?.Images && selectedProduct.Images.length > 0 && (
               <div className="product-details__image">
-                <img
-                  src={selectedProduct.Images[0].url}
-                  alt={selectedProduct["Product Name"]}
-                  className="self-center-details"
-                />
+                <ProductImageSlide images={selectedProduct.Images} />
               </div>
             )}
 
