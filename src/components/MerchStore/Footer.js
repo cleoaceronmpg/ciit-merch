@@ -40,7 +40,7 @@ const Footer = (props) => {
                 </li>
                 <li>
                   <Link
-                    to="https://www.facebook.com/messages/t/502903216233917"
+                    to="https://bit.ly/3D4mPPq"
                     target="_blank"
                     className="dropdown-item"
                   >

@@ -4,8 +4,6 @@ import { arrayOf, shape, string } from "prop-types";
 import "./styles.css";
 
 const ProductImageSlide = ({ images }) => {
-  console.log("list of images:", images);
-
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {

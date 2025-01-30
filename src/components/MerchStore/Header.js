@@ -156,10 +156,7 @@ const Header = ({ authentication, cart, ...props }) => {
                     <i className="bx bx-bell"></i> Notifications
                   </span>
                   <span>
-                    <Link
-                      to={"https://www.facebook.com/messages/t/502903216233917"}
-                      target="_blank"
-                    >
+                    <Link to={"https://bit.ly/3D4mPPq"} target="_blank">
                       <i className="bx bx-message-rounded-dots"></i> Chat us
                     </Link>
                   </span>

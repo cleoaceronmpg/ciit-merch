@@ -1,5 +1,6 @@
 import React from "react";
 import Swal from "sweetalert2";
+import DOMPurify from "dompurify";
 import { useParams } from "react-router-dom";
 import { connect } from "react-redux";
 import { actionCreator, types } from "../../../../store";
@@ -21,6 +22,8 @@ const ProductDetails = ({ app, cart, ...props }) => {
   const [selectedSize, setSelectedSize] = React.useState(null);
   const [selectedColor, setSelectedColor] = React.useState(null);
   const [selectedQty, setSelectedQty] = React.useState(1);
+  const [sanitizedDescriptionHTML, setSanitizedDescriptionHTML] =
+    React.useState(null);
 
   React.useEffect(() => {
     cart &&
@@ -49,6 +52,12 @@ const ProductDetails = ({ app, cart, ...props }) => {
 
   React.useEffect(() => {
     selectedProduct?.id && fetchRemainingStocks(selectedProduct["Product ID"]);
+    selectedProduct?.id &&
+      setSanitizedDescriptionHTML(
+        DOMPurify.sanitize(selectedProduct["Product Description"], {
+          ALLOWED_ATTR: ["style"], // Allow inline styles
+        })
+      );
   }, [selectedSize, selectedColor, selectedProduct]);
 
   const fetchRemainingStocks = async (recordId) => {
@@ -209,8 +218,6 @@ const ProductDetails = ({ app, cart, ...props }) => {
   //meta title
   document.title = "CIIT Merch | Product Details";
 
-  console.log("images:", selectedProduct.Images);
-
   return (
     <React.Fragment>
       <Header />
@@ -318,9 +325,10 @@ const ProductDetails = ({ app, cart, ...props }) => {
           <div className="product-description">
             <h4>Description</h4>
             {selectedProduct["Product Description"] !== undefined ? (
-              <p className="text-muted">
-                {selectedProduct["Product Description"]}
-              </p>
+              <p
+                className="text-muted"
+                dangerouslySetInnerHTML={{ __html: sanitizedDescriptionHTML }}
+              />
             ) : (
               <p>Description not available</p>
             )}
