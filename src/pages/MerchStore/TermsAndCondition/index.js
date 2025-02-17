@@ -39,7 +39,7 @@ const TermsAndCondition = ({ account, authentication, ...props }) => {
                         <p className="text-muted mt-2">
                           Welcome to{" "}
                           <span style={{ fontWeight: 700 }}>WeAre Merch</span>,
-                          owned and operated by D Julliz Scrap Trading. By
+                          owned and operated by WEAREMERCH ONLINE SHOP. By
                           accessing or using our website and services, you agree
                           to comply with and be bound by the following Terms and
                           Conditions. Please read them carefully before using
@@ -248,7 +248,7 @@ const TermsAndCondition = ({ account, authentication, ...props }) => {
                           All content on this website, including text, images,
                           graphics, and logos, is the property of{" "}
                           <span style={{ fontWeight: 700 }}>
-                            D Julliz Scrap Trading
+                            WEAREMERCH ONLINE SHOP
                           </span>{" "}
                           or its content suppliers and is protected by
                           applicable copyright laws. You may not reproduce,
@@ -259,7 +259,7 @@ const TermsAndCondition = ({ account, authentication, ...props }) => {
                         <p className="text-muted mt-2">
                           WeAre Merch and{" "}
                           <span style={{ fontWeight: 700 }}>
-                            D Julliz Scrap Trading
+                            WEAREMERCH ONLINE SHOP
                           </span>{" "}
                           shall not be held liable for any damages arising from
                           the use or inability to use our website or services,

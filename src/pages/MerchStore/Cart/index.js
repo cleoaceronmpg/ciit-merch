@@ -1,6 +1,8 @@
 import React from "react";
+import Swal from "sweetalert2";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { Button, Container } from "reactstrap";
 import { actionCreator, types } from "../../../store";
 
 //import Breadcrumbs
@@ -9,11 +11,13 @@ import Header from "../../../components/MerchStore/Header";
 import Footer from "../../../components/MerchStore/Footer";
 import "./styles.css";
 
-import { Button, Container } from "reactstrap";
+// api
+import appServices from "../../../api/services/app";
 
 const Cart = ({ app, cart, ...props }) => {
   const [shoppingCart, setShoppingCart] = React.useState([]);
   const [subTotal, setSubTotal] = React.useState(null);
+  const [itemsWithZeroStock, setItemsWithZeroStock] = React.useState(null);
   let navigate = useNavigate();
 
   React.useEffect(() => {
@@ -99,6 +103,40 @@ const Cart = ({ app, cart, ...props }) => {
       type: types.UPDATE_CART,
       payload: newCartData,
     });
+  };
+
+  const checkStockBeforeCheckout = async () => {
+    if (shoppingCart.length > 0) {
+      let listOfNoStockItems = [];
+
+      for (let cart of shoppingCart) {
+        let stockResult = await appServices.api.fnGetRemainingStocks({
+          recordId: cart["Product ID"],
+          size: cart["Size"],
+          color: cart["Color"],
+        });
+
+        let remainingStock = stockResult.reduce((acc, currentItem) => {
+          const remainingStocks = currentItem?.fields["Remaining Stocks"];
+          return acc + parseInt(remainingStocks, 10);
+        }, 0);
+
+        if (!remainingStock) {
+          Swal.fire({
+            icon: "error",
+            title: `${cart["Product Name"]}`,
+            text: "This product is currently out of stock. Feel free to check out our other merchandise. Thank you!",
+          });
+
+          listOfNoStockItems.push(cart["Product ID"]);
+          break;
+        }
+      }
+
+      if (!listOfNoStockItems.length) {
+        navigate("/checkout");
+      }
+    }
   };
 
   //meta title
@@ -319,7 +357,8 @@ const Cart = ({ app, cart, ...props }) => {
                             }}
                             color="primary"
                             onClick={() => {
-                              navigate("/checkout");
+                              checkStockBeforeCheckout();
+                              //navigate("/checkout");
                             }}
                           >
                             <span>CHECKOUT</span>

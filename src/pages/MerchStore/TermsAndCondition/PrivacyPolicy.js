@@ -31,7 +31,7 @@ const PrivacyPolicy = ({ account, authentication, ...props }) => {
                         <p className="text-muted mt-2">
                           At{" "}
                           <span style={{ fontWeight: 700 }}>WeAre Merch</span>,
-                          operated by D Julliz Scrap Trading, we are committed
+                          operated by WEAREMERCH ONLINE SHOP, we are committed
                           to protecting your personal information and respecting
                           your privacy. This Privacy Policy outlines how your
                           information is collected, used, and disclosed when you
