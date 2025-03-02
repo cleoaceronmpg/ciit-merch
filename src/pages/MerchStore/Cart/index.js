@@ -17,14 +17,46 @@ import appServices from "../../../api/services/app";
 const Cart = ({ app, cart, ...props }) => {
   const [shoppingCart, setShoppingCart] = React.useState([]);
   const [subTotal, setSubTotal] = React.useState(null);
-  const [itemsWithZeroStock, setItemsWithZeroStock] = React.useState(null);
+  const [promoCode, setPromoCode] = React.useState(null);
+  const [promoCodeSubmitted, setPromoCodeSubmitted] = React.useState(false);
   let navigate = useNavigate();
+
+  React.useEffect(() => {
+    clearPromoCode();
+  }, []);
+
+  React.useEffect(() => {
+    if (!cart.loading) {
+      if (promoCodeSubmitted && cart.error) {
+        Swal.fire({
+          icon: "error",
+          title: `${promoCode}`,
+          text: cart.errorMessage,
+        });
+        setPromoCodeSubmitted(false);
+      }
+
+      if (promoCodeSubmitted && !cart.error && cart.promoCode) {
+        Swal.fire({
+          icon: "success",
+          title: `${cart.promoCode?.PromoCode}`,
+          text: "You have successfully applied a promo code.",
+        });
+        setPromoCodeSubmitted(false);
+      }
+    }
+  }, [cart.loading]);
 
   React.useEffect(() => {
     // collection && setCatalog(collection);
     app.products.length > 0 && cartDataHandler(cart.data);
     cart.data && computeSubTotal(cart.data);
   }, [cart.data, app.products]);
+
+  React.useEffect(() => {
+    cart.promoCode?.Amount &&
+      computeSubTotalWithDiscount(cart.promoCode?.Amount);
+  }, [cart.promoCode]);
 
   const cartDataHandler = async (data) => {
     if (data.length > 0) {
@@ -67,6 +99,12 @@ const Cart = ({ app, cart, ...props }) => {
     }, 0);
 
     setSubTotal(TotalAmount);
+  };
+
+  const computeSubTotalWithDiscount = async (Amount) => {
+    const discountedAmount = parseFloat(subTotal) - parseFloat(Amount);
+
+    setSubTotal(discountedAmount);
   };
 
   const plusQuantity = async (id) => {
@@ -134,9 +172,32 @@ const Cart = ({ app, cart, ...props }) => {
       }
 
       if (!listOfNoStockItems.length) {
-        navigate("/checkout");
+        navigate("/checkout", { state: { isFromCart: true } });
       }
     }
+  };
+
+  const validateAnApplyPromoCode = async () => {
+    if (promoCode) {
+      await props.actionCreator({
+        type: types.APPLY_PROMO_CODE,
+        payload: { promoCode: promoCode },
+      });
+
+      setPromoCodeSubmitted(true);
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: `Promotion Code`,
+        text: "Promo code cannot be empty.",
+      });
+    }
+  };
+
+  const clearPromoCode = async () => {
+    await props.actionCreator({
+      type: types.CLEAR_PROMO_CODE,
+    });
   };
 
   //meta title
@@ -314,6 +375,9 @@ const Cart = ({ app, cart, ...props }) => {
                               type="text"
                               name="coupon"
                               placeholder="Enter coupon code"
+                              onChange={(e) => {
+                                setPromoCode(e.target.value);
+                              }}
                             />
                             <Button
                               className="btn btn-primary w-100 waves-effect waves-light"
@@ -322,6 +386,9 @@ const Cart = ({ app, cart, ...props }) => {
                                 backgroundColor: "#ff5400",
                                 borderColor: "#ff5400",
                                 maxWidth: "50%",
+                              }}
+                              onClick={() => {
+                                validateAnApplyPromoCode();
                               }}
                               color="primary"
                             >
@@ -341,6 +408,15 @@ const Cart = ({ app, cart, ...props }) => {
                             <h5>Subtotal</h5>
                             <h5>₱ {parseFloat(subTotal).toFixed(2)}</h5>
                           </div>
+                          {cart.promoCode && (
+                            <div className="discount">
+                              <h5>Promo Code Discount</h5>
+                              <h5>
+                                ₱{" "}
+                                {parseFloat(cart.promoCode?.Amount).toFixed(2)}
+                              </h5>
+                            </div>
+                          )}
                           <div className="grand-total">
                             <h5>Total</h5>
                             <h3>₱ {parseFloat(subTotal).toFixed(2)}</h3>
@@ -358,7 +434,6 @@ const Cart = ({ app, cart, ...props }) => {
                             color="primary"
                             onClick={() => {
                               checkStockBeforeCheckout();
-                              //navigate("/checkout");
                             }}
                           >
                             <span>CHECKOUT</span>
@@ -385,31 +460,6 @@ const Cart = ({ app, cart, ...props }) => {
                     <span>Your cart is empty!</span>
                   </div>
                   <div className="flex justify-center mt-8">
-                    {/* <a href="/home" className="button primary">
-                      <span>
-                        <span className="flex space-x-4">
-                          <span className="self-center">CONTINUE SHOPPING</span>{" "}
-                          <svg
-                            className="self-center"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            style={{
-                              width: "2.5rem",
-                              height: "2.5rem",
-                            }}
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="1"
-                              d="M17 8l4 4m0 0l-4 4m4-4H3"
-                            ></path>
-                          </svg>
-                        </span>
-                      </span>
-                    </a> */}
                     <Button
                       className="btn btn-primary w-100 waves-effect waves-light"
                       onClick={() => {

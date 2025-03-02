@@ -1,10 +1,20 @@
-import { ADD_TO_CART, UPDATE_CART, REMOVE_CART, CLEAR_CART } from "./types";
+import {
+  ADD_TO_CART,
+  UPDATE_CART,
+  REMOVE_CART,
+  CLEAR_CART,
+  APPLY_PROMO_CODE,
+  APPLY_PROMO_CODE_SUCCESS,
+  APPLY_PROMO_CODE_FAILED,
+  CLEAR_PROMO_CODE,
+} from "./types";
 
 const INIT_STATE = {
   loading: true,
   data: [],
   error: false,
   errorMessage: null,
+  promoCode: null,
 };
 
 const cart = (state = INIT_STATE, action) => {
@@ -38,8 +48,38 @@ const cart = (state = INIT_STATE, action) => {
         errorMessage: null,
       };
 
+    case APPLY_PROMO_CODE:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case APPLY_PROMO_CODE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        promoCode: action.payload,
+        error: null,
+        errorMessage: null,
+      };
+
+    case APPLY_PROMO_CODE_FAILED:
+      return {
+        ...state,
+        loading: false,
+        error: true,
+        errorMessage: action.payload,
+        promoCode: null,
+      };
+
     case CLEAR_CART:
       return INIT_STATE;
+
+    case CLEAR_PROMO_CODE:
+      return {
+        ...state,
+        promoCode: null,
+      };
 
     default:
       return state;

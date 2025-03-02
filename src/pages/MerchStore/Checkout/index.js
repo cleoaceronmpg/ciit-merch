@@ -1,7 +1,7 @@
 import React from "react";
 import Swal from "sweetalert2";
 import { connect } from "react-redux";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { actionCreator, types } from "../../../store";
 import { hashChecksum } from "../../../helpers/crypto_helper";
 import {
@@ -35,6 +35,9 @@ const Checkout = ({
   ...props
 }) => {
   let navigate = useNavigate();
+  const location = useLocation();
+  const { isFromCart } = location.state || {};
+
   const [shoppingCart, setShoppingCart] = React.useState([]);
   const [subTotal, setSubTotal] = React.useState(null);
   const [total, setTotal] = React.useState(null);
@@ -47,7 +50,6 @@ const Checkout = ({
     checkout.paymentMethod
   );
   const [notesToOrders, setNotesToOrders] = React.useState(null);
-
   const { fields } = profile.data;
   const { shippingRate } = app;
 
@@ -114,6 +116,9 @@ const Checkout = ({
   });
 
   React.useEffect(() => {
+    if (!isFromCart) {
+      navigate("/cart");
+    }
     authentication.authenticated && initTempEmail();
   }, [authentication]);
 
@@ -188,12 +193,17 @@ const Checkout = ({
   };
 
   const computeSubTotalAndShippingRate = async (data) => {
-    const TotalAmount = data.reduce((acc, product) => {
+    let TotalAmount = data.reduce((acc, product) => {
       // Remove non-numeric characters from price and convert to number
       const numericPrice = parseFloat(product.Price.replace(/[^0-9.-]+/g, ""));
       // Add to accumulator: price * quantity
       return acc + numericPrice * product.Quantity;
     }, 0);
+
+    if (cart.promoCode?.Amount) {
+      TotalAmount =
+        parseFloat(TotalAmount) - parseFloat(cart.promoCode?.Amount);
+    }
 
     const totalItems = data.reduce((acc, product) => {
       return acc + parseInt(product.Quantity);
@@ -311,6 +321,8 @@ const Checkout = ({
           CustomerNotes: checkout.notesToOrders,
           ShippingFee:
             selectedOption === "for-delivery" ? shippingTotalRate : 0,
+          DiscountAmount: cart.promoCode?.Amount || 0,
+          PromoCode: cart.promoCode?.id ? [cart.promoCode?.id] : [],
         },
       });
     } else {
@@ -998,6 +1010,12 @@ const Checkout = ({
                   <h5>Subtotal</h5>
                   <h5>₱ {parseFloat(subTotal).toFixed(2)}</h5>
                 </div>
+                {cart.promoCode && (
+                  <div className="checkout-details-block__total">
+                    <h5>Promo Code Discount</h5>
+                    <h5>₱ -{parseFloat(cart.promoCode?.Amount).toFixed(2)}</h5>
+                  </div>
+                )}
                 {selectedOption === "for-delivery" && (
                   <div className="checkout-details-block__total">
                     <h5>Shipping Fee</h5>

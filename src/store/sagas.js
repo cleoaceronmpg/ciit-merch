@@ -9,11 +9,13 @@ import authenticationSaga from "./authentication/saga";
 import appSaga from "./app/saga";
 import checkoutSaga from "./checkout/saga";
 import profileSaga from "./profile/saga";
+import cartSaga from "./cart/saga";
 
 export default function* rootSaga() {
   yield all([
     //public
     fork(appSaga),
+    fork(cartSaga),
     fork(checkoutSaga),
     fork(AccountSaga),
     fork(authenticationSaga),

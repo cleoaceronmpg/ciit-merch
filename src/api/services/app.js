@@ -131,19 +131,28 @@ class App {
   fnGetRemainingStocks = async (values) => {
     const conditions = [];
 
-    // Add conditions dynamically based on available values
-    if (values.recordId && values.size && values.color) {
-      conditions.push(
-        `AND({Product IDs} = '${values.recordId}', {Size} = '${values.size}', {Colors} = '${values.color}')`
-      );
-    } else if (values.recordId && values.size) {
-      conditions.push(
-        `AND({Product IDs} = '${values.recordId}', {Size} = '${values.size}')`
-      );
-    } else if (values.recordId && values.color) {
-      conditions.push(
-        `AND({Product IDs} = '${values.recordId}', {Colors} = '${values.color}')`
-      );
+    // for accessories, books, etc. remaining stocks
+    if (
+      values.recordId &&
+      values.size === "No Size" &&
+      values.color === "No Color"
+    ) {
+      conditions.push(`AND({Product IDs} = '${values.recordId}')`);
+    } else {
+      // Add conditions dynamically based on available values
+      if (values.recordId && values.size && values.color) {
+        conditions.push(
+          `AND({Product IDs} = '${values.recordId}', {Size} = '${values.size}', {Colors} = '${values.color}')`
+        );
+      } else if (values.recordId && values.size) {
+        conditions.push(
+          `AND({Product IDs} = '${values.recordId}', {Size} = '${values.size}')`
+        );
+      } else if (values.recordId && values.color) {
+        conditions.push(
+          `AND({Product IDs} = '${values.recordId}', {Colors} = '${values.color}')`
+        );
+      }
     }
 
     // Construct the filter formula
@@ -165,6 +174,14 @@ class App {
 
   fnPostCustomerRequest = async (payload) => {
     return await ciitMerchApi("Customer Requests").create(payload);
+  };
+
+  fnGetPromoCodeByCode = async (values) => {
+    return await ciitMerchApi("PromoCodes")
+      .select({
+        filterByFormula: `AND({PromoCode} = '${values.promoCode}')`,
+      })
+      .firstPage();
   };
 }
 

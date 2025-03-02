@@ -1,37 +1,39 @@
 import { call, put, takeLatest } from "redux-saga/effects";
-import { handleErrorResponse } from "../../helpers/api_helper";
+
 import {
-  GET_USER_LIST,
-  GET_USER_LIST_SUCCESS,
-  GET_USER_LIST_FAILED,
-  ADD_NEW_USER,
-  ADD_NEW_USER_SUCCESS,
-  ADD_NEW_USER_FAILED,
-  UPDATE_USER,
-  UPDATE_USER_SUCCESS,
-  UPDATE_USER_FAILED,
-  DELETE_USER,
-  DELETE_USER_SUCCESS,
-  DELETE_USER_FAILED,
+  APPLY_PROMO_CODE,
+  APPLY_PROMO_CODE_SUCCESS,
+  APPLY_PROMO_CODE_FAILED,
 } from "./types";
 
-import userServices from "../../api/services/user";
+import appServices from "../../api/services/app";
 
-// function* fnGetUserList() {
-//   try {
-//     const data = yield call(userServices.api.fnGetUserList);
-//     yield put({
-//       type: GET_USER_LIST_SUCCESS,
-//       payload: [...data.data.data.result],
-//     });
-//   } catch (error) {
-//     yield put({
-//       type: GET_USER_LIST_FAILED,
-//       payload: error.response?.data ? error.response?.data.message : "",
-//     });
-//   }
-// }
+function* fnApplyPromoCode({ payload }) {
+  try {
+    const response = yield call(appServices.api.fnGetPromoCodeByCode, payload);
+
+    const newdata = response.map((item) => ({ ...item.fields, id: item.id }));
+
+    if (!newdata[0]?.id) {
+      throw "Promo code is not valid.";
+    }
+
+    if (newdata[0]["Is Used"] === "Yes") {
+      throw "Promo code is already used.";
+    }
+
+    yield put({
+      type: APPLY_PROMO_CODE_SUCCESS,
+      payload: newdata[0],
+    });
+  } catch (error) {
+    yield put({
+      type: APPLY_PROMO_CODE_FAILED,
+      payload: error,
+    });
+  }
+}
 
 export default function* watcher() {
-  // yield takeLatest(GET_USER_LIST, fnGetUserList);
+  yield takeLatest(APPLY_PROMO_CODE, fnApplyPromoCode);
 }
