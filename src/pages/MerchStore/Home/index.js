@@ -65,7 +65,7 @@ const Home = ({ app, authentication, ...props }) => {
           <Row className="banner-container">
             <Col className="banner-tag-line-container" lg={6}>
               <div className="tagline">
-                <p>Gear Up for a Back-to-School Deal!</p>
+                {/* <p>Gear Up for a Back-to-School Deal!</p>
                 <h5
                   style={{
                     fontWeight: 900,
@@ -91,7 +91,27 @@ const Home = ({ app, authentication, ...props }) => {
                   a CIIT Old School Hoodie or
                 </p>
                 <p>Oversized T-shirt on February 01 to February 15, 2025!</p>
-                <p>📅 ETA February 28, 2025!</p>
+                <p>📅 ETA February 28, 2025!</p> */}
+
+                <h5
+                  style={{
+                    fontWeight: 700,
+                    color: "#545454",
+                  }}
+                >
+                  WeARe is popping up at CIIT Open House!
+                </h5>
+
+                <p
+                  style={{
+                    marginTop: 20,
+                  }}
+                >
+                  Catch us at the event and enjoy an exclusive 10% OFF on all
+                  purchases made on-site!{" "}
+                </p>
+
+                <p>Promo runs from 📅 April 26, 2025 until supplies last.</p>
               </div>
               <div className="orderNow">
                 <Button
