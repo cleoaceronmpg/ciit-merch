@@ -50,6 +50,7 @@ const Checkout = ({
     checkout.paymentMethod
   );
   const [notesToOrders, setNotesToOrders] = React.useState(null);
+  const [discountedAmount, setDiscountedAmount] = React.useState(null);
   const { fields } = profile.data;
   const { shippingRate } = app;
 
@@ -201,8 +202,11 @@ const Checkout = ({
     }, 0);
 
     if (cart.promoCode?.Amount) {
-      TotalAmount =
-        parseFloat(TotalAmount) - parseFloat(cart.promoCode?.Amount);
+      const discountedAmount =
+        parseFloat(TotalAmount) * parseFloat(cart.promoCode?.Amount / 100);
+
+      setDiscountedAmount(discountedAmount);
+      TotalAmount = parseFloat(TotalAmount) - discountedAmount;
     }
 
     const totalItems = data.reduce((acc, product) => {
@@ -321,7 +325,7 @@ const Checkout = ({
           CustomerNotes: checkout.notesToOrders,
           ShippingFee:
             selectedOption === "for-delivery" ? shippingTotalRate : 0,
-          DiscountAmount: cart.promoCode?.Amount || 0,
+          DiscountAmount: discountedAmount || 0,
           PromoCode: cart.promoCode?.id ? [cart.promoCode?.id] : [],
         },
       });
@@ -1013,7 +1017,7 @@ const Checkout = ({
                 {cart.promoCode && (
                   <div className="checkout-details-block__total">
                     <h5>Promo Code Discount</h5>
-                    <h5>₱ -{parseFloat(cart.promoCode?.Amount).toFixed(2)}</h5>
+                    <h5>{cart.promoCode?.Amount}% OFF</h5>
                   </div>
                 )}
                 {selectedOption === "for-delivery" && (

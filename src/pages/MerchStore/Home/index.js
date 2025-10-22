@@ -24,6 +24,10 @@ const Home = ({ app, authentication, ...props }) => {
   }, [app]);
 
   React.useEffect(() => {
+    console.log("bannerAds", bannerAds);
+  }, [bannerAds]);
+
+  React.useEffect(() => {
     fetchCampaigns();
   }, []);
 
@@ -137,7 +141,7 @@ const Home = ({ app, authentication, ...props }) => {
                 paddingRight: "0px",
               }}
             >
-              {bannerAds && (
+              {bannerAds && bannerAds.length > 0 && (
                 <img
                   src={bannerAds.Image[0]?.url || ""}
                   className="banner-image"

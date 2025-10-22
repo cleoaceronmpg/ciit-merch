@@ -102,9 +102,11 @@ const Cart = ({ app, cart, ...props }) => {
   };
 
   const computeSubTotalWithDiscount = async (Amount) => {
-    const discountedAmount = parseFloat(subTotal) - parseFloat(Amount);
+    const discountedAmount = parseFloat(subTotal) * parseFloat(Amount / 100);
 
-    setSubTotal(discountedAmount);
+    const newSubTotal = parseFloat(subTotal) - discountedAmount;
+
+    setSubTotal(newSubTotal);
   };
 
   const plusQuantity = async (id) => {
@@ -411,10 +413,7 @@ const Cart = ({ app, cart, ...props }) => {
                           {cart.promoCode && (
                             <div className="discount">
                               <h5>Promo Code Discount</h5>
-                              <h5>
-                                ₱{" "}
-                                {parseFloat(cart.promoCode?.Amount).toFixed(2)}
-                              </h5>
+                              <h5>{cart.promoCode?.Amount}% OFF</h5>
                             </div>
                           )}
                           <div className="grand-total">
